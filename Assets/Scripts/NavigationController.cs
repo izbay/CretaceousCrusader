@@ -56,8 +56,11 @@ public class NavigationController : MonoBehaviour {
 	}
 	
 	public Vector3 getClickPoint () {
-		Vector3 returnVal = Camera.main.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane));
-		return returnVal;
+		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+		RaycastHit hit;
+		if (Physics.Raycast (ray, out hit, int.MaxValue, 1 << LayerMask.NameToLayer ("Water")))
+			return hit.point;
+		return Vector3.zero;
 	}
 	
 	void drawPath(List<Vector3> path){
@@ -73,7 +76,7 @@ public class NavigationController : MonoBehaviour {
 		Node endNode = new Node(end, int.MaxValue, NodeStates.end);
 		
 		// If it's a trivial distance, just return null.
-		if (Vector3.Distance (start,end) < 0.001f){
+		if (Vector3.Distance (start,end) < 1f){
 			return null;
 		}
 		// If we can get there without hitting a wall, just go there!
@@ -97,7 +100,7 @@ public class NavigationController : MonoBehaviour {
 				if(!isObstructed(nodes[i],nodes[j])){
 					nodes[i].addConnection (nodes[j]);
 					nodes[j].addConnection (nodes[i]);
-					//Debug.DrawLine (nodes[i].location,nodes[j].location,Color.magenta);
+					Debug.DrawLine (nodes[i].location,nodes[j].location,Color.magenta);
 				}
 			}
 			
@@ -119,7 +122,7 @@ public class NavigationController : MonoBehaviour {
 				nodes[i].state = NodeStates.open;
 				nodes[i].score = getScore(startNode,nodes[i],endNode);
 				//Debug.Log (nodes[i].label+" connects to start with score: "+nodes[i].score+". Opening "+nodes[i].label+".");
-				//Debug.DrawLine (nodes[i].location,startNode.location,Color.white);
+				Debug.DrawLine (nodes[i].location,startNode.location,Color.white);
 			}
 		}
 		bool completedSearch = false, foundAPath = false;
@@ -212,7 +215,7 @@ public class NavigationController : MonoBehaviour {
 		}
 	}
 	private bool isObstructed(Node start, Node end){
-		float subjectRadius = 0.4f;
+		float subjectRadius = 3f;
 		float distance = Vector3.Distance (start.location,end.location);
 		// We can't just draw a line from center to center because we could cut a corner into a wall.
 		// Take the subject size into account and draw a line from top/bottom/left/right edge.
@@ -220,11 +223,11 @@ public class NavigationController : MonoBehaviour {
 		for(int i=0;i<8;i+=4){
 			corners[i].x -= subjectRadius;
 			corners[i+1].x += subjectRadius;
-			corners[i+2].y -= subjectRadius;
-			corners[i+3].y += subjectRadius;
+			corners[i+2].z -= subjectRadius;
+			corners[i+3].z += subjectRadius;
 		}
 		for(int i=0;i<4;i++){
-			if(Physics2D.Raycast (corners[i],corners[i+4]-corners[i],distance))
+			if(Physics.Raycast (corners[i]+(corners[i+4]-corners[i]).normalized, corners[i+4]-corners[i], distance, 1 << LayerMask.NameToLayer ("Default")))
 				return true;
 		}
 		return false;
@@ -246,7 +249,6 @@ public class NavigationController : MonoBehaviour {
 		
 		public Node(Vector3 location, int label, NodeStates state = NodeStates.inactive){
 			this.location = location;
-			this.location.z = 0;
 			this.label = label;
 			this.state = state;
 			this.connections = new List<Node>();
