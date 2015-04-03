@@ -22,38 +22,10 @@ public class UnitController : MonoBehaviour {
 			Seek ();
 			SavePosition ();
 		}
-		
-		/** Handle if W and S are both held.
-		int dir_motion = 0;
-		if (Input.GetKey (KeyCode.W))
-			dir_motion++;
-		if (Input.GetKey (KeyCode.S))
-			dir_motion--;
-			
-		// Do motion. Remove target if one existed!
-		if (dir_motion != 0){
-			transform.Translate (dir_motion * Vector3.forward * moveSpeed * Time.deltaTime);
-			//target = Vector3.zero;
-			setRails (false);
-		}
-		// Handle if A and D are both held.
-		int dir_rotation = 0;
-		if (Input.GetKey (KeyCode.A))
-			dir_rotation--;
-		if (Input.GetKey (KeyCode.D))
-			dir_rotation++;
-
-		// Do rotation. Remove target if one existed!
-		if (dir_rotation != 0){
-			transform.Rotate(dir_rotation * Vector3.up * turnSpeed * 10 * Time.deltaTime);
-			//target = Vector3.zero;
-			setRails (false);
-		}
-		SavePosition ();**/
 	}
 
 	void Seek () {
-		Debug.DrawLine (curr_pos, target, Color.magenta);
+		//Debug.DrawLine (curr_pos, target, Color.magenta);
 
 		float distance = Vector3.Distance (curr_pos,target);
 		

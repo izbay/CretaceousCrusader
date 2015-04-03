@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 public class NavigationController : MonoBehaviour {
 	public UnitController subject;
-	
+
+	private int counter;
 	private bool pathForSubject = false;
 	private Vector3 startPos = Vector3.zero;
 	private Vector3 endPos = Vector3.zero;
@@ -12,6 +13,7 @@ public class NavigationController : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+		counter = 0;
 	}
 	
 	// Update is called once per frame
@@ -45,9 +47,20 @@ public class NavigationController : MonoBehaviour {
 		
 		// Recalculate the path with every update. If performance is compromised, reduce the frequency of this to be done 'every x ticks'.
 		if(path != null && pathForSubject && subject.isOnRails()){
-			drawPath(path);
+			//drawPath(path);
 			subject.setTarget(path[1]);
-			path = getPath (subject.transform.position, path[path.Count-1]);
+			if(counter == 50){
+				path = getPath (subject.transform.position, path[path.Count-1]);
+				counter = 0;
+			} else {
+				Vector3 start = subject.transform.position;
+				Vector3 end = path[path.Count-1];
+				List<Vector3> returnPath = quickScanPath (start, end);
+				if(!pathIsInvalid (returnPath)){
+					path = returnPath;
+				}
+				counter++;
+			}
 		} else if (path != null && !pathForSubject){
 			drawPath(path);
 		} else {
@@ -68,20 +81,80 @@ public class NavigationController : MonoBehaviour {
 			Debug.DrawLine (path[i-1],path[i],Color.magenta);
 		}
 	}
+
+	private bool pathIsInvalid(List<Vector3> returnPath){
+		return returnPath != null && returnPath.Count == 2 && returnPath[0] == Vector3.zero && returnPath[1] == Vector3.zero;
+	}
+
+	// This is only used for debug purposes.
+	private void printList(List<Node> list){
+		if (list == null){
+			Debug.Log("<Empty list>");
+		} else {
+			foreach (Node node in list){
+				if (node.label==int.MinValue)
+					Debug.Log ("Start");
+				else if(node.label==int.MaxValue)
+					Debug.Log ("End");
+				else
+					Debug.Log(node.label);
+			}
+		}
+	}
+	private bool isObstructed(Node start, Node end){
+		float subjectRadius = 3f;
+		float distance = Vector3.Distance (start.location,end.location);
+		// We can't just draw a line from center to center because we could cut a corner into a wall.
+		// Take the subject size into account and draw a line from top/bottom/left/right edge.
+		Vector3[] corners = new Vector3[]{start.location,start.location,start.location,start.location,end.location,end.location,end.location,end.location};
+		for(int i=0;i<8;i+=4){
+			corners[i].x -= subjectRadius;
+			corners[i+1].x += subjectRadius;
+			corners[i+2].z -= subjectRadius;
+			corners[i+3].z += subjectRadius;
+		}
+		for(int i=0;i<4;i++){
+			if(Physics.Raycast (corners[i], corners[i+4]-corners[i], distance, 1 << LayerMask.NameToLayer ("Default"))){
+				//Debug.DrawLine(corners[i], corners[i+4], Color.red);
+				return true;
+			}
+		}
+		return false;
+	}
 	
+	private float getScore(Node start, Node node, Node end){
+		return Vector3.Distance (start.location,node.location) + Vector3.Distance (node.location,end.location);
+	}
+
 	enum NodeStates {inactive, open, closed, start, end};
-	
-	public List<Vector3> getPath(Vector3 start, Vector3 end){
+
+	public List<Vector3> quickScanPath(Vector3 start, Vector3 end){
 		Node startNode = new Node(start, int.MinValue, NodeStates.start);
 		Node endNode = new Node(end, int.MaxValue, NodeStates.end);
 		
 		// If it's a trivial distance, just return null.
-		if (Vector3.Distance (start,end) < 1f){
+		if (Vector3.Distance (start,end) < 1.5f){
 			return null;
 		}
 		// If we can get there without hitting a wall, just go there!
+		
 		if (!isObstructed(startNode,endNode)){
+			//Debug.DrawLine(start,end, Color.green);
 			return new List<Vector3> {start, end};
+		} else {
+			//Debug.DrawLine(start,end, Color.red);
+			// Encoding for solution not found.
+			return new List<Vector3> {Vector3.zero, Vector3.zero};
+		}
+	}
+
+	public List<Vector3> getPath(Vector3 start, Vector3 end){
+		Node startNode = new Node(start, int.MinValue, NodeStates.start);
+		Node endNode = new Node(end, int.MaxValue, NodeStates.end);
+
+		List<Vector3> returnPath = quickScanPath(start, end);
+		if(!pathIsInvalid(returnPath)){
+			return returnPath;
 		}
 		
 		// Time to actually run A*... Start by creating a digital representation of every nav_node.
@@ -100,7 +173,7 @@ public class NavigationController : MonoBehaviour {
 				if(!isObstructed(nodes[i],nodes[j])){
 					nodes[i].addConnection (nodes[j]);
 					nodes[j].addConnection (nodes[i]);
-					Debug.DrawLine (nodes[i].location,nodes[j].location,Color.magenta);
+					//Debug.DrawLine (nodes[i].location,nodes[j].location,Color.magenta);
 				}
 			}
 			
@@ -122,7 +195,7 @@ public class NavigationController : MonoBehaviour {
 				nodes[i].state = NodeStates.open;
 				nodes[i].score = getScore(startNode,nodes[i],endNode);
 				//Debug.Log (nodes[i].label+" connects to start with score: "+nodes[i].score+". Opening "+nodes[i].label+".");
-				Debug.DrawLine (nodes[i].location,startNode.location,Color.white);
+				//Debug.DrawLine (nodes[i].location,startNode.location,Color.white);
 			}
 		}
 		bool completedSearch = false, foundAPath = false;
@@ -143,7 +216,7 @@ public class NavigationController : MonoBehaviour {
 						} else if(connection.state == NodeStates.inactive){
 							connection.addPossiblePrev(nodes[i]);
 							foundNodes.Add(connection);
-							connection.score = getScore (nodes[i],connection,endNode); // Should the first param be nodes[i] or startNode? Come back to this.
+							connection.score = getScore (startNode,connection,endNode); // Should the first param be nodes[i] or startNode? Come back to this.
 							//Debug.Log (nodes[i].label+" connects to "+connection.label+" with score: "+connection.score+". Opening "+connection.label+".");
 						}
 					}
@@ -198,45 +271,7 @@ public class NavigationController : MonoBehaviour {
 			return null;
 		}
 	}
-	
-	// This is only used for debug purposes.
-	private void printList(List<Node> list){
-		if (list == null){
-			Debug.Log("<Empty list>");
-		} else {
-			foreach (Node node in list){
-				if (node.label==int.MinValue)
-					Debug.Log ("Start");
-				else if(node.label==int.MaxValue)
-					Debug.Log ("End");
-				else
-					Debug.Log(node.label);
-			}
-		}
-	}
-	private bool isObstructed(Node start, Node end){
-		float subjectRadius = 3f;
-		float distance = Vector3.Distance (start.location,end.location);
-		// We can't just draw a line from center to center because we could cut a corner into a wall.
-		// Take the subject size into account and draw a line from top/bottom/left/right edge.
-		Vector3[] corners = new Vector3[]{start.location,start.location,start.location,start.location,end.location,end.location,end.location,end.location};
-		for(int i=0;i<8;i+=4){
-			corners[i].x -= subjectRadius;
-			corners[i+1].x += subjectRadius;
-			corners[i+2].z -= subjectRadius;
-			corners[i+3].z += subjectRadius;
-		}
-		for(int i=0;i<4;i++){
-			if(Physics.Raycast (corners[i]+(corners[i+4]-corners[i]).normalized, corners[i+4]-corners[i], distance, 1 << LayerMask.NameToLayer ("Default")))
-				return true;
-		}
-		return false;
-	}
-	
-	private float getScore(Node start, Node node, Node end){
-		return Vector3.Distance (start.location,node.location) + Vector3.Distance (node.location,end.location);
-	}
-	
+		
 	private class Node {
 		// Declare all of the node fields.
 		public int label; //{ get; set; }
