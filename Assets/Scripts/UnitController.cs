@@ -42,6 +42,7 @@ public class UnitController : MonoBehaviour {
 		} else {
 			// We've reached the target. Clear out all memory of it and await further instructions.
 			target = Vector3.zero;
+			setRails (false);
 		}
 	}
 
@@ -55,6 +56,8 @@ public class UnitController : MonoBehaviour {
 
 	public void setRails(bool railSetting){
 		onRails = railSetting;
+		Animator anim = transform.Find("AnimationContainer").GetComponent<Animator>();
+		anim.SetBool ("onRails",railSetting);
 	}
 	
 	public bool isOnRails(){

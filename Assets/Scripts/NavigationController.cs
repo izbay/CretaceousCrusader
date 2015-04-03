@@ -65,6 +65,7 @@ public class NavigationController : MonoBehaviour {
 			drawPath(path);
 		} else {
 			path = null;
+			subject.setRails (false);
 		}
 	}
 	
