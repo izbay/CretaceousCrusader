@@ -13,7 +13,7 @@ GameObject:
   - 23: {fileID: 2371754}
   - 65: {fileID: 6571756}
   - 54: {fileID: 5471754}
-  m_Layer: 1
+  m_Layer: 2
   m_Name: Cube
   m_TagString: nav_node
   m_Icon: {fileID: 0}
@@ -33,7 +33,7 @@ GameObject:
   - 23: {fileID: 2371756}
   - 65: {fileID: 6571758}
   - 54: {fileID: 5471756}
-  m_Layer: 1
+  m_Layer: 2
   m_Name: Cube
   m_TagString: nav_node
   m_Icon: {fileID: 0}
@@ -53,7 +53,7 @@ GameObject:
   - 23: {fileID: 2371758}
   - 65: {fileID: 6571764}
   - 54: {fileID: 5471758}
-  m_Layer: 1
+  m_Layer: 2
   m_Name: Cube
   m_TagString: nav_node
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   - 23: {fileID: 2371760}
   - 65: {fileID: 6571766}
   - 54: {fileID: 5471760}
-  m_Layer: 1
+  m_Layer: 2
   m_Name: Cube
   m_TagString: nav_node
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 471762}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -168,8 +168,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 171762}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 168.889999, y: 33.7700005, z: 144.740005}
+  m_LocalRotation: {x: 0, y: -.832263649, z: 0, w: .554380119}
+  m_LocalPosition: {x: 200.020004, y: 33.7999992, z: 164.979996}
   m_LocalScale: {x: 1, y: 1.77474403, z: 2.16125965}
   m_Children:
   - {fileID: 471764}
@@ -283,7 +283,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: edfd43522f122994c8acd56303744475, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0

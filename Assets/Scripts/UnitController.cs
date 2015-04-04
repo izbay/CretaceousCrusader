@@ -1,18 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class UnitController : MonoBehaviour {
 
 	public float turnSpeed;
 	public float moveSpeed;
 
+
+	private NavigationController navigationController;
 	private Vector3 target = Vector3.zero;
 	private Vector3 curr_pos;
 	private bool onRails = false;
+	private List<Vector3> path;
+	private int counter = 0;
 
 	// Use this for initialization
 	void Start () {
 		SavePosition ();
+		navigationController = GameObject.FindGameObjectWithTag("global_nav").GetComponent<NavigationController>();
 	}
 	
 	// Update is called once per frame
@@ -21,6 +27,27 @@ public class UnitController : MonoBehaviour {
 		if (target != Vector3.zero) {	
 			Seek ();
 			SavePosition ();
+		}
+
+		// Check path with every update.
+
+		if(path != null && onRails){
+			setTarget(path[1]);
+			if(counter == 100){
+				path = navigationController.getPath (transform.position, path[path.Count-1]);
+				counter = 0;
+			} else {
+				Vector3 start = transform.position;
+				Vector3 end = path[path.Count-1];
+				List<Vector3> returnPath = navigationController.quickScanPath (start, end);
+				if(!navigationController.pathIsInvalid (returnPath)){
+					path = returnPath;
+				}
+				counter++;
+			}
+		} else {
+			path = null;
+			setRails (false);
 		}
 	}
 
@@ -50,6 +77,11 @@ public class UnitController : MonoBehaviour {
 		curr_pos = transform.position;
 	}
 
+	public void setPath (List<Vector3> path){
+		this.path = path;
+		setRails (true);
+	}
+
 	public void setTarget(Vector3 target){
 		this.target = target;
 	}
@@ -58,9 +90,5 @@ public class UnitController : MonoBehaviour {
 		onRails = railSetting;
 		Animator anim = transform.Find("AnimationContainer").GetComponent<Animator>();
 		anim.SetBool ("onRails",railSetting);
-	}
-	
-	public bool isOnRails(){
-		return onRails;
 	}
 }

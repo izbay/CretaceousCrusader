@@ -3,105 +3,30 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class NavigationController : MonoBehaviour {
-	public UnitController subject;
+	public SelectionController selection;
 
-	private int counter;
 	private bool pathForSubject = false;
-	private Vector3 startPos = Vector3.zero;
-	private Vector3 endPos = Vector3.zero;
 	private List<Vector3> path = null;
-	
-	// Use this for initialization
-	void Start () {
-		counter = 0;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		if (Input.GetMouseButtonDown (0)) {
-			if(Input.GetKey (KeyCode.LeftShift)){
-				// Tell the subject to seek this point when shift is held.
-				subject.setTarget(getClickPoint());
-				path = null;
-			} else if(Input.GetKey (KeyCode.LeftControl)){
-				Vector3 target = getClickPoint();
-				// Demonstrate A* with Debug Lines. Set start position, end position, then find the path and draw it!
-				if(startPos == Vector3.zero || endPos != Vector3.zero){
-					startPos = target;
-					endPos = Vector3.zero;
-				} else {
-					endPos = target;
-					// Run A* for startPos and endPos
-					pathForSubject = false;
-					path = getPath(startPos, endPos);
-					startPos = Vector3.zero;
-					endPos = Vector3.zero;
-				}
-			} else {
-				// Move using A*.
-				pathForSubject = true;
-				path = getPath (subject.transform.position, getClickPoint ());
-				subject.setRails (true);
-			}
-		}
-		
-		// Recalculate the path with every update. If performance is compromised, reduce the frequency of this to be done 'every x ticks'.
-		if(path != null && pathForSubject && subject.isOnRails()){
-			//drawPath(path);
-			subject.setTarget(path[1]);
-			if(counter == 50){
-				path = getPath (subject.transform.position, path[path.Count-1]);
-				counter = 0;
-			} else {
-				Vector3 start = subject.transform.position;
-				Vector3 end = path[path.Count-1];
-				List<Vector3> returnPath = quickScanPath (start, end);
-				if(!pathIsInvalid (returnPath)){
-					path = returnPath;
-				}
-				counter++;
-			}
-		} else if (path != null && !pathForSubject){
-			drawPath(path);
-		} else {
-			path = null;
-			subject.setRails (false);
-		}
-	}
-	
-	public Vector3 getClickPoint () {
-		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-		RaycastHit hit;
-		if (Physics.Raycast (ray, out hit, int.MaxValue, 1 << LayerMask.NameToLayer ("Water")))
-			return hit.point;
-		return Vector3.zero;
-	}
-	
-	void drawPath(List<Vector3> path){
-		for(int i=1; i<path.Count; i++){
-			Debug.DrawLine (path[i-1],path[i],Color.magenta);
+	private UnitController subject;
+
+	enum NodeStates {inactive, open, closed, start, end};
+
+	void Start () {}
+
+	void Update () {}
+
+	public void registerClick(Vector3 click){
+		// Move using A*.
+		subject = selection.getSelected();
+		if(subject != null){
+			subject.setPath(getPath (subject.transform.position, click));
 		}
 	}
 
-	private bool pathIsInvalid(List<Vector3> returnPath){
+	public bool pathIsInvalid(List<Vector3> returnPath){
 		return returnPath != null && returnPath.Count == 2 && returnPath[0] == Vector3.zero && returnPath[1] == Vector3.zero;
 	}
-
-	// This is only used for debug purposes.
-	private void printList(List<Node> list){
-		if (list == null){
-			Debug.Log("<Empty list>");
-		} else {
-			foreach (Node node in list){
-				if (node.label==int.MinValue)
-					Debug.Log ("Start");
-				else if(node.label==int.MaxValue)
-					Debug.Log ("End");
-				else
-					Debug.Log(node.label);
-			}
-		}
-	}
+	
 	private bool isObstructed(Node start, Node end){
 		float subjectRadius = 3f;
 		float distance = Vector3.Distance (start.location,end.location);
@@ -126,8 +51,6 @@ public class NavigationController : MonoBehaviour {
 	private float getScore(Node start, Node node, Node end){
 		return Vector3.Distance (start.location,node.location) + Vector3.Distance (node.location,end.location);
 	}
-
-	enum NodeStates {inactive, open, closed, start, end};
 
 	public List<Vector3> quickScanPath(Vector3 start, Vector3 end){
 		Node startNode = new Node(start, int.MinValue, NodeStates.start);
@@ -313,3 +236,55 @@ public class NavigationController : MonoBehaviour {
 		}
 	}
 }
+
+/** These are likely being retired. Keeping the code for now just in case.
+if (Input.GetMouseButtonDown (0)) {
+	if(Input.GetKey (KeyCode.LeftShift)){
+		// Tell the subject to seek this point when shift is held.
+		subject.setTarget(getClickPoint());
+		path = null;
+	} else if(Input.GetKey (KeyCode.LeftControl)){
+		Vector3 target = getClickPoint();
+		// Demonstrate A* with Debug Lines. Set start position, end position, then find the path and draw it!
+		if(startPos == Vector3.zero || endPos != Vector3.zero){
+			startPos = target;
+			endPos = Vector3.zero;
+		} else {
+			endPos = target;
+			// Run A* for startPos and endPos
+			pathForSubject = false;
+			path = getPath(startPos, endPos);
+			startPos = Vector3.zero;
+			endPos = Vector3.zero;
+		}
+	} else {
+		//A* goes here.
+	}
+}
+public Vector3 getClickPoint () {
+	Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+	RaycastHit hit;
+	if (Physics.Raycast (ray, out hit, int.MaxValue, 1 << LayerMask.NameToLayer ("Water")))
+		return hit.point;
+	return Vector3.zero;
+}	
+void drawPath(List<Vector3> path){
+	for(int i=1; i<path.Count; i++){
+		Debug.DrawLine (path[i-1],path[i],Color.magenta);
+	}
+}
+private void printList(List<Node> list){
+	if (list == null){
+		Debug.Log("<Empty list>");
+	} else {
+		foreach (Node node in list){
+			if (node.label==int.MinValue)
+				Debug.Log ("Start");
+			else if(node.label==int.MaxValue)
+				Debug.Log ("End");
+			else
+				Debug.Log(node.label);
+		}
+	}
+}
+**/
