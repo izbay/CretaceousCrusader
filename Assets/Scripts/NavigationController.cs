@@ -5,8 +5,6 @@ using System.Collections.Generic;
 public class NavigationController : MonoBehaviour {
 	public SelectionController selection;
 
-	private bool pathForSubject = false;
-	private List<Vector3> path = null;
 	private UnitController subject;
 
 	enum NodeStates {inactive, open, closed, start, end};

@@ -64,7 +64,7 @@ public class UnitController : MonoBehaviour {
 			transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, turnSpeed);
 			float angle = Vector3.Angle (targetDir, transform.forward);
 			if (angle < 3){
-				rigidbody.AddForce(transform.forward * moveSpeed * 120);
+				rigidbody.AddForce(transform.forward * moveSpeed *500);
 			}
 		} else {
 			// We've reached the target. Clear out all memory of it and await further instructions.

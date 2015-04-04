@@ -17,7 +17,7 @@ Shader "TSF/BaseOutline1"
 		[MaterialToggle(_ASYM_ON)] _Asym ("Enable Asymmetry", Float) = 0        	//12
 		_Asymmetry ("OutlineAsymmetry", Vector) = (0.0,0.25,0.5,0.0)     			//13
 		[MaterialToggle(_TRANSP_ON)] _Trans ("Enable Transparency", Float) = 0   	//14
-		[Enum(TRANS_OPTIONS)] _TrOp ("Transparency mode", Float) = 0                //15
+		//[Enum(TRANS_OPTIONS)] _TrOp ("Transparency mode", Float) = 0                //15
 		_Cutoff ("Alpha cutoff", Range(0,1)) = 0.5                                  //16
     }
  

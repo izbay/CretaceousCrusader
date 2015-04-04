@@ -52,6 +52,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &197180
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 497180}
+  - 119: {fileID: 11997180}
+  m_Layer: 2
+  m_Name: Selection Projector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &467806
 Transform:
   m_ObjectHideFlags: 1
@@ -64,7 +80,7 @@ Transform:
   m_Children:
   - {fileID: 492778}
   m_Father: {fileID: 467810}
-  m_RootOrder: 0
+  m_RootOrder: 1
 --- !u!4 &467810
 Transform:
   m_ObjectHideFlags: 1
@@ -73,8 +89,9 @@ Transform:
   m_GameObject: {fileID: 167810}
   m_LocalRotation: {x: 0, y: .897139728, z: 0, w: .44174701}
   m_LocalPosition: {x: 185.600006, y: 32.9599991, z: 166.169998}
-  m_LocalScale: {x: 1, y: 1, z: .99999994}
+  m_LocalScale: {x: 1, y: 1, z: .999999821}
   m_Children:
+  - {fileID: 497180}
   - {fileID: 467806}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -89,6 +106,18 @@ Transform:
   m_LocalScale: {x: .303941637, y: 1.18277323, z: .248094708}
   m_Children: []
   m_Father: {fileID: 467806}
+  m_RootOrder: 0
+--- !u!4 &497180
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 197180}
+  m_LocalRotation: {x: .707106829, y: 0, z: 0, w: .707106829}
+  m_LocalPosition: {x: 0, y: 50, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 467810}
   m_RootOrder: 0
 --- !u!23 &2392778
 Renderer:
@@ -180,7 +209,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnSpeed: 2
-  moveSpeed: 60
+  moveSpeed: 10
+--- !u!119 &11997180
+Projector:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 197180}
+  m_Enabled: 0
+  serializedVersion: 2
+  m_NearClipPlane: .100000001
+  m_FarClipPlane: 75
+  m_FieldOfView: 7
+  m_AspectRatio: 1
+  m_Orthographic: 0
+  m_OrthographicSize: 2
+  m_Material: {fileID: 2100000, guid: a9cdb98423c19412bbac43b1fb623c48, type: 2}
+  m_IgnoreLayers:
+    serializedVersion: 2
+    m_Bits: 4294967279
 --- !u!136 &13667806
 CapsuleCollider:
   m_ObjectHideFlags: 1
