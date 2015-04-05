@@ -20,6 +20,13 @@ public class NavigationController : MonoBehaviour {
 			subject.setPath(getPath (subject.transform.position, click));
 		}
 	}
+	public void registerClick(UnitController obj){
+		subject = selection.getSelected ();
+		if (subject != null) {
+			subject.setATarget(obj);
+			subject.setPath(getPath(subject.transform.position,obj.transform.position));
+		}
+	}
 
 	public bool pathIsInvalid(List<Vector3> returnPath){
 		return returnPath != null && returnPath.Count == 2 && returnPath[0] == Vector3.zero && returnPath[1] == Vector3.zero;

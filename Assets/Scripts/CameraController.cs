@@ -5,10 +5,10 @@ public class CameraController : MonoBehaviour {
 
 	public float minCameraHeight = 10;
 	public float maxCameraHeight = 200;
-
+	
 	public NavigationController navigationController;
 	public SelectionController selectionController;
-
+	public UnitController unitController;
 	public float scrollSpeed;
 	public float dragSpeed;
 	
@@ -34,12 +34,27 @@ public class CameraController : MonoBehaviour {
 			RaycastHit hit;
 			if (Physics.Raycast (ray, out hit)){
 				int layerHit = hit.transform.gameObject.layer;
-				if(layerHit==LayerMask.NameToLayer("Water")){
-					navigationController.registerClick (hit.point);
-				} else if (layerHit==LayerMask.NameToLayer("Unit")){
+				if (layerHit==LayerMask.NameToLayer("Unit")){
 					selectionController.registerClick(hit.transform.gameObject.GetComponent<UnitController>());
-				} else {
+					unitController= hit.transform.root.GetComponent<UnitController>();
+				}else {
 					selectionController.registerClick (null);
+				}
+			}
+		}
+		if (Input.GetMouseButton (1)) {
+			if(unitController!=null){
+				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+				RaycastHit hit;
+				if (Physics.Raycast (ray, out hit)){
+					int layerHit = hit.transform.gameObject.layer;
+					if(layerHit==LayerMask.NameToLayer("Water")){
+						navigationController.registerClick (hit.point);
+						unitController.Atarget=null;
+					}else if(layerHit==LayerMask.NameToLayer("Enemy Unit")){
+						unitController.registerClick(hit.transform.gameObject.GetComponent<UnitController>());
+					}else {
+					}
 				}
 			}
 		}

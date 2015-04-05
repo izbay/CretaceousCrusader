@@ -17,12 +17,16 @@ public class SelectionController : MonoBehaviour {
 	}
 
 	public void registerClick(UnitController unit){
-		if(selected != null){
-			selected.transform.Find("Selection Projector").GetComponent<Projector>().enabled = false;
-		}
-		selected = unit;
-		if(selected != null){
-			selected.transform.Find("Selection Projector").GetComponent<Projector>().enabled = true;
+		if (unit != null) {
+			if (unit.selectable == true) {
+				if (selected != null) {
+					selected.transform.Find ("Selection Projector").GetComponent<Projector> ().enabled = false;
+				}
+				selected = unit;
+				if (selected != null) {
+					selected.transform.Find ("Selection Projector").GetComponent<Projector> ().enabled = true;
+				}
+			}
 		}
 	}
 
