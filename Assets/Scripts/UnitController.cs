@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class UnitController : MonoBehaviour {
 
-	public int health;
+	public float health = 100;
 	public int energy;
 	public int maxCarry;
 	public int currentCarry;
@@ -14,6 +15,7 @@ public class UnitController : MonoBehaviour {
 	public float turnSpeed;
 	public float moveSpeed;
 	public bool selectable=true;
+	public Scrollbar unitHealth;
 
 
 	protected NavigationController navigationController;
@@ -66,6 +68,7 @@ public class UnitController : MonoBehaviour {
 		if (attackCharge < attackRate) {
 			attackCharge += Time.deltaTime;
 		}
+	
 	}
 
 	protected virtual void Seek () {
@@ -181,7 +184,13 @@ public class UnitController : MonoBehaviour {
 	
 	//Take Damage
 	public void Hit(UnitController attacker){
+
 		health -= attacker.attackStr;
+
+
+		//healthBar.value -= attacker.attackStr;
+		//healthBar.value = health;
+
 		if (Atarget == null) {
 			Atarget=attacker;
 		}
@@ -197,6 +206,7 @@ public class UnitController : MonoBehaviour {
 			}
 			GameObject.Destroy(gameObject);
 		}
+		unitHealth.size = health / 100f;
 	}
 	/*
 	//Perform Attack
