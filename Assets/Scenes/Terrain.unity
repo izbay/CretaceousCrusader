@@ -703,6 +703,6 @@ MonoBehaviour:
   navigationController: {fileID: 1991233337}
   selectionController: {fileID: 1433722503}
   unitController: {fileID: 0}
-  scrollSpeed: 30
-  dragSpeed: 30
-  scrollWidth: 15
+  scrollSpeed: 90
+  dragSpeed: 90
+  scrollWidth: 25
