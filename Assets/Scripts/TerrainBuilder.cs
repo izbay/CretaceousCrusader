@@ -71,8 +71,8 @@ public class TerrainBuilder : MonoBehaviour {
 		float[] biomeLevels = new float[6];
 
 		biomeLevels[0]= allHeights[fivePercent*4]; 				// Water - 20%
-		biomeLevels[1]= allHeights[totalIdxs - fivePercent*16];	// Swamp - 10% (Rounded down)
-		biomeLevels[2]= allHeights[totalIdxs - fivePercent*14];	// Plains - 40%
+		biomeLevels[1]= allHeights[totalIdxs - fivePercent*16];	// Swamp - 5% (Rounded down)
+		biomeLevels[2]= allHeights[totalIdxs - fivePercent*15];	// Plains - 45%
 		biomeLevels[3]= allHeights[totalIdxs - fivePercent*6];	// Forest - 15%
 		biomeLevels[4]= allHeights[totalIdxs - fivePercent*3];	// Hill - 5%
 		biomeLevels[5]= allHeights[totalIdxs - fivePercent*2];	// Mountain - 10%
@@ -82,21 +82,22 @@ public class TerrainBuilder : MonoBehaviour {
 
 				if (height[i,j] <= biomeLevels[0]){
 					height[i,j] = biomeLevels[0] - 0.0075f;
-					setTexture(i,j,0);
+					setTexture(i,j,0,1f);
 				} else if (height[i,j] >= biomeLevels[5]){
 					height[i,j] += 0.035f;
-					setTexture(i,j,5);
+					setTexture(i,j,5,1f);
 				} else if (height[i,j] >= biomeLevels[4]){
 					height[i,j] += 0.0015f;
-					setTexture(i,j,4);
+					setTexture(i,j,4,((height[i,j]-biomeLevels[4])/biomeLevels[4])*16);
 				} else if (height[i,j] >= biomeLevels[3]){
 					height[i,j] += 0.00125f;
-					setTexture(i,j,3);
+					setTexture(i,j,3,((height[i,j]-biomeLevels[3])/biomeLevels[3])*32);
 				} else if (height[i,j] >= biomeLevels[2]){
 					height[i,j] += 0.001f;
-					setTexture(i,j,2);
+					setTexture(i,j,2,((height[i,j]-biomeLevels[2])/biomeLevels[2])*4);
 				} else {
-					setTexture(i,j,1);
+					height[i,j] -= 0.00325f;
+					setTexture(i,j,1,1f);
 				}
 			}
 		}
@@ -106,11 +107,13 @@ public class TerrainBuilder : MonoBehaviour {
 		OnWizardCreate();
 	}
 
-	private void setTexture(int x, int y, int id){
+	private void setTexture(int x, int y, int id, float percent){
 		for(int i=0;i<6;i++){
 			try{
 				if(i == id){
-					alphaData[x,y,i] = 1f;
+					alphaData[x,y,i] = percent;
+				} else if (percent < 1f && i == id-1){
+					alphaData[x,y,i] = 1 - percent;
 				} else {
 					alphaData[x,y,i] = 0f;
 				}
