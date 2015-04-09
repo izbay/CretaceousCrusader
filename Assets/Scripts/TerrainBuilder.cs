@@ -71,9 +71,9 @@ public class TerrainBuilder : MonoBehaviour {
 		float[] biomeLevels = new float[6];
 
 		biomeLevels[0]= allHeights[fivePercent*4]; 				// Water - 20%
-		biomeLevels[1]= allHeights[totalIdxs - fivePercent*16];	// Swamp - 5% (Rounded down)
-		biomeLevels[2]= allHeights[totalIdxs - fivePercent*15];	// Plains - 45%
-		biomeLevels[3]= allHeights[totalIdxs - fivePercent*6];	// Forest - 15%
+		biomeLevels[1]= allHeights[totalIdxs - fivePercent*16];	// Swamp - 10% (Rounded down)
+		biomeLevels[2]= allHeights[totalIdxs - fivePercent*14];	// Plains - 45%
+		biomeLevels[3]= allHeights[totalIdxs - fivePercent*5];	// Forest - 10%
 		biomeLevels[4]= allHeights[totalIdxs - fivePercent*3];	// Hill - 5%
 		biomeLevels[5]= allHeights[totalIdxs - fivePercent*2];	// Mountain - 10%
 
@@ -81,7 +81,7 @@ public class TerrainBuilder : MonoBehaviour {
 			for(int j=0; j < depth; j++){
 
 				if (height[i,j] <= biomeLevels[0]){
-					height[i,j] = biomeLevels[0] - 0.0075f;
+					height[i,j] = biomeLevels[0] - 0.0035f;
 					setTexture(i,j,0,1f);
 				} else if (height[i,j] >= biomeLevels[5]){
 					height[i,j] += 0.035f;
@@ -97,7 +97,7 @@ public class TerrainBuilder : MonoBehaviour {
 					setTexture(i,j,2,((height[i,j]-biomeLevels[2])/biomeLevels[2])*4);
 				} else {
 					height[i,j] -= 0.00325f;
-					setTexture(i,j,1,1f);
+					setTexture(i,j,1,((height[i,j]-biomeLevels[1])/biomeLevels[1])*64);
 				}
 			}
 		}
