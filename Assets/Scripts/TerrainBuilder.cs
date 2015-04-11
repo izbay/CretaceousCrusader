@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class TerrainBuilder : MonoBehaviour {
-
+	public GameObject NavCube;
 	private Terrain terrain;
 	private int offsetX, offsetY;
 	private float tileSize1, tileSize2, scaleLevel;//, counter;
@@ -80,24 +80,31 @@ public class TerrainBuilder : MonoBehaviour {
 		for(int i=0; i < width; i++){
 			for(int j=0; j < depth; j++){
 
-				if (height[i,j] <= biomeLevels[0]){
+				if (height[i,j] < biomeLevels[0]){
 					height[i,j] = biomeLevels[0] - 0.0035f;
 					setTexture(i,j,0,1f);
-				} else if (height[i,j] >= biomeLevels[5]){
+				} else if (height[i,j] > biomeLevels[5]){
 					height[i,j] += 0.035f;
 					setTexture(i,j,5,1f);
-				} else if (height[i,j] >= biomeLevels[4]){
+				} else if (height[i,j] > biomeLevels[4]){
 					height[i,j] += 0.0015f;
 					setTexture(i,j,4,((height[i,j]-biomeLevels[4])/biomeLevels[4])*16);
-				} else if (height[i,j] >= biomeLevels[3]){
+				} else if (height[i,j] > biomeLevels[3]){
 					height[i,j] += 0.00125f;
 					setTexture(i,j,3,((height[i,j]-biomeLevels[3])/biomeLevels[3])*32);
-				} else if (height[i,j] >= biomeLevels[2]){
+				} else if (height[i,j] > biomeLevels[2]){
 					height[i,j] += 0.001f;
 					setTexture(i,j,2,((height[i,j]-biomeLevels[2])/biomeLevels[2])*4);
 				} else {
-					height[i,j] -= 0.00325f;
+					//height[i,j] -= 0.00325f;
 					setTexture(i,j,1,((height[i,j]-biomeLevels[1])/biomeLevels[1])*64);
+				}
+
+				for(int k=0; k < 6; k++){
+					if(height[i,j] <= biomeLevels[k]+0.0001f && height[i,j] >= biomeLevels[k]-0.0001f){
+						GameObject node = Instantiate (NavCube, getWorldCoordFromTerrainCoord(i,j, height[i,j]), new Quaternion()) as GameObject;
+						node.transform.parent = transform;
+					}
 				}
 			}
 		}
@@ -105,6 +112,14 @@ public class TerrainBuilder : MonoBehaviour {
 		terrain.terrainData.SetAlphamaps (0, 0, alphaData);
 		terrain.terrainData.SetHeights (0,0,height);
 		OnWizardCreate();
+	}
+
+	private Vector3 getWorldCoordFromTerrainCoord(int i, int j, float k){
+		TerrainData td = terrain.terrainData;
+		float x = ((j*1.0f)/td.heightmapHeight) * td.size.x;
+		float y = k * td.size.y;
+		float z = ((i*1.0f)/td.heightmapWidth) * td.size.z;
+		return new Vector3(x, y, z);
 	}
 
 	private void setTexture(int x, int y, int id, float percent){

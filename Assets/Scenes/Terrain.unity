@@ -277,6 +277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94f512c6023ff6a4981795ab6123fc67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NavCube: {fileID: 182350, guid: 7c6549a293835e04b9f2207250fb84b7, type: 2}
   detail: 2
   globalH: -20
   selectColor: {r: .426470578, g: .426470578, b: .426470578, a: 1}
