@@ -4,29 +4,23 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class TerrainBuilder : MonoBehaviour {
-	public GameObject NavCube;
+	public GameObject[] Objects;
+
 	private Terrain terrain;
 	private int offsetX, offsetY;
-	private float tileSize1, tileSize2, scaleLevel;//, counter;
+	private float tileSize1, tileSize2, scaleLevel;
 	private float[,,] alphaData;
+	private List<Vector3> KeepLocations = new List<Vector3>();
+	private List<Vector3> NestLocations = new List<Vector3>();
+	private List<Vector3> RockLocations = new List<Vector3>();
 
 	// Use this for initialization
 	void Start () {
-		//counter = 0;
 		initTerrainSeed ();
 		GenerateTerrain ();
-
 	}
 
-	void Update () {
-		/**
-		if(counter++ == 50){
-			counter = 0;
-			initTerrainSeed ();
-			GenerateTerrain ();
-		}
-		**/
-	}
+	void Update () {}
 
 	private void initTerrainSeed(){
 		terrain = transform.GetComponent<Terrain>();
@@ -56,13 +50,6 @@ public class TerrainBuilder : MonoBehaviour {
 			}
 		}
 
-
-
-
-
-
-
-
 		// Assume a standard distribution of heights. (If it's skewed, the terrain may deviate from the planned percentages, but shouldn't by much)
 		Array.Sort (allHeights);
 
@@ -79,41 +66,107 @@ public class TerrainBuilder : MonoBehaviour {
 
 		for(int i=0; i < width; i++){
 			for(int j=0; j < depth; j++){
-
+			// Water
 				if (height[i,j] < biomeLevels[0]){
 					height[i,j] = biomeLevels[0] - 0.0035f;
 					setTexture(i,j,0,1f);
+			// Mountain	
 				} else if (height[i,j] > biomeLevels[5]){
 					height[i,j] += 0.035f;
 					setTexture(i,j,5,1f);
+			// Hill
 				} else if (height[i,j] > biomeLevels[4]){
 					height[i,j] += 0.0015f;
 					setTexture(i,j,4,((height[i,j]-biomeLevels[4])/biomeLevels[4])*16);
+					RockLocations.Add (getWorldCoordFromTerrainCoord(i,j,height[i,j]));
+			// Forest
 				} else if (height[i,j] > biomeLevels[3]){
 					height[i,j] += 0.00125f;
 					setTexture(i,j,3,((height[i,j]-biomeLevels[3])/biomeLevels[3])*32);
+					if(UnityEngine.Random.Range(0,10) < 7){
+						NestLocations.Add (getWorldCoordFromTerrainCoord(i,j,height[i,j]));
+					} else {
+						RockLocations.Add (getWorldCoordFromTerrainCoord(i,j,height[i,j]));
+					}
+			// Plains
 				} else if (height[i,j] > biomeLevels[2]){
 					height[i,j] += 0.001f;
 					setTexture(i,j,2,((height[i,j]-biomeLevels[2])/biomeLevels[2])*4);
+					KeepLocations.Add (getWorldCoordFromTerrainCoord(i,j,height[i,j]));//+0.0383f));
+			// Swamp
 				} else {
-					//height[i,j] -= 0.00325f;
 					setTexture(i,j,1,((height[i,j]-biomeLevels[1])/biomeLevels[1])*64);
+					if(UnityEngine.Random.Range(0,10) < 3){
+						RockLocations.Add (getWorldCoordFromTerrainCoord(i,j,height[i,j]));
+					}
 				}
 
+				// Place Nav Nodes
 				for(int k=0; k < 6; k++){
 					if(height[i,j] <= biomeLevels[k]+0.0001f && height[i,j] >= biomeLevels[k]-0.0001f){
-						GameObject node = Instantiate (NavCube, getWorldCoordFromTerrainCoord(i,j, height[i,j]), new Quaternion()) as GameObject;
+						GameObject node = Instantiate (Objects[0], getWorldCoordFromTerrainCoord(i,j, height[i,j]), new Quaternion()) as GameObject;
 						node.transform.parent = transform;
 					}
 				}
 			}
 		}
+		NestLocations = Shuffle(NestLocations);
+		RockLocations = Shuffle(RockLocations);
+		KeepLocations = Shuffle(KeepLocations);
+
+		Place (Objects[1], 20, NestLocations);
+		Place (Objects[2], 40, RockLocations);
+		PlaceKeep ();
 
 		terrain.terrainData.SetAlphamaps (0, 0, alphaData);
 		terrain.terrainData.SetHeights (0,0,height);
-		OnWizardCreate();
+		BuildBaseBoard();
 	}
 
+	private void PlaceKeep(){
+		KeepLocations.RemoveAll (v => v.x < 800 || v.x > 2200 || v.z < 800 || v.z > 2200);
+
+		// TODO: (Stretch Goal) Further Pruning and Score Locations.
+		GameObject keep = Instantiate (Objects[3], KeepLocations[0], Quaternion.Euler(0, UnityEngine.Random.Range(0, 360), 0)) as GameObject;
+		keep.transform.parent = transform;
+	}
+
+	private void Place(GameObject obj, int num, List<Vector3> list){
+		List<Vector3> usedLocations = new List<Vector3>();
+		for(int k=0; k < num; k++){
+			bool foundFlag;
+			Vector3 proposedLocation = Vector3.zero;
+			do {
+				foundFlag = true;
+				proposedLocation = list[list.Count-1];
+				foreach (Vector3 v in usedLocations){
+					if (Vector3.Distance (v, proposedLocation) < 300f){
+						foundFlag = false;
+					}
+				}
+				list.RemoveAt (list.Count-1);
+			} while (!foundFlag && list.Count >= 1);
+			if (foundFlag){
+				GameObject node = Instantiate (obj, proposedLocation, Quaternion.Euler(0, UnityEngine.Random.Range(0, 360), 0)) as GameObject;
+				node.transform.parent = transform;
+				usedLocations.Add (proposedLocation);
+			}
+		}
+	}
+
+	private List<Vector3> Shuffle(List<Vector3> list){  
+		int idx = list.Count;  
+		while (idx > 1) {  
+			idx--;  
+			int i = UnityEngine.Random.Range(0,idx+1);  
+			// Swap
+			Vector3 value = list[i];  
+			list[i] = list[idx];  
+			list[idx] = value;  
+		}
+		return list;
+	}
+	
 	private Vector3 getWorldCoordFromTerrainCoord(int i, int j, float k){
 		TerrainData td = terrain.terrainData;
 		float x = ((j*1.0f)/td.heightmapHeight) * td.size.x;
@@ -155,7 +208,7 @@ public class TerrainBuilder : MonoBehaviour {
 	private Vector2[] uvs;
 	private int[] triangles;
 	// BEGIN METHODS
-	void OnWizardCreate(){
+	void BuildBaseBoard(){
 		posTerrain = terrain.transform.position;
 		int sizeTab = (int)( terrain.terrainData.size.x / detail )+1;
 		float[] hh = new float[sizeTab];
