@@ -35,8 +35,8 @@ public class CameraController : MonoBehaviour {
 			if (Physics.Raycast (ray, out hit)){
 				int layerHit = hit.transform.gameObject.layer;
 				if (layerHit==LayerMask.NameToLayer("Unit")){
-					selectionController.registerClick(hit.transform.gameObject.GetComponent<UnitController>());
 					unitController= hit.transform.root.GetComponent<UnitController>();
+					selectionController.registerClick(unitController);
 				}else {
 					selectionController.registerClick (null);
 				}

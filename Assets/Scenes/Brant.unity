@@ -3737,7 +3737,7 @@ GameObject:
   - 4: {fileID: 2045384168}
   - 114: {fileID: 2045384167}
   - 154: {fileID: 2045384166}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3780,7 +3780,7 @@ MonoBehaviour:
   m_LightmapSize: 1024
   m_DrawTreesAndFoliage: 1
   m_CollectDetailPatches: 1
-  m_MaterialTemplate: {fileID: 2100000, guid: 0a4045ee62a7b1b4aadd7b958afcb377, type: 2}
+  m_MaterialTemplate: {fileID: 2100000, guid: 0690c4960d192bb41b46daacd56fb07a, type: 2}
 --- !u!4 &2045384168
 Transform:
   m_ObjectHideFlags: 0
