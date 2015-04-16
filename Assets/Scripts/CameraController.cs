@@ -9,7 +9,7 @@ public class CameraController : MonoBehaviour {
 	public NavigationController navigationController;
 	public SelectionController selectionController;
 	public UnitController unitController;
-	public GameObject Keep;
+	public Transform keepTransform;
 	public float scrollSpeed;
 	public float dragSpeed;
 	
@@ -21,7 +21,12 @@ public class CameraController : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		Keep = GameObject.Find ("Keep(Clone)");
+		if (keepTransform == null) {
+			keepTransform = GameObject.Find ("Keep").transform;
+		}
+		if (keepTransform == null) {
+			keepTransform = GameObject.Find ("Keep(Clone)").transform;
+		}
 		seekKeep = true;
 	}
 	
@@ -158,8 +163,8 @@ public class CameraController : MonoBehaviour {
 			}
 
 			if (seekKeep) {
-				if(Keep != null){
-					destination = Keep.transform.position;
+				if(keepTransform != null){
+					destination = keepTransform.position;
 					destination.y=Camera.main.transform.position.y;
 					if (Vector3.Distance(destination,origin)> 175f) {
 						Camera.main.transform.position = Vector3.MoveTowards (origin, destination, Time.deltaTime * scrollSpeed*2);
