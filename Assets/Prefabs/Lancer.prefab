@@ -30,7 +30,7 @@ GameObject:
   - 114: {fileID: 11467806}
   m_Layer: 8
   m_Name: Lancer
-  m_TagString: Untagged
+  m_TagString: lancer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -89,7 +89,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 167810}
   m_LocalRotation: {x: 0, y: .897139728, z: 0, w: .44174701}
-  m_LocalPosition: {x: 151.499893, y: 4.03297424, z: 136.362854}
+  m_LocalPosition: {x: 154.020126, y: 4.21065807, z: 138.151428}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 497180}

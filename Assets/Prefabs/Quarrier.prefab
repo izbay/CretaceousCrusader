@@ -47,7 +47,7 @@ GameObject:
   - 114: {fileID: 11410304}
   m_Layer: 8
   m_Name: Quarrier
-  m_TagString: Untagged
+  m_TagString: quarrier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,7 +100,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 110306}
   m_LocalRotation: {x: 0, y: .967989445, z: 0, w: -.250991076}
-  m_LocalPosition: {x: 153.511795, y: 4.75847006, z: 124.261887}
+  m_LocalPosition: {x: 152.596649, y: 4.67437601, z: 127.619484}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 406752}

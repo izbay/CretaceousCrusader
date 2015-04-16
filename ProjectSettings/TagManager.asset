@@ -5,6 +5,9 @@ TagManager:
   tags:
   - nav_node
   - global_nav
+  - farmer
+  - quarrier
+  - lancer
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX

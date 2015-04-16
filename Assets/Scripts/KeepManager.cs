@@ -1,14 +1,21 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class KeepManager : MonoBehaviour {
 
-	public float foodQty;
-	public float rockQty;
+
 	public GameObject[] units;
+	public GameObject UI;
 
 	private int maxUnitCount = 5;
 	private int spawnLimit = 5;
+	private float foodQty = 5f;
+	private float rockQty = 20f;
+	private float foodTick = 0f;
+	private float foodSpeed = 10f;
+	private float baseFoodRegen = 2f;
+	private float farmerBonusFood = 0.2f;
 
 	// Use this for initialization
 	void Start () {
@@ -17,7 +24,31 @@ public class KeepManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		generateFood();
+
+		Text txt = UI.transform.Find("Info_Panel/Resources").GetComponent<Text>();
+		txt.text = "(♨) "+foodQty.ToString ("F0")+"   (ロ) "+rockQty.ToString ("F0");
+	}
+
+	public float requestFood(float amount){
+		if(amount <= foodQty){
+			foodQty -= amount;
+			return amount;
+		} else {
+			float returnVal = foodQty;
+			foodQty = 0;
+			return returnVal;
+		}
+	}
+
+	private void generateFood(){
+		if (foodTick >= foodSpeed){
+			int farmerCnt = GameObject.FindGameObjectsWithTag("farmer").Length;
+			foodQty += baseFoodRegen + farmerBonusFood * farmerCnt;
+			foodTick = 0f;
+		} else {
+			foodTick += Time.deltaTime;
+		}
 	}
 
 	private void Spawn(int[] unitList){

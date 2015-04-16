@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class UnitController : MonoBehaviour {
 
-	public float health = 100;
+	public float health = 100f;
 	public int energy;
 	public int maxCarry;
 	public int currentCarry;
@@ -25,13 +25,16 @@ public class UnitController : MonoBehaviour {
 	protected List<Vector3> path;
 	protected int counter = 0;
 	public  UnitController Atarget;
-	protected float attackCharge=0;
+	protected float attackCharge=0f;
 	public List<UnitController> attackers;
+
+	private KeepManager Keep;
 
 	// Use this for initialization
 	protected virtual void Start () {
-		SavePosition ();
 		navigationController = GameObject.FindGameObjectWithTag("global_nav").GetComponent<NavigationController>();
+		Keep = GameObject.FindGameObjectWithTag("Player").GetComponent<KeepManager>();
+		SavePosition ();
 	}
 	
 	// Update is called once per frame
@@ -111,6 +114,13 @@ public class UnitController : MonoBehaviour {
 	}
 
 	void SavePosition () {
+		// This is rudimentary food consumption as a proof of concept. This will be modified to use 'energy' later.
+		if(curr_pos != Vector3.zero){
+			float hunger = Vector3.Distance (transform.position,curr_pos)/50f;
+			if(Keep.requestFood (hunger) < hunger){
+				health -= 0.1f;
+			};
+		}
 		curr_pos = transform.position;
 	}
 
