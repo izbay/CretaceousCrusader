@@ -61,6 +61,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 410308}
   - 95: {fileID: 9510306}
+  - 122: {fileID: 12282170}
   m_Layer: 8
   m_Name: AnimationContainer
   m_TagString: Untagged
@@ -99,7 +100,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 110306}
   m_LocalRotation: {x: 0, y: .967989445, z: 0, w: -.250991076}
-  m_LocalPosition: {x: 207.389999, y: 32.7900009, z: 140.729996}
+  m_LocalPosition: {x: 153.511795, y: 4.75847006, z: 124.261887}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 406752}
@@ -191,7 +192,7 @@ Animator:
   m_GameObject: {fileID: 110308}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d37553327339cc3468f96d4f7fab319f, type: 2}
+  m_Controller: {fileID: 9100000, guid: d5803e5eb7d84c64ab01e59595e5d10f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -208,8 +209,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b7c4fa1eeed8a44fb78a68646611826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 100
+  energy: 0
+  maxCarry: 0
+  currentCarry: 0
+  attackStr: 0
+  attackRate: 0
+  attackRange: 0
   turnSpeed: 1
   moveSpeed: 5
+  selectable: 1
+  unitHealth: {fileID: 0}
+  Atarget: {fileID: 0}
+  attackers: []
 --- !u!119 &11906752
 Projector:
   m_ObjectHideFlags: 1
@@ -228,6 +240,17 @@ Projector:
   m_IgnoreLayers:
     serializedVersion: 2
     m_Bits: 4294967279
+--- !u!122 &12282170
+Halo:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 110308}
+  m_Enabled: 1
+  m_Color:
+    serializedVersion: 2
+    rgba: 4290559164
+  m_Size: 0
 --- !u!136 &13610304
 CapsuleCollider:
   m_ObjectHideFlags: 1

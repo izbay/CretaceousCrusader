@@ -9,6 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 467806}
   - 95: {fileID: 9594046}
+  - 122: {fileID: 12226044}
   m_Layer: 8
   m_Name: AnimationContainer
   m_TagString: Untagged
@@ -88,7 +89,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 167810}
   m_LocalRotation: {x: 0, y: .897139728, z: 0, w: .44174701}
-  m_LocalPosition: {x: 185.600006, y: 32.9599991, z: 166.169998}
+  m_LocalPosition: {x: 151.499893, y: 4.03297424, z: 136.362854}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 497180}
@@ -191,7 +192,7 @@ Animator:
   m_GameObject: {fileID: 167806}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d37553327339cc3468f96d4f7fab319f, type: 2}
+  m_Controller: {fileID: 9100000, guid: d5803e5eb7d84c64ab01e59595e5d10f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -218,6 +219,7 @@ MonoBehaviour:
   turnSpeed: 2
   moveSpeed: 10
   selectable: 1
+  unitHealth: {fileID: 0}
   Atarget: {fileID: 0}
   attackers: []
 --- !u!119 &11997180
@@ -238,6 +240,17 @@ Projector:
   m_IgnoreLayers:
     serializedVersion: 2
     m_Bits: 4294967279
+--- !u!122 &12226044
+Halo:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 167806}
+  m_Enabled: 1
+  m_Color:
+    serializedVersion: 2
+    rgba: 4290559164
+  m_Size: 0
 --- !u!136 &13667806
 CapsuleCollider:
   m_ObjectHideFlags: 1
