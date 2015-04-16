@@ -15,19 +15,13 @@ public class CameraController : MonoBehaviour {
 	
 	public int scrollWidth;
 
-	private bool seekKeep;
+	public bool seekKeep;
 	private Vector3 oldPos;
 	private Vector3 panOrigin;
 	
 	// Use this for initialization
 	void Start () {
-		if (keepTransform == null) {
-			keepTransform = GameObject.Find ("Keep").transform;
-		}
-		if (keepTransform == null) {
-			keepTransform = GameObject.Find ("Keep(Clone)").transform;
-		}
-		seekKeep = true;
+
 	}
 	
 	// Update is called once per frame

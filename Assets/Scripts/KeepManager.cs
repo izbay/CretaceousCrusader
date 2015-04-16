@@ -21,6 +21,8 @@ public class KeepManager : MonoBehaviour {
 	void Start () {
 		UI = GameObject.Find ("Canvas");
 		Spawn (new int[]{1,0,0,0,1});
+		Camera.main.GetComponent<CameraController> ().keepTransform = this.transform;
+		Camera.main.GetComponent<CameraController> ().seekKeep = true;
 	}
 	
 	// Update is called once per frame
