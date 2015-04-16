@@ -9,17 +9,20 @@ public class CameraController : MonoBehaviour {
 	public NavigationController navigationController;
 	public SelectionController selectionController;
 	public UnitController unitController;
+	public GameObject Keep;
 	public float scrollSpeed;
 	public float dragSpeed;
 	
 	public int scrollWidth;
-	
+
+	private bool seekKeep;
 	private Vector3 oldPos;
 	private Vector3 panOrigin;
 	
 	// Use this for initialization
 	void Start () {
-	
+		Keep = GameObject.Find ("Keep(Clone)");
+		seekKeep = true;
 	}
 	
 	// Update is called once per frame
@@ -65,18 +68,39 @@ public class CameraController : MonoBehaviour {
 		// Handlie click-and-drag
 		if(Input.GetMouseButtonDown(2))
 		{
+			seekKeep=false;
 			oldPos = transform.position;
 			panOrigin = Camera.main.ScreenToViewportPoint(Input.mousePosition);
 		}
 		
-		if(Input.GetMouseButton(2))
-		{
-			Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition) - panOrigin;
+		if (Input.GetMouseButton (2)) {
+			seekKeep=false;
+			Vector3 pos = Camera.main.ScreenToViewportPoint (Input.mousePosition) - panOrigin;
 			pos.z = pos.y;
 			pos.y = 0;
 			transform.position = oldPos - pos * dragSpeed;
-		}
-		
+		} 
+		//starts to seek the Keep Object if H is hit
+		else if (Input.GetKeyDown ("h")) {
+			seekKeep=true;
+		} 
+		//seeks out the Keep object
+		/*else if (seekKeep) {
+			Vector3 origin = Camera.main.transform.position;
+			if(Keep != null){
+				Vector3 destination = Keep.transform.position;
+				destination.y=Camera.main.transform.position.y;
+				if (Vector3.Distance(destination,origin)> 175f) {
+					Camera.main.transform.position = Vector3.MoveTowards (origin, destination, Time.deltaTime * scrollSpeed*2);
+				}
+				else{
+					seekKeep=false;
+				}
+			}
+			else{
+				seekKeep=false;
+			}
+		}*/
 		// Handle camera panning when mouse is near edge of screen
 		else
 		{
@@ -112,7 +136,6 @@ public class CameraController : MonoBehaviour {
 			
 			// Allow zooming with the scroll wheel
 			movement += transform.forward * scrollSpeed * Input.GetAxis ("Mouse ScrollWheel");
-			
 			//calculate desired camera position based on received input
 			Vector3 origin = Camera.main.transform.position;
 			Vector3 destination = origin + movement;
@@ -130,8 +153,26 @@ public class CameraController : MonoBehaviour {
 			//if a change in position is detected perform the necessary update
 			if(destination != origin)
 			{
+				seekKeep=false;
 				Camera.main.transform.position = Vector3.MoveTowards(origin, destination, Time.deltaTime * scrollSpeed);
 			}
+
+			if (seekKeep) {
+				if(Keep != null){
+					destination = Keep.transform.position;
+					destination.y=Camera.main.transform.position.y;
+					if (Vector3.Distance(destination,origin)> 175f) {
+						Camera.main.transform.position = Vector3.MoveTowards (origin, destination, Time.deltaTime * scrollSpeed*2);
+					}
+					else{
+						seekKeep=false;
+					}
+				}
+				else{
+					seekKeep=false;
+				}
+			}
+
 		}
 	}
 }
