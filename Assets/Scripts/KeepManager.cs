@@ -6,8 +6,8 @@ public class KeepManager : MonoBehaviour {
 
 
 	public GameObject[] units;
-	public GameObject UI;
 
+	private GameObject UI;
 	private int maxUnitCount = 5;
 	private int spawnLimit = 5;
 	private float foodQty = 5f;
@@ -19,6 +19,7 @@ public class KeepManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		UI = GameObject.Find ("Canvas");
 		Spawn (new int[]{1,0,0,0,1});
 	}
 	
