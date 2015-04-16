@@ -8,12 +8,15 @@ public class CameraController : MonoBehaviour {
 	
 	public NavigationController navigationController;
 	public UnitController unitController;
+
 	public float scrollSpeed;
 	public float dragSpeed;
 	public int scrollWidth;
 
+	public Transform keepTransform;
+	public bool seekKeep;
+
 	private GameObject Keep;
-	private bool seekKeep;
 	private Vector3 oldPos;
 	private Vector3 panOrigin;
 	private KeepManager selectionController;
@@ -158,8 +161,8 @@ public class CameraController : MonoBehaviour {
 			}
 
 			if (seekKeep) {
-				if(Keep != null){
-					destination = Keep.transform.position;
+				if(keepTransform != null){
+					destination = keepTransform.position;
 					destination.y=Camera.main.transform.position.y;
 					if (Vector3.Distance(destination,origin)> 175f) {
 						Camera.main.transform.position = Vector3.MoveTowards (origin, destination, Time.deltaTime * scrollSpeed*2);

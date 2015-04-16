@@ -797,3 +797,5 @@ MonoBehaviour:
   scrollSpeed: 90
   dragSpeed: 90
   scrollWidth: 25
+  keepTransform: {fileID: 0}
+  seekKeep: 0
