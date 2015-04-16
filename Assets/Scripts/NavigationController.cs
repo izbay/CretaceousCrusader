@@ -3,13 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class NavigationController : MonoBehaviour {
-	public SelectionController selection;
 
+	private KeepManager selection;
 	private UnitController subject;
-
+	private List<Node> nodes = new List<Node>();
 	enum NodeStates {inactive, open, closed, start, end};
 
-	void Start () {}
+	void Start () {
+		selection = GameObject.FindGameObjectWithTag("Player").GetComponent<KeepManager>();
+		generateNavMap();
+	}
 
 	void Update () {}
 
@@ -32,9 +35,11 @@ public class NavigationController : MonoBehaviour {
 		return returnPath != null && returnPath.Count == 2 && returnPath[0] == Vector3.zero && returnPath[1] == Vector3.zero;
 	}
 	
-	private bool isObstructed(Node start, Node end){
-		float subjectRadius = 3f;
+	private bool isObstructed(Node start, Node end, float cap = 250f){
 		float distance = Vector3.Distance (start.location,end.location);
+		if(distance > cap) return true;
+
+		float subjectRadius = 3f;
 		// We can't just draw a line from center to center because we could cut a corner into a wall.
 		// Take the subject size into account and draw a line from top/bottom/left/right edge.
 		Vector3[] corners = new Vector3[]{start.location,start.location,start.location,start.location,end.location,end.location,end.location,end.location};
@@ -67,7 +72,7 @@ public class NavigationController : MonoBehaviour {
 		}
 		// If we can get there without hitting a wall, just go there!
 		
-		if (!isObstructed(startNode,endNode)){
+		if (!isObstructed(startNode,endNode, Mathf.Infinity)){
 			//Debug.DrawLine(start,end, Color.green);
 			return new List<Vector3> {start, end};
 		} else {
@@ -77,18 +82,49 @@ public class NavigationController : MonoBehaviour {
 		}
 	}
 
-	public List<Vector3> getPath(Vector3 start, Vector3 end){
-		Node startNode = new Node(start, int.MinValue, NodeStates.start);
-		Node endNode = new Node(end, int.MaxValue, NodeStates.end);
-
-		List<Vector3> returnPath = quickScanPath(start, end);
-		if(!pathIsInvalid(returnPath)){
-			return returnPath;
+	private class Node {
+		// Declare all of the node fields.
+		public int label; //{ get; set; }
+		public Node previous; //{ get; set; }
+		public List<Node> connections; //{ get; set; }
+		public List<Node> possiblePrevious; //{ get; set; }
+		public Vector3 location; //{ get; set; }
+		public NodeStates state; //{ get; set; }
+		public float score; //{ get; set; }
+		
+		public Node(Vector3 location, int label, NodeStates state = NodeStates.inactive){
+			this.location = location;
+			this.label = label;
+			this.state = state;
+			this.connections = new List<Node>();
+			this.possiblePrevious = new List<Node>();
 		}
+		
+		public void addConnection(Node other){
+			connections.Add (other);
+		}
+		public void addPossiblePrev(Node other){
+			possiblePrevious.Add (other);
+		}
+		
+		public void getBestPrevious(){
+			float lowScore = int.MaxValue;
+			Node returnNode = null;
+			
+			foreach(Node node in possiblePrevious){
+				if(node.score < lowScore){
+					lowScore = node.score;
+					returnNode = node;
+				}
+			}
+			
+			previous = returnNode;
+		}
+	}
+	public void generateNavMap(){
 		
 		// Time to actually run A*... Start by creating a digital representation of every nav_node.
 		GameObject[] navNodes = GameObject.FindGameObjectsWithTag("nav_node");
-		List<Node> nodes = new List<Node>();
 		for(int i=0; i<navNodes.Length; i++)
 		{
 			Node currNode = new Node(navNodes[i].transform.position, i);
@@ -111,15 +147,27 @@ public class NavigationController : MonoBehaviour {
 				nodes.Remove (nodes[i--]);
 				continue;
 			}
+		}
+	}
+	public List<Vector3> getPath(Vector3 start, Vector3 end){
+		Node startNode = new Node(start, int.MinValue, NodeStates.start);
+		Node endNode = new Node(end, int.MaxValue, NodeStates.end);
+
+		List<Vector3> returnPath = quickScanPath(start, end);
+		if(!pathIsInvalid(returnPath)){
+			return returnPath;
+		}
+
+		for(int i=0;i<nodes.Count;i++){
+
 			// Check if the node connects to the end target. If so, add it as a connection!
-			
-			if(!isObstructed(nodes[i],endNode)){
+			if(!isObstructed(nodes[i],endNode, Mathf.Infinity)){
 				nodes[i].addConnection (endNode);
 				//Debug.DrawLine (nodes[i].location,endNode.location,Color.green);
 			}
 			
 			// Check which nodes connect to the starting point.
-			if(!isObstructed(startNode,nodes[i])){
+			if(!isObstructed(startNode,nodes[i],Mathf.Infinity)){
 				nodes[i].previous = startNode;
 				nodes[i].state = NodeStates.open;
 				nodes[i].score = getScore(startNode,nodes[i],endNode);
@@ -195,49 +243,25 @@ public class NavigationController : MonoBehaviour {
 					Debug.Log(shortestRoute[i].label); **/
 				path.Add (shortestRoute[i].location);
 			}
+			doCleanup(startNode, endNode);
 			return path;
 		} else {
+			doCleanup(startNode, endNode);
 			return null;
 		}
 	}
-		
-	private class Node {
-		// Declare all of the node fields.
-		public int label; //{ get; set; }
-		public Node previous; //{ get; set; }
-		public List<Node> connections; //{ get; set; }
-		public List<Node> possiblePrevious; //{ get; set; }
-		public Vector3 location; //{ get; set; }
-		public NodeStates state; //{ get; set; }
-		public float score; //{ get; set; }
-		
-		public Node(Vector3 location, int label, NodeStates state = NodeStates.inactive){
-			this.location = location;
-			this.label = label;
-			this.state = state;
-			this.connections = new List<Node>();
-			this.possiblePrevious = new List<Node>();
-		}
-		
-		public void addConnection(Node other){
-			connections.Add (other);
-		}
-		public void addPossiblePrev(Node other){
-			possiblePrevious.Add (other);
-		}
-		
-		public void getBestPrevious(){
-			float lowScore = int.MaxValue;
-			Node returnNode = null;
-			
-			foreach(Node node in possiblePrevious){
-				if(node.score < lowScore){
-					lowScore = node.score;
-					returnNode = node;
+
+	private void doCleanup(Node start, Node end){
+		for(int i=0;i<nodes.Count;i++){
+			nodes[i].possiblePrevious = new List<Node>();
+			if(nodes[i].previous == start){
+				nodes[i].previous = null;
+			}
+			for(int j=0;j<nodes[i].connections.Count;j++){
+				if(nodes[i].connections[j] == start || nodes[i].connections[j] == end){
+					nodes[i].connections.RemoveAt(j--);
 				}
 			}
-			
-			previous = returnNode;
 		}
 	}
 }

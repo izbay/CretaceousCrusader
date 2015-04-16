@@ -103,7 +103,7 @@ public class TerrainBuilder : MonoBehaviour {
 
 				// Place Nav Nodes
 				for(int k=0; k < 6; k++){
-					if(height[i,j] <= biomeLevels[k]+0.0001f && height[i,j] >= biomeLevels[k]-0.0001f){
+					if(height[i,j] <= biomeLevels[k]+0.00008f && height[i,j] >= biomeLevels[k]-0.00008f){
 						GameObject node = Instantiate (Objects[0], getWorldCoordFromTerrainCoord(i,j, height[i,j]), new Quaternion()) as GameObject;
 						node.transform.parent = transform;
 					}

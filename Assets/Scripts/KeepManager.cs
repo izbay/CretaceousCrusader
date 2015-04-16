@@ -6,6 +6,7 @@ public class KeepManager : MonoBehaviour {
 
 
 	public GameObject[] units;
+	public UnitController selected;
 
 	private GameObject UI;
 	private int maxUnitCount = 5;
@@ -20,7 +21,7 @@ public class KeepManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		UI = GameObject.Find ("Canvas");
-		Spawn (new int[]{1,0,0,0,1});
+		Spawn (new int[]{1,0,2,0,1});
 	}
 	
 	// Update is called once per frame
@@ -54,7 +55,7 @@ public class KeepManager : MonoBehaviour {
 
 	private void Spawn(int[] unitList){
 		Vector3[] positions = new Vector3[unitList.Length];
-		Vector3 basePos = transform.position + transform.forward.normalized;
+		Vector3 basePos = transform.position + transform.forward.normalized * 5f;
 		for(int i=0; i<unitList.Length; i++){
 			Vector3 horz = transform.right.normalized * (i - (unitList.Length/2.0f)) * 10.0f;
 			positions[i] = basePos + horz;
@@ -65,5 +66,23 @@ public class KeepManager : MonoBehaviour {
 			//unit.transform.parent = transform;
 			//unit.GetComponent<UnitController>().
 		}
+	}
+
+	public void registerClick(UnitController unit){
+		if (unit != null) {
+			if (unit.selectable == true) {
+				if (selected != null) {
+					selected.transform.Find ("Selection Projector").GetComponent<Projector> ().enabled = false;
+				}
+				selected = unit;
+				if (selected != null) {
+					selected.transform.Find ("Selection Projector").GetComponent<Projector> ().enabled = true;
+				}
+			}
+		}
+	}
+	
+	public UnitController getSelected(){
+		return selected;
 	}
 }

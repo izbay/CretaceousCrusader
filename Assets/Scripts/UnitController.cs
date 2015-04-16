@@ -14,6 +14,8 @@ public class UnitController : MonoBehaviour {
 	public float attackRange;
 	public float turnSpeed;
 	public float moveSpeed;
+	public float standingConsumption;
+	public float walkingConsumption;
 	public bool selectable=true;
 	public Scrollbar unitHealth;
 
@@ -42,20 +44,18 @@ public class UnitController : MonoBehaviour {
 		// If a target exists, move to it.
 		if (target != Vector3.zero) {	
 			Seek ();
-			SavePosition ();
 		}
+		SavePosition ();
 
 		// Check path with every update.
 
 		if(path != null && onRails){
 			setTarget(path[1]);
-			if(counter == 100){
-				path = navigationController.getPath (transform.position, path[path.Count-1]);
+			if(counter == 300){
+				path = navigationController.getPath (curr_pos, path[path.Count-1]);
 				counter = 0;
 			} else {
-				Vector3 start = transform.position;
-				Vector3 end = path[path.Count-1];
-				List<Vector3> returnPath = navigationController.quickScanPath (start, end);
+				List<Vector3> returnPath = navigationController.quickScanPath (curr_pos, path[path.Count-1]);
 				if(!navigationController.pathIsInvalid (returnPath)){
 					path = returnPath;
 				}
@@ -116,7 +116,8 @@ public class UnitController : MonoBehaviour {
 	void SavePosition () {
 		// This is rudimentary food consumption as a proof of concept. This will be modified to use 'energy' later.
 		if(curr_pos != Vector3.zero){
-			float hunger = Vector3.Distance (transform.position,curr_pos)/50f;
+			float hunger = (Vector3.Distance (transform.position,curr_pos) * walkingConsumption) / 40f;
+			hunger += (standingConsumption * Time.deltaTime) / 80f;
 			if(Keep.requestFood (hunger) < hunger){
 				health -= 0.1f;
 			};

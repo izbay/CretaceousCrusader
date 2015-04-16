@@ -7,21 +7,21 @@ public class CameraController : MonoBehaviour {
 	public float maxCameraHeight = 200;
 	
 	public NavigationController navigationController;
-	public SelectionController selectionController;
 	public UnitController unitController;
-	public GameObject Keep;
 	public float scrollSpeed;
 	public float dragSpeed;
-	
 	public int scrollWidth;
 
+	private GameObject Keep;
 	private bool seekKeep;
 	private Vector3 oldPos;
 	private Vector3 panOrigin;
-	
+	private KeepManager selectionController;
+
 	// Use this for initialization
 	void Start () {
-		Keep = GameObject.Find ("Keep(Clone)");
+		Keep = GameObject.FindGameObjectWithTag("Player");
+		selectionController = Keep.GetComponent<KeepManager>();
 		seekKeep = true;
 	}
 	
