@@ -62,6 +62,7 @@ public class UnitController : MonoBehaviour {
 			}
 		} else {
 			path = null;
+			target = Vector3.zero;
 			setRails (false);
 		}
 		if(Atarget!=null){

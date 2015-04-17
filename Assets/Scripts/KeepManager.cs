@@ -26,7 +26,6 @@ public class KeepManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		UI = GameObject.Find ("Canvas");
-		Spawn (new int[]{1,0,0,0,1});
 		Camera.main.GetComponent<CameraController>().keepTransform = this.transform;
 		Camera.main.GetComponent<CameraController>().seekKeep = true;
 
@@ -72,7 +71,7 @@ public class KeepManager : MonoBehaviour {
 		}
 	}
 
-	private void Spawn(int[] unitList){
+	public void Spawn(int[] unitList){
 		Vector3[] positions = new Vector3[unitList.Length];
 		Vector3 basePos = transform.position + transform.forward.normalized * 5f;
 		for(int i=0; i<unitList.Length; i++){
@@ -140,7 +139,17 @@ public class KeepManager : MonoBehaviour {
 	}
 
 	public void alterSpawnCount(int amt){
-		maxUnitCount += amt;
+		if (spawnLimit + amt <= maxUnitCount && spawnLimit + amt > 0) {
+			spawnLimit += amt;
+			UI.transform.Find("Info_Panel/Unit_Cap_Control/DelSpawn/Del").GetComponent<Text>().color = Color.white;
+			UI.transform.Find("Info_Panel/Unit_Cap_Control/AddSpawn/Add").GetComponent<Text>().color = Color.white;
+		}
+
+		if(spawnLimit + 1 > maxUnitCount){
+			UI.transform.Find("Info_Panel/Unit_Cap_Control/AddSpawn/Add").GetComponent<Text>().color = Color.gray;
+		} else if (spawnLimit - 1 <= 0){
+			UI.transform.Find("Info_Panel/Unit_Cap_Control/DelSpawn/Del").GetComponent<Text>().color = Color.gray;
+		}
 	}
 
 	public UnitController getSelected(){

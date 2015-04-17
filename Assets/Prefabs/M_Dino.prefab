@@ -84,8 +84,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 124156}
   m_LocalRotation: {x: 0, y: .395786464, z: 0, w: .91834265}
-  m_LocalPosition: {x: 188.210007, y: 33.8300018, z: 119.540001}
-  m_LocalScale: {x: 1, y: 1, z: .999999821}
+  m_LocalPosition: {x: 159.872238, y: 4.76679564, z: 141.063599}
+  m_LocalScale: {x: .100000001, y: .100000001, z: .100000001}
   m_Children:
   - {fileID: 424156}
   m_Father: {fileID: 0}
@@ -158,7 +158,7 @@ Animator:
   m_GameObject: {fileID: 124160}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d37553327339cc3468f96d4f7fab319f, type: 2}
+  m_Controller: {fileID: 9100000, guid: d5803e5eb7d84c64ab01e59595e5d10f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -184,7 +184,10 @@ MonoBehaviour:
   attackRange: 10
   turnSpeed: 2
   moveSpeed: 10
+  standingConsumption: 0
+  walkingConsumption: 0
   selectable: 1
+  unitHealth: {fileID: 0}
   Atarget: {fileID: 0}
   attackers: []
 --- !u!136 &13624162
@@ -196,10 +199,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 5
-  m_Height: 10
+  m_Radius: 50
+  m_Height: 100
   m_Direction: 1
-  m_Center: {x: 0, y: 5, z: 0}
+  m_Center: {x: 0, y: 50, z: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

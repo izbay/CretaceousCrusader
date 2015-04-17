@@ -127,8 +127,11 @@ public class TerrainBuilder : MonoBehaviour {
 		KeepLocations.RemoveAll (v => v.x < 800 || v.x > 2200 || v.z < 800 || v.z > 2200);
 
 		// TODO: (Stretch Goal) Further Pruning and Score Locations.
-		GameObject keep = Instantiate (Objects[3], KeepLocations[0], Quaternion.Euler(0, UnityEngine.Random.Range(0, 360), 0)) as GameObject;
-		keep.transform.parent = transform;
+		GameObject keep = GameObject.FindGameObjectWithTag("Player");
+		keep.transform.position = KeepLocations[0];
+		keep.transform.rotation = Quaternion.Euler(0, UnityEngine.Random.Range(0, 360), 0);
+		//keep.transform.parent = transform;
+		keep.GetComponent<KeepManager>().Spawn(new int[]{1,0,0,0,1});
 	}
 
 	private void Place(GameObject obj, int num, List<Vector3> list){

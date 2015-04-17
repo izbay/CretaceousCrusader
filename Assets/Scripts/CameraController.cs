@@ -20,7 +20,6 @@ public class CameraController : MonoBehaviour {
 	private Vector3 oldPos;
 	private Vector3 panOrigin;
 	private KeepManager selectionController;
-
 	// Use this for initialization
 	void Start () {
 		Keep = GameObject.FindGameObjectWithTag("Player");
@@ -43,7 +42,7 @@ public class CameraController : MonoBehaviour {
 				if (layerHit==LayerMask.NameToLayer("Unit")){
 					unitController= hit.transform.root.GetComponent<UnitController>();
 					selectionController.registerClick(unitController);
-				}else {
+				}else if(!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()){
 					selectionController.registerClick (null);
 				}
 			}
@@ -68,6 +67,9 @@ public class CameraController : MonoBehaviour {
 
 	private void moveCamera()
 	{
+		if(UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()){
+			return;
+		}
 		// Handlie click-and-drag
 		if(Input.GetMouseButtonDown(2))
 		{
