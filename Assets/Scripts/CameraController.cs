@@ -34,6 +34,7 @@ public class CameraController : MonoBehaviour {
 	}
 
 	private void registerClicks(){
+		//Left Mouse Button
 		if(Input.GetMouseButtonDown (0)){
 			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 			RaycastHit hit;
@@ -47,6 +48,7 @@ public class CameraController : MonoBehaviour {
 				}
 			}
 		}
+		//Right Mouse Button
 		if (Input.GetMouseButton (1)) {
 			if(unitController!=null){
 				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
@@ -58,6 +60,14 @@ public class CameraController : MonoBehaviour {
 						unitController.Atarget=null;
 					}else if(layerHit==LayerMask.NameToLayer("Enemy Unit")){
 						unitController.registerClick(hit.transform.gameObject.GetComponent<UnitController>());
+					}else if(layerHit == LayerMask.NameToLayer("Stone")){
+						if(unitController is QuarrierController){
+							unitController.registerClick(hit.transform.gameObject.GetComponent<StoneController>());
+						}
+					}else if(layerHit == LayerMask.NameToLayer("Keep")){
+						if(unitController is QuarrierController){
+							unitController.setTarget(Keep.transform.position);
+						}
 					}else {
 					}
 				}

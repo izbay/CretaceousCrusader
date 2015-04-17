@@ -19,9 +19,12 @@ public class StoneController : UnitController {
 			attacker.Atarget=null;
 			GameObject.Destroy(gameObject);
 		}
-		unitHealth.size = health / 100f;
 	}
 	public override void setRails(bool railSetting){
 
+	}
+	public override void SavePosition () {
+		
+		curr_pos = transform.position;
 	}
 }

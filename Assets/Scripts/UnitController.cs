@@ -29,7 +29,7 @@ public class UnitController : MonoBehaviour {
 	protected float attackCharge=0f;
 	public List<UnitController> attackers;
 
-	private KeepManager Keep;
+	protected KeepManager Keep;
 
 	// Use this for initialization
 	protected virtual void Start () {
@@ -62,7 +62,7 @@ public class UnitController : MonoBehaviour {
 			}
 		} else {
 			path = null;
-			target = Vector3.zero;
+			//target = Vector3.zero;
 			setRails (false);
 		}
 		if(Atarget!=null){
@@ -188,7 +188,7 @@ public class UnitController : MonoBehaviour {
 	}
 
 	//Perform Attack
-	public void Attack(){
+	public virtual void Attack(){
 		attackCharge = 0;
 		Atarget.Hit (gameObject.GetComponent<UnitController>());
 	}

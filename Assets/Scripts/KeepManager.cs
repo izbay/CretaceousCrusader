@@ -155,4 +155,7 @@ public class KeepManager : MonoBehaviour {
 	public UnitController getSelected(){
 		return selected;
 	}
+	public void addRock(int r){
+		rockQty+=r;
+	}
 }
