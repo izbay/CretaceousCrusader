@@ -113,7 +113,7 @@ public class UnitController : MonoBehaviour {
 		}
 	}
 
-	void SavePosition () {
+	public virtual void SavePosition () {
 		// This is rudimentary food consumption as a proof of concept. This will be modified to use 'energy' later.
 		if(curr_pos != Vector3.zero){
 			float hunger = (Vector3.Distance (transform.position,curr_pos) * walkingConsumption) / 40f;
@@ -138,14 +138,14 @@ public class UnitController : MonoBehaviour {
 		this.Atarget = target;
 	}
 
-	public void setRails(bool railSetting){
+	public virtual void setRails(bool railSetting){
 		onRails = railSetting;
 		Animator anim = transform.Find("AnimationContainer").GetComponent<Animator>();
 		anim.SetBool ("onRails",railSetting);
 	}
 
 
-	public void registerClick(UnitController unit){
+	public virtual void registerClick(UnitController unit){
 		if (unit.selectable == true) {
 			target=unit.transform.position;
 		} else {
@@ -194,7 +194,7 @@ public class UnitController : MonoBehaviour {
 	}
 	
 	//Take Damage
-	public void Hit(UnitController attacker){
+	public virtual void Hit(UnitController attacker){
 
 		health -= attacker.attackStr;
 

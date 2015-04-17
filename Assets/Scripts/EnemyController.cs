@@ -9,5 +9,8 @@ public class EnemyController : UnitController {
 		selectable = false;
 	}
 
+	public override void SavePosition () {
 
+		curr_pos = transform.position;
+	}
 }
