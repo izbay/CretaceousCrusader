@@ -8,7 +8,9 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 472276}
-  m_Layer: 2
+  - 114: {fileID: 11481802}
+  - 136: {fileID: 13647994}
+  m_Layer: 10
   m_Name: Stone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,7 +28,7 @@ GameObject:
   - 33: {fileID: 3372278}
   - 23: {fileID: 2372278}
   - 95: {fileID: 9572278}
-  m_Layer: 2
+  m_Layer: 10
   m_Name: stone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,6 +102,45 @@ Animator:
   m_ApplyRootMotion: 1
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &11481802
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 172276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8a74c07c88078e4a9edbf7cbf15cc9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  energy: 0
+  maxCarry: 0
+  currentCarry: 0
+  attackStr: 0
+  attackRate: 0
+  attackRange: 0
+  turnSpeed: 0
+  moveSpeed: 0
+  standingConsumption: 0
+  walkingConsumption: 0
+  selectable: 0
+  unitHealth: {fileID: 0}
+  Atarget: {fileID: 0}
+  attackers: []
+--- !u!136 &13647994
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 172276}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 6.5
+  m_Height: 32
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

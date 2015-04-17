@@ -206,24 +206,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 110306}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b7c4fa1eeed8a44fb78a68646611826, type: 3}
+  m_Script: {fileID: 11500000, guid: 224f28dce4d5a8241adde2e9a48eda99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
   energy: 0
-  maxCarry: 0
+  maxCarry: 100
   currentCarry: 0
-  attackStr: 0
-  attackRate: 0
-  attackRange: 0
+  attackStr: 25
+  attackRate: 1
+  attackRange: 10
   turnSpeed: 1
-  moveSpeed: 5
-  standingConsumption: .5
-  walkingConsumption: .25
+  moveSpeed: 15
+  standingConsumption: 0
+  walkingConsumption: 0
   selectable: 1
   unitHealth: {fileID: 0}
   Atarget: {fileID: 0}
   attackers: []
+  returning: 0
+  KeepTransform: {x: 0, y: 0, z: 0}
 --- !u!119 &11906752
 Projector:
   m_ObjectHideFlags: 1
