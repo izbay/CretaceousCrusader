@@ -518,7 +518,11 @@ MonoBehaviour:
   - {fileID: 177626, guid: 0ed58eedc3b5c8244acd570f73a17cab, type: 2}
   - {fileID: 110306, guid: b80500560eecb4b4cb4b9596270abae1, type: 2}
   - {fileID: 167810, guid: 343956402ae8b0a4fa01033eb332f374, type: 2}
-  UI: {fileID: 0}
+  unitIco:
+  - {fileID: 21300000, guid: 0d0f4e6e25410024993467087c6c28bd, type: 3}
+  - {fileID: 21300000, guid: c97dc8802b4bae849a82161bfcb61e7b, type: 3}
+  - {fileID: 21300000, guid: 3181a265303f7954f946841ded6bc32a, type: 3}
+  selected: {fileID: 0}
 --- !u!136 &13695562
 CapsuleCollider:
   m_ObjectHideFlags: 1

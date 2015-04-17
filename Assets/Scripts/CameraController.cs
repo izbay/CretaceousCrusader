@@ -65,7 +65,7 @@ public class CameraController : MonoBehaviour {
 			}
 		}
 	}
-	
+
 	private void moveCamera()
 	{
 		// Handlie click-and-drag

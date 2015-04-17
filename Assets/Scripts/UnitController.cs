@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class UnitController : MonoBehaviour {
-
 	public float health = 100f;
 	public int energy;
 	public int maxCarry;
