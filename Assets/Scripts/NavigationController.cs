@@ -23,6 +23,17 @@ public class NavigationController : MonoBehaviour {
 			subject.setPath(getPath (subject.transform.position, click));
 		}
 	}
+
+	public void registerClick(UnitController unit,Vector3 click){
+		// Move using A*.
+		subject = selection.getSelected();
+		if (subject != null && unit.GetInstanceID () == subject.GetInstanceID ()) {
+			subject.setPath (getPath (subject.transform.position, click));
+		} else {
+			//unit.setPath(getPath (subject.transform.position, click));
+		}
+	}
+
 	public void registerClick(UnitController obj){
 		subject = selection.getSelected ();
 		if (subject != null) {

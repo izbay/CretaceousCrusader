@@ -124,11 +124,10 @@ public class KeepManager : MonoBehaviour {
 	}
 
 	public void changeUnit(PlayerUnitController unit, int id){
-		//for(int i=0; i<units.Length; i++){
-			//if(unitPanel[id].image.sprite == unitIco[i]){
+
 				// Command the unit to change. This is a placeholder.
-				GameObject newUnit = Instantiate (units[id], unit.transform.position,unit.transform.rotation) as GameObject;
-				GameObject.Destroy(unit.transform.root.gameObject);
+			GameObject newUnit = Instantiate (units[id], unit.transform.position,unit.transform.rotation) as GameObject;
+			GameObject.Destroy(unit.transform.root.gameObject);
 		if (selected.GetInstanceID() == unit.GetInstanceID()) {
 			registerClick (null);
 			GameObject.Find ("Main Camera").GetComponent<CameraController> ().unitController = newUnit.GetComponent<UnitController> ();
@@ -136,11 +135,9 @@ public class KeepManager : MonoBehaviour {
 		} else {
 			GameObject.Find ("Main Camera").GetComponent<CameraController> ().unitController = newUnit.GetComponent<UnitController> ();
 		}
-				// We need to update the camera for this case where the unit selection changes without a click from it.
 
-				return;
-			//}
-		//}
+		return;
+
 	}
 	public void changeUnitClass(int id){
 		for (int i=0; i<units.Length; i++) {
