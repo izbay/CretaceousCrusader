@@ -78,7 +78,11 @@ public class NavigationController : MonoBehaviour {
 	}
 
 	private bool isUnwalkable(Vector3 position){
-		int biome = GameObject.Find ("Terrain").GetComponent<TerrainBuilder> ().getBiomeAtWorldCoord (position);
+		TerrainBuilder tb = GameObject.Find ("Terrain").GetComponent<TerrainBuilder> ();
+		if (tb == null) {
+			return false;
+		}
+		int biome = tb.getBiomeAtWorldCoord (position);
 		// water is 0. mountain is 5.
 		return biome == 0 || biome == 5;
 	}

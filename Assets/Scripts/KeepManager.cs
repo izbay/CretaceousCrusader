@@ -16,11 +16,14 @@ public class KeepManager : MonoBehaviour {
 	private float rockQty = 20f;
 	private float foodTick = 0f;
 	private float foodSpeed = 10f;
+	private float spawnTick = 0f;
+	private float spawnSpeed = 30f;
 	private float baseFoodRegen = 2f;
 	private float farmerBonusFood = 0.2f;
 
 	private Text resourceIndicator;
-	private Text respawnIndicator;
+	private Text spawnCountIndicator;
+	private Text spawnTimerIndicator;
 	private Button[] unitPanel = new Button[3];
 
 	// Use this for initialization
@@ -30,7 +33,8 @@ public class KeepManager : MonoBehaviour {
 		Camera.main.GetComponent<CameraController>().seekKeep = true;
 
 		resourceIndicator = UI.transform.Find("Info_Panel/Resources").GetComponent<Text>();
-		respawnIndicator = UI.transform.Find("Info_Panel/Unit_Cap_Control/Respawn").GetComponent<Text>();
+		spawnCountIndicator = UI.transform.Find("Info_Panel/Unit_Cap_Control/Respawn").GetComponent<Text>();
+		spawnTimerIndicator = UI.transform.Find("Info_Panel/Unit_Cap_Control/SpawnCountdown").GetComponent<Text>();
 		unitPanel[0] = UI.transform.Find("Unit_Panel/Unit0").GetComponent<Button>();
 		unitPanel[1] = UI.transform.Find("Unit_Panel/Unit0_0").GetComponent<Button>();
 		unitPanel[2] = UI.transform.Find("Unit_Panel/Unit0_1").GetComponent<Button>();
@@ -41,7 +45,19 @@ public class KeepManager : MonoBehaviour {
 		generateFood();
 
 		resourceIndicator.text = "(♨) "+foodQty.ToString ("F0")+"   (ロ) "+rockQty.ToString ("F0");
-		respawnIndicator.text = totalUnits() + " / " + spawnLimit;
+		spawnCountIndicator.text = totalUnits() + " / " + spawnLimit;
+		if (totalUnits() < spawnLimit) {
+			if(spawnTick < spawnSpeed){
+				spawnTimerIndicator.text = "(↻) " + Mathf.RoundToInt(spawnSpeed-spawnTick).ToString ();
+				spawnTick += Time.deltaTime;
+			} else {
+				Spawn();
+				spawnTick = 0f;
+			}
+		} else {
+			spawnTimerIndicator.text = "";
+			spawnTick = 0f;
+		}
 	}
 
 	public float requestFood(float amount){
@@ -71,6 +87,9 @@ public class KeepManager : MonoBehaviour {
 		}
 	}
 
+	public void Spawn(){
+		Spawn (new int[1] {0});
+	}
 	public void Spawn(int[] unitList){
 		Vector3[] positions = new Vector3[unitList.Length];
 		Vector3 basePos = transform.position + transform.forward.normalized * 5f;
