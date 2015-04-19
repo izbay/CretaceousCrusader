@@ -131,9 +131,11 @@ public class UnitController : MonoBehaviour {
 	public virtual void registerClick(UnitController unit){
 		if (unit.selectable == true) {
 			target=unit.transform.position;
+			navigationController.registerClick(target);
 		} else {
 			Atarget = unit;
 			target=unit.transform.position;
+			navigationController.registerClick(target);
 		}
 	}
 
@@ -167,7 +169,7 @@ public class UnitController : MonoBehaviour {
 	//move towards attacker
 	public virtual void AdjustPosition(){
 		target = Atarget.transform.position;
-		Seek ();
+		navigationController.registerClick(target);
 	}
 
 	//Perform Attack

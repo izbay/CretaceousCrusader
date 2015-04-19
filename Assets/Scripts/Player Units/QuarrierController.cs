@@ -3,26 +3,7 @@ using System.Collections;
 
 public class QuarrierController : PlayerUnitController {
 
-	public bool returning;
-	public Vector3 KeepTransform;
-	protected override void Start(){
-		
-		base.Start();
-		selectable = true;
-		returning = false;
-		KeepTransform = Keep.transform.position;
-	}
-	protected override void Update(){
-		base.Update ();
-		if (currentCarry == maxCarry) {
-			if(!returning){
-				ReturnResources();
-			}
-			if(Vector3.Distance(curr_pos, Keep.transform.position)<20f){
-				UnloadResources();
-			}
-		}
-	}
+
 	public void registerClick(StoneController unit){
 			Atarget = unit;
 			target = unit.transform.position;
@@ -39,10 +20,22 @@ public class QuarrierController : PlayerUnitController {
 			base.Attack();
 		}
 	}
-
+	protected override void Update(){
+		base.Update ();
+		if (currentCarry == maxCarry) {
+			if(!returning){
+				ReturnResources();
+			}
+		}
+		if (returning) {
+			if(Vector3.Distance(curr_pos, Keep.transform.position)<20f){
+				UnloadResources();
+			}
+		}
+	}
 	public void ReturnResources(){
 		target= Keep.transform.position;
-		setRails (true);
+		navigationController.registerClick(Keep.transform.position);
 		returning = true;
 	}
 	public void UnloadResources(){

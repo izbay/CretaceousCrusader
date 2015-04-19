@@ -73,6 +73,7 @@ NavMeshSettings:
     minRegionArea: 2
     widthInaccuracy: 16.666666
     heightInaccuracy: 10
+    tileSizeHint: 0
   m_NavMesh: {fileID: 0}
 --- !u!1 &20199107
 GameObject:
@@ -159,7 +160,7 @@ GameObject:
   - 23: {fileID: 28679236}
   - 95: {fileID: 28679235}
   - 136: {fileID: 28679234}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: keep
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -748,7 +749,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 421734370}
   - 114: {fileID: 421734371}
-  m_Layer: 2
+  m_Layer: 11
   m_Name: Keep(Clone)
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1757,8 +1758,8 @@ MonoBehaviour:
   m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ignoreReversedGraphics: 1
-  blockingObjects: 0
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -2242,8 +2243,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2047553284}
-  m_LocalRotation: {x: .187654689, y: .355099648, z: -.0693087131, w: .913173795}
-  m_LocalPosition: {x: 885, y: 127, z: 971}
+  m_LocalRotation: {x: .342020124, y: 0, z: 0, w: .939692616}
+  m_LocalPosition: {x: 885, y: 200, z: 971}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

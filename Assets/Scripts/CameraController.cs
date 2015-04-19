@@ -66,7 +66,8 @@ public class CameraController : MonoBehaviour {
 						}
 					}else if(layerHit == LayerMask.NameToLayer("Keep")){
 						if(unitController is QuarrierController){
-							unitController.setTarget(Keep.transform.position);
+							navigationController.registerClick(Keep.transform.position);
+							(unitController as QuarrierController).ReturnResources();
 						}
 					}else {
 					}

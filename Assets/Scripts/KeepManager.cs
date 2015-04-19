@@ -7,7 +7,7 @@ public class KeepManager : MonoBehaviour {
 
 	public GameObject[] units;
 	public Sprite[] unitIco;
-	public UnitController selected;
+	public PlayerUnitController selected;
 
 	private GameObject UI;
 	private int maxUnitCount = 5;
@@ -93,7 +93,7 @@ public class KeepManager : MonoBehaviour {
 				if (selected != null) {
 					selected.transform.Find ("Selection Projector").GetComponent<Projector> ().enabled = false;
 				}
-				selected = unit;
+				selected = unit as PlayerUnitController;
 				int altIndex = 1;
 				for(int i=0; i<units.Length; i++){
 					if(selected.transform.CompareTag (units[i].transform.tag)){
@@ -123,21 +123,28 @@ public class KeepManager : MonoBehaviour {
 		unitPanel[2].image.enabled = !unitPanel[2].image.enabled;
 	}
 
-	public void changeUnit(int id){
+	public void changeUnit(PlayerUnitController unit, int id){
 		for(int i=0; i<units.Length; i++){
 			if(unitPanel[id].image.sprite == unitIco[i]){
 				// Command the unit to change. This is a placeholder.
-				GameObject newUnit = Instantiate (units[i], selected.transform.position,selected.transform.rotation) as GameObject;
-				GameObject.Destroy(selected.transform.root.gameObject);
-				registerClick(null);
+				GameObject newUnit = Instantiate (units[i], unit.transform.position,unit.transform.rotation) as GameObject;
+				GameObject.Destroy(unit.transform.root.gameObject);
+				if(unit == null){
+					registerClick(null);
+					GameObject.Find ("Main Camera").GetComponent<CameraController>().unitController = newUnit.GetComponent<UnitController>();
+					registerClick(newUnit.GetComponent<UnitController>());
+				}else{
+					GameObject.Find ("Main Camera").GetComponent<CameraController>().unitController = newUnit.GetComponent<UnitController>();
+				}
 				// We need to update the camera for this case where the unit selection changes without a click from it.
-				GameObject.Find ("Main Camera").GetComponent<CameraController>().unitController = newUnit.GetComponent<UnitController>();
-				registerClick(newUnit.GetComponent<UnitController>());
+
 				return;
 			}
 		}
 	}
-
+	public void changeUnitClass(int id){
+		selected.changeClass(id);
+	}
 	public void alterSpawnCount(int amt){
 		if (spawnLimit + amt <= maxUnitCount && spawnLimit + amt > 0) {
 			spawnLimit += amt;
