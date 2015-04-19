@@ -125,16 +125,16 @@ public class UnitController : MonoBehaviour {
 		curr_pos = transform.position;
 	}
 
-	public void setPath (List<Vector3> path){
+	public virtual void setPath (List<Vector3> path){
 		this.path = path;
 		setRails (true);
 	}
 
-	public void setTarget(Vector3 target){
+	public virtual void setTarget(Vector3 target){
 		this.target = target;
 	}
 
-	public void setATarget(UnitController target){
+	public virtual void setATarget(UnitController target){
 		this.Atarget = target;
 	}
 
@@ -164,7 +164,7 @@ public class UnitController : MonoBehaviour {
 		}
 	}
 	//checks to see if enemy is within range to attack
-	public bool TargetInRange(){
+	public virtual bool TargetInRange(){
 		Vector3 targetLocation = Atarget.transform.position;
 		Vector3 direction = targetLocation - transform.position;
 		if(direction.sqrMagnitude < attackRange * attackRange) {
@@ -173,7 +173,7 @@ public class UnitController : MonoBehaviour {
 		return false;
 	}
 	//checks to see if ready to attack again
-	public bool ReadyToAttack(){
+	public virtual bool ReadyToAttack(){
 		if (attackCharge >= attackRate) {
 			return true;
 		} else {
@@ -182,7 +182,7 @@ public class UnitController : MonoBehaviour {
 
 	}
 	//move towards attacker
-	public void AdjustPosition(){
+	public virtual void AdjustPosition(){
 		target = Atarget.transform.position;
 		Seek ();
 	}
