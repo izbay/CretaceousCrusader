@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class StoneController : UnitController {
 	
-	protected void Start(){
+	new protected void Start(){
 
 		selectable = false;
 	}
