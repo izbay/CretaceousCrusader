@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class QuarrierController : UnitController {
+public class QuarrierController : PlayerUnitController {
 
 	public bool returning;
 	public Vector3 KeepTransform;
@@ -29,10 +29,14 @@ public class QuarrierController : UnitController {
 	}
 	//Perform Attack
 	public override void Attack(){
-		if (currentCarry < maxCarry) {
-			attackCharge = 0;
-			Atarget.Hit (gameObject.GetComponent<UnitController> ());
-			currentCarry += attackStr;
+		if (Atarget is StoneController) {
+			if (currentCarry < maxCarry) {
+				attackCharge = 0;
+				Atarget.Hit (gameObject.GetComponent<UnitController> ());
+				currentCarry += attackStr;
+			}
+		} else {
+			base.Attack();
 		}
 	}
 

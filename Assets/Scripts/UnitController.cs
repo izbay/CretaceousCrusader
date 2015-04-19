@@ -5,20 +5,14 @@ using UnityEngine.UI;
 
 public class UnitController : MonoBehaviour {
 	public float health = 100f;
-	public int energy;
-	public int maxCarry;
-	public int currentCarry;
 	public int attackStr;
 	public float attackRate;
 	public float attackRange;
 	public float turnSpeed;
 	public float moveSpeed;
-	public float standingConsumption;
-	public float walkingConsumption;
-	public bool selectable=true;
+	public bool selectable;
 	public Scrollbar unitHealth;
-
-
+	
 	protected NavigationController navigationController;
 	protected Vector3 target = Vector3.zero;
 	protected Vector3 curr_pos;
@@ -29,12 +23,9 @@ public class UnitController : MonoBehaviour {
 	protected float attackCharge=0f;
 	public List<UnitController> attackers;
 
-	protected KeepManager Keep;
-
 	// Use this for initialization
 	protected virtual void Start () {
 		navigationController = GameObject.FindGameObjectWithTag("global_nav").GetComponent<NavigationController>();
-		Keep = GameObject.FindGameObjectWithTag("Player").GetComponent<KeepManager>();
 		SavePosition ();
 	}
 	
@@ -114,14 +105,6 @@ public class UnitController : MonoBehaviour {
 	}
 
 	public virtual void SavePosition () {
-		// This is rudimentary food consumption as a proof of concept. This will be modified to use 'energy' later.
-		if(curr_pos != Vector3.zero){
-			float hunger = (Vector3.Distance (transform.position,curr_pos) * walkingConsumption) / 40f;
-			hunger += (standingConsumption * Time.deltaTime) / 80f;
-			if(Keep.requestFood (hunger) < hunger){
-				health -= 0.1f;
-			};
-		}
 		curr_pos = transform.position;
 	}
 

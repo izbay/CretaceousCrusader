@@ -8,9 +8,4 @@ public class EnemyController : UnitController {
 		base.Start();
 		selectable = false;
 	}
-
-	public override void SavePosition () {
-
-		curr_pos = transform.position;
-	}
 }
