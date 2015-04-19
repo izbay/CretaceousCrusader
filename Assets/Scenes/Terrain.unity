@@ -484,7 +484,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 421734371}
-        m_MethodName: changeUnit
+        m_MethodName: changeUnitClass
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1547,16 +1547,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
-  energy: 0
-  maxCarry: 0
-  currentCarry: 0
   attackStr: 0
   attackRate: 0
   attackRange: 0
   turnSpeed: 0
   moveSpeed: 0
-  standingConsumption: 0
-  walkingConsumption: 0
   selectable: 0
   unitHealth: {fileID: 0}
   Atarget: {fileID: 0}
@@ -2193,7 +2188,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 421734371}
-        m_MethodName: changeUnit
+        m_MethodName: changeUnitClass
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
