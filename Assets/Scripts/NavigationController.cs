@@ -11,7 +11,7 @@ public class NavigationController : MonoBehaviour {
 
 	void Start () {
 		selection = GameObject.FindGameObjectWithTag("Player").GetComponent<KeepManager>();
-		generateNavMap();
+		StartCoroutine(generateNavMap());
 	}
 
 	void Update () {}
@@ -135,7 +135,7 @@ public class NavigationController : MonoBehaviour {
 			previous = returnNode;
 		}
 	}
-	public void generateNavMap(){
+	IEnumerator generateNavMap(){
 		
 		// Time to actually run A*... Start by creating a digital representation of every nav_node.
 		GameObject[] navNodes = GameObject.FindGameObjectsWithTag("nav_node");
@@ -161,8 +161,10 @@ public class NavigationController : MonoBehaviour {
 				nodes.Remove (nodes[i--]);
 				continue;
 			}
+			yield return null;
 		}
 	}
+
 	public List<Vector3> getPath(Vector3 start, Vector3 end){
 		Node startNode = new Node(start, int.MinValue, NodeStates.start);
 		Node endNode = new Node(end, int.MaxValue, NodeStates.end);
