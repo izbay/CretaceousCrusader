@@ -68,6 +68,7 @@ public class CameraController : MonoBehaviour {
 						if(unitController is QuarrierController){
 							navigationController.registerClick(Keep.transform.position);
 							(unitController as QuarrierController).ReturnResources();
+							unitController.Atarget=null;
 						}
 					}else {
 					}

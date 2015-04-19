@@ -2,9 +2,9 @@
 using System.Collections;
 
 public class FarmerController : PlayerUnitController {
-	protected override void Start(){
-		
-		base.Start();
+	protected override void Start ()
+	{
+		base.Start ();
+		classID = 0;
 	}
-
 }

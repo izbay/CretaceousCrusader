@@ -3,10 +3,16 @@ using System.Collections;
 
 public class QuarrierController : PlayerUnitController {
 
+	protected override void Start ()
+	{
+		base.Start ();
+		classID = 1;
+	}
 
 	public void registerClick(StoneController unit){
+
 			Atarget = unit;
-			target = unit.transform.position;
+			navigationController.registerClick(unit.transform.position);
 	}
 	//Perform Attack
 	public override void Attack(){
@@ -15,6 +21,11 @@ public class QuarrierController : PlayerUnitController {
 				attackCharge = 0;
 				Atarget.Hit (gameObject.GetComponent<UnitController> ());
 				currentCarry += attackStr;
+				if (currentCarry >= maxCarry) {
+					if(!returning){
+						ReturnResources();
+					}
+				}
 			}
 		} else {
 			base.Attack();
@@ -22,20 +33,14 @@ public class QuarrierController : PlayerUnitController {
 	}
 	protected override void Update(){
 		base.Update ();
-		if (currentCarry == maxCarry) {
-			if(!returning){
-				ReturnResources();
-			}
-		}
 		if (returning) {
-			if(Vector3.Distance(curr_pos, Keep.transform.position)<20f){
+			if(Vector3.Distance(curr_pos,KeepTransform)<20f){
 				UnloadResources();
 			}
 		}
 	}
 	public void ReturnResources(){
-		target= Keep.transform.position;
-		navigationController.registerClick(Keep.transform.position);
+		returnToKeep ();
 		returning = true;
 	}
 	public void UnloadResources(){

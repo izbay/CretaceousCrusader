@@ -23,6 +23,9 @@ public class UnitController : MonoBehaviour {
 	protected float attackCharge=0f;
 	public List<UnitController> attackers;
 
+	protected delegate void StateDelegate();
+	protected StateDelegate stateDelegate;
+
 	// Use this for initialization
 	protected virtual void Start () {
 		navigationController = GameObject.FindGameObjectWithTag("global_nav").GetComponent<NavigationController>();
@@ -131,11 +134,9 @@ public class UnitController : MonoBehaviour {
 	public virtual void registerClick(UnitController unit){
 		if (unit.selectable == true) {
 			target=unit.transform.position;
-			navigationController.registerClick(target);
 		} else {
 			Atarget = unit;
-			target=unit.transform.position;
-			navigationController.registerClick(target);
+			navigationController.registerClick(unit.transform.position);
 		}
 	}
 
@@ -168,8 +169,7 @@ public class UnitController : MonoBehaviour {
 	}
 	//move towards attacker
 	public virtual void AdjustPosition(){
-		target = Atarget.transform.position;
-		navigationController.registerClick(target);
+		navigationController.registerClick(Atarget.transform.position);
 	}
 
 	//Perform Attack

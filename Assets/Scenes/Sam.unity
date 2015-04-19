@@ -160,7 +160,7 @@ GameObject:
   - 23: {fileID: 28679236}
   - 95: {fileID: 28679235}
   - 136: {fileID: 28679234}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: keep
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -485,7 +485,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 421734371}
-        m_MethodName: changeUnit
+        m_MethodName: changeUnitClass
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2004,7 +2004,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 421734371}
-        m_MethodName: changeUnit
+        m_MethodName: changeUnitClass
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2071,6 +2071,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 274c58c5305213a42b7cb510c5790ba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  obstructionLayers:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!4 &1991233338
 Transform:
   m_ObjectHideFlags: 0
