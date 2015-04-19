@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class TerrainBuilder : MonoBehaviour {
 	public GameObject[] Objects;
-
+	private float[] biomeLevels;
 	private Terrain terrain;
 	private int offsetX, offsetY;
 	private float tileSize1, tileSize2, scaleLevel;
@@ -55,7 +55,7 @@ public class TerrainBuilder : MonoBehaviour {
 
 		int fivePercent = Mathf.RoundToInt(width*depth*0.05f);
 		int totalIdxs = width*depth;
-		float[] biomeLevels = new float[6];
+		biomeLevels = new float[6];
 
 		biomeLevels[0]= allHeights[fivePercent*4]; 				// Water - 20%
 		biomeLevels[1]= allHeights[totalIdxs - fivePercent*16];	// Swamp - 10% (Rounded down)
@@ -101,9 +101,9 @@ public class TerrainBuilder : MonoBehaviour {
 					}
 				}
 
-				// Place Nav Nodes
-				for(int k=0; k < 6; k++){
-					if(height[i,j] <= biomeLevels[k]+0.00008f && height[i,j] >= biomeLevels[k]-0.00008f){
+				// Place Nav Nodes normally k=0;k<6;k++
+				for(int k=2; k < 6; k+=2){
+					if(height[i,j] <= biomeLevels[k]+0.0001f && height[i,j] >= biomeLevels[k]-0.0001f){
 						GameObject node = Instantiate (Objects[0], getWorldCoordFromTerrainCoord(i,j, height[i,j]), new Quaternion()) as GameObject;
 						node.transform.parent = transform;
 					}
@@ -129,7 +129,7 @@ public class TerrainBuilder : MonoBehaviour {
 		// TODO: (Stretch Goal) Further Pruning and Score Locations.
 		GameObject keep = GameObject.FindGameObjectWithTag("Player");
 		keep.transform.position = KeepLocations[0];
-		keep.transform.rotation = Quaternion.Euler(0, UnityEngine.Random.Range(0, 360), 0);
+		keep.transform.rotation = Quaternion.Euler (0, 180, 0);//UnityEngine.Random.Range(0, 360), 0);
 		//keep.transform.parent = transform;
 		keep.GetComponent<KeepManager>().Spawn(new int[]{1,0,0,0,1});
 	}
@@ -178,6 +178,26 @@ public class TerrainBuilder : MonoBehaviour {
 		return new Vector3(x, y, z);
 	}
 
+	public int getBiomeAtWorldCoord(Vector3 position){
+		TerrainData td = terrain.terrainData;
+		int j = Mathf.RoundToInt (td.heightmapWidth * position.z / td.size.z);
+		int i = Mathf.RoundToInt (td.heightmapHeight * position.x / td.size.x);
+		float height = td.GetHeight (i, j) / td.size.y;
+		if (height <= biomeLevels [0] - 0.00348f) {
+			return 0;
+		} else if (height >= biomeLevels[5] + 0.035f){
+			return 5;
+		} else if (height >= biomeLevels[4] + 0.0015f){
+			return 4;
+		} else if (height >= biomeLevels[3] + 0.00125f){
+			return 3;
+		} else if (height >= biomeLevels[2] + 0.001f){
+			return 2;
+		} else {
+			return 1;
+		}
+	}
+	
 	private void setTexture(int x, int y, int id, float percent){
 		for(int i=0;i<6;i++){
 			try{

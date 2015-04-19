@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class NavigationController : MonoBehaviour {
-
+	public LayerMask obstructionLayers;
 	private KeepManager selection;
 	private UnitController subject;
 	private List<Node> nodes = new List<Node>();
@@ -50,12 +50,26 @@ public class NavigationController : MonoBehaviour {
 			corners[i+3].z += subjectRadius;
 		}
 		for(int i=0;i<4;i++){
-			if(Physics.Raycast (corners[i], corners[i+4]-corners[i], distance, 1 << LayerMask.NameToLayer ("Default"))){
-				//Debug.DrawLine(corners[i], corners[i+4], Color.red);
+			if(Physics.Raycast (corners[i], corners[i+4]-corners[i], distance, obstructionLayers)){
+				Debug.DrawLine(corners[i], corners[i+4], Color.red);
 				return true;
 			}
 		}
-		return false;
+		return isUnwalkable (start.location, end.location);
+	}
+
+	private bool isUnwalkable(Vector3 start, Vector3 end){
+		bool rtnVal = false;
+		for (float percent = 0f; percent <= 1f; percent += 0.1f) {
+			rtnVal = rtnVal || isUnwalkable (start + (end - start) * percent);
+		}
+		return rtnVal;
+	}
+
+	private bool isUnwalkable(Vector3 position){
+		int biome = GameObject.Find ("Terrain").GetComponent<TerrainBuilder> ().getBiomeAtWorldCoord (position);
+		// water is 0. mountain is 5.
+		return biome == 0 || biome == 5;
 	}
 	
 	private float getScore(Node start, Node node, Node end){
@@ -67,16 +81,16 @@ public class NavigationController : MonoBehaviour {
 		Node endNode = new Node(end, int.MaxValue, NodeStates.end);
 		
 		// If it's a trivial distance, just return null.
-		if (Vector3.Distance (start,end) < 1.5f){
+		if (Vector3.Distance (start,end) < 1.5f || isUnwalkable (end)){
 			return null;
 		}
 		// If we can get there without hitting a wall, just go there!
 		
 		if (!isObstructed(startNode,endNode, Mathf.Infinity)){
-			//Debug.DrawLine(start,end, Color.green);
+			Debug.DrawLine(start,end, Color.green);
 			return new List<Vector3> {start, end};
 		} else {
-			//Debug.DrawLine(start,end, Color.red);
+			Debug.DrawLine(start,end, Color.red);
 			// Encoding for solution not found.
 			return new List<Vector3> {Vector3.zero, Vector3.zero};
 		}
@@ -138,7 +152,7 @@ public class NavigationController : MonoBehaviour {
 				if(!isObstructed(nodes[i],nodes[j])){
 					nodes[i].addConnection (nodes[j]);
 					nodes[j].addConnection (nodes[i]);
-					//Debug.DrawLine (nodes[i].location,nodes[j].location,Color.magenta);
+					Debug.DrawLine (nodes[i].location,nodes[j].location,Color.magenta);
 				}
 			}
 			
@@ -161,9 +175,10 @@ public class NavigationController : MonoBehaviour {
 		for(int i=0;i<nodes.Count;i++){
 
 			// Check if the node connects to the end target. If so, add it as a connection!
-			if(!isObstructed(nodes[i],endNode, Mathf.Infinity)){
+			if(!isObstructed(nodes[i],endNode,Mathf.Infinity)){
 				nodes[i].addConnection (endNode);
-				//Debug.DrawLine (nodes[i].location,endNode.location,Color.green);
+				//endNode.addConnection (nodes[i]);
+				Debug.DrawLine (nodes[i].location,endNode.location,Color.green);
 			}
 			
 			// Check which nodes connect to the starting point.
@@ -171,8 +186,10 @@ public class NavigationController : MonoBehaviour {
 				nodes[i].previous = startNode;
 				nodes[i].state = NodeStates.open;
 				nodes[i].score = getScore(startNode,nodes[i],endNode);
+				//nodes[i].addConnection(startNode);
+				//startNode.addConnection(nodes[i]);
 				//Debug.Log (nodes[i].label+" connects to start with score: "+nodes[i].score+". Opening "+nodes[i].label+".");
-				//Debug.DrawLine (nodes[i].location,startNode.location,Color.white);
+				Debug.DrawLine (nodes[i].location,startNode.location,Color.white);
 			}
 		}
 		bool completedSearch = false, foundAPath = false;
@@ -185,15 +202,22 @@ public class NavigationController : MonoBehaviour {
 				if(nodes[i].state == NodeStates.open){
 					completedSearch = false;
 					//Debug.Log ("Evaluating "+nodes[i].label+".");
-					foreach (Node connection in nodes[i].connections){
-						if(connection.state == NodeStates.end){
+					for(int j=0;j<nodes[i].connections.Count;j++){
+						// Confirm there is still connection and remove if it no longer exists.
+						/**if(isObstructed(nodes[i], nodes[i].connections[j])){
+							nodes[i].connections.Remove (nodes[i].connections[j]);
+							nodes[i].connections[j].connections.Remove (nodes[i]);
+							continue;
+						}**/
+
+						if(nodes[i].connections[j].state == NodeStates.end){
 							//Debug.Log (nodes[i].label+" connects to End!");
 							foundAPath = true;
 							endNode.addConnection (nodes[i]);
-						} else if(connection.state == NodeStates.inactive){
-							connection.addPossiblePrev(nodes[i]);
-							foundNodes.Add(connection);
-							connection.score = getScore (startNode,connection,endNode); // Should the first param be nodes[i] or startNode? Come back to this.
+						} else if(nodes[i].connections[j].state == NodeStates.inactive){
+							nodes[i].connections[j].addPossiblePrev(nodes[i]);
+							foundNodes.Add(nodes[i].connections[j]);
+							nodes[i].connections[j].score = getScore (startNode,nodes[i].connections[j],endNode); // Should the first param be nodes[i] or startNode? Come back to this.
 							//Debug.Log (nodes[i].label+" connects to "+connection.label+" with score: "+connection.score+". Opening "+connection.label+".");
 						}
 					}
