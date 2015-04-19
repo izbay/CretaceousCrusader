@@ -81,7 +81,7 @@ public class NavigationController : MonoBehaviour {
 		Node endNode = new Node(end, int.MaxValue, NodeStates.end);
 		
 		// If it's a trivial distance, just return null.
-		if (Vector3.Distance (start,end) < 1.5f || isUnwalkable (end)){
+		if (Vector3.Distance (new Vector3(start.x,0,start.z),new Vector3(end.x,0,end.z)) < 1.5f || isUnwalkable (end) ){
 			return null;
 		}
 		// If we can get there without hitting a wall, just go there!
