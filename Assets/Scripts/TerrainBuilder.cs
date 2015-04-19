@@ -101,7 +101,7 @@ public class TerrainBuilder : MonoBehaviour {
 					}
 				}
 
-				// Place Nav Nodes normally k=0;k<6;k++
+				// Place Nav Nodes (normally k=0;k<6;k++)
 				for(int k=2; k < 6; k+=2){
 					if(height[i,j] <= biomeLevels[k]+0.0001f && height[i,j] >= biomeLevels[k]-0.0001f){
 						GameObject node = Instantiate (Objects[0], getWorldCoordFromTerrainCoord(i,j, height[i,j]), new Quaternion()) as GameObject;
@@ -114,13 +114,14 @@ public class TerrainBuilder : MonoBehaviour {
 		RockLocations = Shuffle(RockLocations);
 		KeepLocations = Shuffle(KeepLocations);
 
-		Place (Objects[1], 20, NestLocations);
-		Place (Objects[2], 40, RockLocations);
 		PlaceKeep ();
-
+		
 		terrain.terrainData.SetAlphamaps (0, 0, alphaData);
 		terrain.terrainData.SetHeights (0,0,height);
 		BuildBaseBoard();
+
+		StartCoroutine(Place (Objects[1], 20, NestLocations));
+		StartCoroutine(Place (Objects[2], 40, RockLocations));
 	}
 
 	private void PlaceKeep(){
@@ -134,7 +135,7 @@ public class TerrainBuilder : MonoBehaviour {
 		keep.GetComponent<KeepManager>().Spawn(new int[]{1,0,0,0,1});
 	}
 
-	private void Place(GameObject obj, int num, List<Vector3> list){
+	IEnumerator Place(GameObject obj, int num, List<Vector3> list){
 		List<Vector3> usedLocations = new List<Vector3>();
 		for(int k=0; k < num; k++){
 			bool foundFlag;
@@ -154,6 +155,7 @@ public class TerrainBuilder : MonoBehaviour {
 				node.transform.parent = transform;
 				usedLocations.Add (proposedLocation);
 			}
+			yield return null;
 		}
 	}
 
