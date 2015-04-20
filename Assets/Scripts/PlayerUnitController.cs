@@ -17,11 +17,13 @@ public class PlayerUnitController : UnitController {
 	public bool returning;
 	public bool changing;
 	public Vector3 KeepTransform;
+	private TerrainBuilder tb;
 
 	protected override void Start ()
 	{
 		Keep = GameObject.FindGameObjectWithTag("Player").GetComponent<KeepManager>();
 		KeepTransform = Keep.transform.position+(Keep.transform.forward*5);
+		tb = GameObject.Find ("Terrain").GetComponent<TerrainBuilder> ();
 		base.Start ();
 		selectable = true;
 		returning = false;
@@ -32,6 +34,7 @@ public class PlayerUnitController : UnitController {
 	{
 		base.SavePosition ();
 		// This is rudimentary food consumption as a proof of concept. This will be modified to use 'energy' later.
+		int biome = tb.getBiomeAtWorldCoord (transform.position);
 		if(curr_pos != Vector3.zero){
 			float hunger = (Vector3.Distance (transform.position,curr_pos) * walkingConsumption) / 40f;
 			hunger += (standingConsumption * Time.deltaTime) / 80f;
@@ -61,7 +64,7 @@ public class PlayerUnitController : UnitController {
 		}
 	}
 	public void returnToKeep(){
-		navigationController.registerClick(KeepTransform);
+		navigationController.registerClick(this, KeepTransform);
 			
 	}
 

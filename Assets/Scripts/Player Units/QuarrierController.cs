@@ -10,9 +10,8 @@ public class QuarrierController : PlayerUnitController {
 	}
 
 	public void registerClick(StoneController unit){
-
 			Atarget = unit;
-			navigationController.registerClick(unit.transform.position);
+		AdjustPosition ();
 	}
 	//Perform Attack
 	public override void Attack(){

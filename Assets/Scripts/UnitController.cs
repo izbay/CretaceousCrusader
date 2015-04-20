@@ -42,7 +42,7 @@ public class UnitController : MonoBehaviour {
 
 		// Check path with every update.
 
-		if(path != null && onRails){
+		if(path != null && path.Count > 1 && onRails){
 			setTarget(path[1]);
 			if(counter == 300){
 				path = navigationController.getPath (curr_pos, path[path.Count-1]);
@@ -69,7 +69,7 @@ public class UnitController : MonoBehaviour {
 	}
 
 	protected virtual void Seek () {
-		//Debug.DrawLine (curr_pos, target, Color.magenta);
+		Debug.DrawLine (curr_pos, target, Color.magenta);
 
 		float distance = Vector3.Distance (curr_pos,target);
 		if (Atarget == null) {
@@ -136,7 +136,7 @@ public class UnitController : MonoBehaviour {
 			target=unit.transform.position;
 		} else {
 			Atarget = unit;
-			navigationController.registerClick(unit.transform.position);
+			AdjustPosition ();
 		}
 	}
 
@@ -149,6 +149,7 @@ public class UnitController : MonoBehaviour {
 			AdjustPosition ();
 		}
 	}
+
 	//checks to see if enemy is within range to attack
 	public virtual bool TargetInRange(){
 		Vector3 targetLocation = Atarget.transform.position;
@@ -169,7 +170,23 @@ public class UnitController : MonoBehaviour {
 	}
 	//move towards attacker
 	public virtual void AdjustPosition(){
-		navigationController.registerClick(Atarget.transform.position);
+		if (path != null && onRails) {
+			if(path.Count > 1){
+				setTarget (path [1]);
+			}
+			if (counter == 300) {
+				path = navigationController.getPath (curr_pos, path [path.Count - 1]);
+				counter = 0;
+			} else {
+				List<Vector3> returnPath = navigationController.quickScanPath (curr_pos, path [path.Count - 1]);
+				if (!navigationController.pathIsInvalid (returnPath)) {
+					path = returnPath;
+				}
+				counter++;
+			}
+		} else {
+			navigationController.registerClick (this, Atarget.transform.position);
+		}
 	}
 
 	//Perform Attack

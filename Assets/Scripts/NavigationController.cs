@@ -18,19 +18,13 @@ public class NavigationController : MonoBehaviour {
 
 	public void registerClick(Vector3 click){
 		// Move using A*.
-		subject = selection.getSelected();
-		if(subject != null){
-			subject.setPath(getPath (subject.transform.position, click));
-		}
+		registerClick (selection.getSelected (), click);
 	}
 
 	public void registerClick(UnitController unit,Vector3 click){
 		// Move using A*.
-		subject = selection.getSelected();
-		if (subject != null && unit.GetInstanceID () == subject.GetInstanceID ()) {
-			subject.setPath (getPath (subject.transform.position, click));
-		} else {
-			//unit.setPath(getPath (subject.transform.position, click));
+		if (unit != null){// && subject.GetInstanceID () == subject.GetInstanceID ()) {
+			unit.setPath (getPath (unit.transform.position, click));
 		}
 	}
 
@@ -264,7 +258,11 @@ public class NavigationController : MonoBehaviour {
 				while(ptr != startNode){
 					score += node.score;
 					prospectivePath.Add (ptr);
-					ptr = ptr.previous;
+					if (ptr == null){
+						score += 1000000;
+					} else {
+						ptr = ptr.previous; // Some cases this is null. Likely due to cleanup. Must be debugged.
+					}
 				}
 				prospectivePath.Add (ptr);
 				
@@ -285,22 +283,20 @@ public class NavigationController : MonoBehaviour {
 					Debug.Log(shortestRoute[i].label); **/
 				path.Add (shortestRoute[i].location);
 			}
-			doCleanup(startNode, endNode);
+			doCleanup();
 			return path;
 		} else {
-			doCleanup(startNode, endNode);
+			doCleanup();
 			return null;
 		}
 	}
 
-	private void doCleanup(Node start, Node end){
+	private void doCleanup(){
 		for(int i=0;i<nodes.Count;i++){
 			nodes[i].possiblePrevious = new List<Node>();
-			if(nodes[i].previous == start){
-				nodes[i].previous = null;
-			}
+			nodes[i].previous = null;
 			for(int j=0;j<nodes[i].connections.Count;j++){
-				if(nodes[i].connections[j] == start || nodes[i].connections[j] == end){
+				if(nodes[i].connections[j].label == int.MaxValue || nodes[i].connections[j].label == int.MinValue){
 					nodes[i].connections.RemoveAt(j--);
 				}
 			}

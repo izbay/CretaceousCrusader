@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class TerrainBuilder : MonoBehaviour {
 	public GameObject[] Objects;
+	private float[] biomeCosts;
 	private float[] biomeLevels;
 	private Terrain terrain;
 	private int offsetX, offsetY;
