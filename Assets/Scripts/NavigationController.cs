@@ -46,7 +46,7 @@ public class NavigationController : MonoBehaviour {
 		return returnPath != null && returnPath.Count == 2 && returnPath[0] == Vector3.zero && returnPath[1] == Vector3.zero;
 	}
 	
-	private bool isObstructed(Node start, Node end, float cap = 250f){
+	private bool isObstructed(Node start, Node end, float cap = 500f){
 		float distance = Vector3.Distance (start.location,end.location);
 		if(distance > cap) return true;
 
@@ -192,14 +192,14 @@ public class NavigationController : MonoBehaviour {
 		for(int i=0;i<nodes.Count;i++){
 
 			// Check if the node connects to the end target. If so, add it as a connection!
-			if(!isObstructed(nodes[i],endNode,Mathf.Infinity)){
+			if(!isObstructed(nodes[i],endNode, 1000f)){
 				nodes[i].addConnection (endNode);
 				//endNode.addConnection (nodes[i]);
 				Debug.DrawLine (nodes[i].location,endNode.location,Color.green);
 			}
 			
 			// Check which nodes connect to the starting point.
-			if(!isObstructed(startNode,nodes[i],Mathf.Infinity)){
+			if(!isObstructed(startNode,nodes[i], 1000f)){
 				nodes[i].previous = startNode;
 				nodes[i].state = NodeStates.open;
 				nodes[i].score = getScore(startNode,nodes[i],endNode);
@@ -230,6 +230,7 @@ public class NavigationController : MonoBehaviour {
 						if(nodes[i].connections[j].state == NodeStates.end){
 							//Debug.Log (nodes[i].label+" connects to End!");
 							foundAPath = true;
+							completedSearch = true; // This shouldn't be here. Testing.
 							endNode.addConnection (nodes[i]);
 						} else if(nodes[i].connections[j].state == NodeStates.inactive){
 							nodes[i].connections[j].addPossiblePrev(nodes[i]);

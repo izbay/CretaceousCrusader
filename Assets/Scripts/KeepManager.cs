@@ -137,9 +137,26 @@ public class KeepManager : MonoBehaviour {
 		}
 	}
 
-	public void toggleAlternateUnitTypes(){
-		unitPanel[1].image.enabled = !unitPanel[1].image.enabled;
-		unitPanel[2].image.enabled = !unitPanel[2].image.enabled;
+	public void doPrimaryButtonAction(){
+		bool isUnit = false;
+		for(int i=0; i<units.Length; i++){
+			if(selected != null && selected.transform.CompareTag (units[i].transform.tag)){
+				isUnit = true;
+			}
+		}
+		if(isUnit){
+			unitPanel[1].image.enabled = !unitPanel[1].image.enabled;
+			unitPanel[2].image.enabled = !unitPanel[2].image.enabled;
+		} else {
+			Debug.Log("Build a Hut");
+		}
+	}
+
+	public void displayKeepButton(){
+		unitPanel[0].image.sprite = unitIco[3];
+		unitPanel[0].image.enabled = true;
+		unitPanel[1].image.enabled = false;
+		unitPanel[2].image.enabled = false;
 	}
 
 	public void changeUnit(PlayerUnitController unit, int id){
@@ -160,7 +177,7 @@ public class KeepManager : MonoBehaviour {
 	}
 	public void changeUnitClass(int id){
 		for (int i=0; i<units.Length; i++) {
-			if (unitPanel [id].image.sprite == unitIco [i]) {
+			if (unitPanel [id].image.sprite == unitIco [i] && unitPanel[id].image.enabled) {
 				selected.changeClass (i);
 			}
 		}

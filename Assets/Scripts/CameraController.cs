@@ -40,11 +40,16 @@ public class CameraController : MonoBehaviour {
 			RaycastHit hit;
 			if (Physics.Raycast (ray, out hit)){
 				int layerHit = hit.transform.gameObject.layer;
+				Keep.GetComponentInChildren<Projector>().enabled = false;
 				if (layerHit==LayerMask.NameToLayer("Unit")){
 					unitController= hit.transform.root.GetComponent<UnitController>();
 					selectionController.registerClick(unitController);
 				}else if(!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()){
 					selectionController.registerClick (null);
+					if(layerHit == LayerMask.NameToLayer("Keep")){
+						Keep.GetComponentInChildren<Projector>().enabled = true;
+						selectionController.displayKeepButton();
+					}
 				}
 			}
 		}
