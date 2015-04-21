@@ -89,7 +89,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 167810}
   m_LocalRotation: {x: 0, y: .897139728, z: 0, w: .44174701}
-  m_LocalPosition: {x: 160.570938, y: 6.16539907, z: 157.76712}
+  m_LocalPosition: {x: 1119.07446, y: 59.8179893, z: 1396.72534}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 497180}
@@ -224,8 +224,8 @@ MonoBehaviour:
   energy: 0
   classID: 0
   changeID: 0
-  standingConsumption: 0
-  walkingConsumption: 0
+  standingConsumption: 7.5
+  walkingConsumption: 15
   Keep: {fileID: 0}
   returning: 0
   changing: 0

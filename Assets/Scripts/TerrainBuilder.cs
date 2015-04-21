@@ -5,12 +5,16 @@ using System.Collections.Generic;
 
 public class TerrainBuilder : MonoBehaviour {
 	public GameObject[] Objects;
-	private float[] biomeCosts;
+	private float[] biomeCosts = new float[6] {10f,1.3f,0.85f,1f,2f,10f};
 	private float[] biomeLevels;
 	private Terrain terrain;
 	private int offsetX, offsetY;
 	private float tileSize1, tileSize2, scaleLevel;
 	private float[,,] alphaData;
+	private int nestAmt = 15;
+	private int stoneAmt = 40;
+	private float spawnTick = 0f;
+	private float spawnSpeed = 30f;
 	private List<Vector3> KeepLocations = new List<Vector3>();
 	private List<Vector3> NestLocations = new List<Vector3>();
 	private List<Vector3> RockLocations = new List<Vector3>();
@@ -21,7 +25,19 @@ public class TerrainBuilder : MonoBehaviour {
 		GenerateTerrain ();
 	}
 
-	void Update () {}
+	void Update () {
+		if (spawnTick > spawnSpeed) {
+			if (GameObject.FindGameObjectsWithTag ("nest").Length < nestAmt) {
+				StartCoroutine (Place (Objects [1], 1, NestLocations));
+			}
+			if (GameObject.FindGameObjectsWithTag ("stone").Length < stoneAmt) {
+				StartCoroutine (Place (Objects [2], 1, RockLocations));
+			}
+			spawnTick = 0f;
+		} else {
+			spawnTick += Time.deltaTime;
+		}
+	}
 
 	private void initTerrainSeed(){
 		terrain = transform.GetComponent<Terrain>();
@@ -121,8 +137,8 @@ public class TerrainBuilder : MonoBehaviour {
 		terrain.terrainData.SetHeights (0,0,height);
 		BuildBaseBoard();
 
-		StartCoroutine(Place (Objects[1], 20, NestLocations));
-		StartCoroutine(Place (Objects[2], 40, RockLocations));
+		StartCoroutine(Place (Objects[1], nestAmt, NestLocations));
+		StartCoroutine(Place (Objects[2], stoneAmt, RockLocations));
 	}
 
 	private void PlaceKeep(){
@@ -200,7 +216,11 @@ public class TerrainBuilder : MonoBehaviour {
 			return 1;
 		}
 	}
-	
+
+	public float getHungerWeight(Vector3 location){
+		return biomeCosts [getBiomeAtWorldCoord (location)];
+	}
+
 	private void setTexture(int x, int y, int id, float percent){
 		for(int i=0;i<6;i++){
 			try{
