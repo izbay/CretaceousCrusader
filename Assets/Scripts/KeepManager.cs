@@ -13,7 +13,7 @@ public class KeepManager : MonoBehaviour {
 	private int maxUnitCount = 5;
 	private int spawnLimit = 5;
 	private float foodQty = 5f;
-	private float rockQty = 20f;
+	private float rockQty = 0f;
 	private float foodTick = 0f;
 	private float foodSpeed = 10f;
 	private float spawnTick = 0f;
