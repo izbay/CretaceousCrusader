@@ -12,5 +12,4 @@ public class SmallDinoController : DinoController {
 	{
 		stateDelegate();
 	}
-
 }

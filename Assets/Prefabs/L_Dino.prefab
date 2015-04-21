@@ -175,16 +175,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 500
-  energy: 100
-  maxCarry: 50
-  currentCarry: 0
   attackStr: 100
   attackRate: 5
   attackRange: 10
   turnSpeed: 2
   moveSpeed: 10
-  standingConsumption: 0
-  walkingConsumption: 0
   selectable: 1
   unitHealth: {fileID: 0}
   Atarget: {fileID: 0}
