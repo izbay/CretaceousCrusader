@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class NestManager : MonoBehaviour {
-	public GameObject[] dinos;
+	
+    public GameObject[] dinos;
+    public List<GameObject> spawnedDinos; 
 	private int type;
-	private int count;
-	private List<GameObject> spawned;
+	private int maxDino;
 
 	private float spawnTick = 0f;
 	private float spawnSpeed = 30f;
@@ -17,42 +19,65 @@ public class NestManager : MonoBehaviour {
 		if (random < 0.65f) {
 			//Small
 			type = 0;
-			count = 5;
+            maxDino = 5;
 		} else {
 			//Medium
 			type = 1;
-			count = 3;
+            maxDino = 3;
 			transform.localScale = new Vector3(2.5f,2.5f,2.5f);
 		}
 
 		// Initial Spawn
-		spawned = new List<GameObject>();
-		for (int i=0; i<count; i++) {
-			//spawned.Add (Instantiate (dinos[type], Vector3.zero, new Quaternion()) as GameObject);
-		}
+        spawnedDinos = new List<GameObject>();
+        for (int i = 0; i < maxDino; i++)
+        {
+            Spawn();
+        }
+
 	}
-	
-	// Update is called once per frame
+
+
+    // Update is called once per frame
 	void Update () {
 		// Handle Respawns. If we lost everyone, remove nest.
-		int alive = spawned.Count;
+        int alive = spawnedDinos.Count;
 		if (alive == 0) {
 			//remove nest
-		}/** else if (alive < count) {
+		} else if (spawnedDinos.Count < maxDino) {
 			//spawn
 			if(spawnTick >= spawnSpeed){
-				spawned.Add (Instantiate (dinos[type], Vector3.zero, new Quaternion()) as GameObject);
+                spawnedDinos.Add(Instantiate(dinos[type], Vector3.zero, new Quaternion()) as GameObject);
 				spawnTick = 0f;
 			} else {
 				spawnTick += Time.deltaTime;
 			}
-		}*/
+		}
 	}
+    public void Spawn()
+    {
+        Spawn(new int[1] { type });
+    }
+    public void Spawn(int[] unitList)
+    {
+        Vector3[] positions = new Vector3[unitList.Length];
+        Vector3 basePos = transform.position + transform.forward.normalized * 5f;
+        for (int i = 0; i < unitList.Length; i++)
+        {
+            Vector3 horz = transform.right.normalized * (i - (unitList.Length / 2.0f)) * 10.0f;
+            positions[i] = basePos + horz;
+        }
+        // Spawn the units
+        for (int i = 0; i < unitList.Length; i++)
+        {
+            spawnedDinos.Add(Instantiate(dinos[unitList[i]], positions[i], transform.rotation) as GameObject);
+        }
+    }
 
 	void pruneTheDead(){
-		foreach (GameObject g in spawned) {
-			if (g == null)
-				spawned.Remove (g);
+        var deadDinos = spawnedDinos.Where(x => (x == null));
+        foreach (GameObject g in spawnedDinos)
+        {
+            spawnedDinos.Remove(g);
 		}
 	}
 }
