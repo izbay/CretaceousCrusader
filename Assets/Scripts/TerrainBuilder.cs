@@ -127,9 +127,9 @@ public class TerrainBuilder : MonoBehaviour {
 				}
 			}
 		}
-		NestLocations = Shuffle(NestLocations);
-		RockLocations = Shuffle(RockLocations);
-		KeepLocations = Shuffle(KeepLocations);
+		NestLocations = Shuffle(NestLocations, 200);
+		RockLocations = Shuffle(RockLocations, 200);
+		KeepLocations = Shuffle(KeepLocations, 800);
 
 		PlaceKeep ();
 		
@@ -142,8 +142,6 @@ public class TerrainBuilder : MonoBehaviour {
 	}
 
 	private void PlaceKeep(){
-		KeepLocations.RemoveAll (v => v.x < 800 || v.x > 2200 || v.z < 800 || v.z > 2200);
-
 		// TODO: (Stretch Goal) Further Pruning and Score Locations.
 		GameObject keep = GameObject.FindGameObjectWithTag("Player");
 		keep.transform.position = KeepLocations[0];
@@ -176,7 +174,8 @@ public class TerrainBuilder : MonoBehaviour {
 		}
 	}
 
-	private List<Vector3> Shuffle(List<Vector3> list){  
+	private List<Vector3> Shuffle(List<Vector3> list, int cullingRadius){  
+		list.RemoveAll (v => v.x < cullingRadius || v.x > terrain.terrainData.size.x-cullingRadius || v.z < cullingRadius || v.z > terrain.terrainData.size.z-cullingRadius);
 		int idx = list.Count;  
 		while (idx > 1) {  
 			idx--;  
@@ -197,11 +196,20 @@ public class TerrainBuilder : MonoBehaviour {
 		return new Vector3(x, y, z);
 	}
 
-	public int getBiomeAtWorldCoord(Vector3 position){
+	public Vector3 toGroundLevel(Vector3 position){
+		position.y = getHeightAtWorldCoord (position);
+		return position;
+	}
+
+	public float getHeightAtWorldCoord(Vector3 position){
 		TerrainData td = terrain.terrainData;
 		int j = Mathf.RoundToInt (td.heightmapWidth * position.z / td.size.z);
 		int i = Mathf.RoundToInt (td.heightmapHeight * position.x / td.size.x);
-		float height = td.GetHeight (i, j) / td.size.y;
+		return td.GetHeight (i, j) / td.size.y;
+	}
+
+	public int getBiomeAtWorldCoord(Vector3 position){
+		float height = getHeightAtWorldCoord (position);
 		if (height <= biomeLevels [0] - 0.00348f) {
 			return 0;
 		} else if (height >= biomeLevels[5] + 0.035f){
