@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class UnitController : MonoBehaviour {
+
 	public float health = 100f;
 	public int attackStr;
 	public float attackRate;
@@ -12,17 +13,17 @@ public class UnitController : MonoBehaviour {
 	public float moveSpeed;
 	public bool selectable;
 	public Scrollbar unitHealth;
+	public  UnitController attackTarget;
+	public List<UnitController> attackers;
 	
 	protected NavigationController navigationController;
-	protected Vector3 target = Vector3.zero;
+	protected Vector3 navTarget = Vector3.zero;
 	protected Vector3 curr_pos;
 	protected bool onRails = false;
 	protected List<Vector3> path;
     protected int pathRefreshCount = 0;
     protected int pathRefreshRate;
-	public  UnitController Atarget;
 	protected float attackCharge=0f;
-	public List<UnitController> attackers;
 
 	protected delegate void StateDelegate();
 	protected StateDelegate stateDelegate;
@@ -38,7 +39,7 @@ public class UnitController : MonoBehaviour {
 	// Update is called once per frame
 	protected virtual void Update () {
 		// If a target exists, move to it.
-		if (target != Vector3.zero) {	
+		if (navTarget != Vector3.zero) {	
 			Seek ();
 		}
 		SavePosition ();
@@ -60,10 +61,10 @@ public class UnitController : MonoBehaviour {
 			}
 		} else {
 			path = null;
-			target = Vector3.zero;
+			navTarget = Vector3.zero;
 			setRails (false);
 		}
-		if(Atarget!=null){
+		if(attackTarget!=null){
 			BeginAttack();
 		}
 		if (attackCharge < attackRate) {
@@ -73,41 +74,23 @@ public class UnitController : MonoBehaviour {
 	}
 
 	protected virtual void Seek () {
-		Debug.DrawLine (curr_pos, target, Color.magenta);
+		Debug.DrawLine (curr_pos, navTarget, Color.magenta);
 
-		float distance = Vector3.Distance (curr_pos,target);
-		if (Atarget == null) {
-			if (distance >= 1f) {
+		float distance = Vector3.Distance (curr_pos,navTarget);
+		if (distance >= 1f || (attackTarget != null && distance >= attackRange)) {
 
-				Vector3 targetDir = new Vector3 (target.x, 0, target.z) - new Vector3 (curr_pos.x, 0, curr_pos.z);
-				Quaternion targetRotation = Quaternion.LookRotation (targetDir);
+			Vector3 targetDir = new Vector3 (navTarget.x, 0, navTarget.z) - new Vector3 (curr_pos.x, 0, curr_pos.z);
+			Quaternion targetRotation = Quaternion.LookRotation (targetDir);
 
-				transform.rotation = Quaternion.RotateTowards (transform.rotation, targetRotation, turnSpeed);
-				float angle = Vector3.Angle (targetDir, transform.forward);
-				if (angle < 3) {
-					rigidbody.AddForce (transform.forward * moveSpeed * 500);
-				}
-			} else {
-				// We've reached the target. Clear out all memory of it and await further instructions.
-				target = Vector3.zero;
-				setRails (false);
+			transform.rotation = Quaternion.RotateTowards (transform.rotation, targetRotation, turnSpeed);
+			float angle = Vector3.Angle (targetDir, transform.forward);
+			if (angle < 3) {
+				rigidbody.AddForce (transform.forward * moveSpeed * 500);
 			}
 		} else {
-			if(distance >=attackRange){
-				Vector3 targetDir = new Vector3 (target.x, 0, target.z) - new Vector3 (curr_pos.x, 0, curr_pos.z);
-				Quaternion targetRotation = Quaternion.LookRotation (targetDir);
-				
-				transform.rotation = Quaternion.RotateTowards (transform.rotation, targetRotation, turnSpeed);
-				float angle = Vector3.Angle (targetDir, transform.forward);
-				if (angle < 3) {
-					rigidbody.AddForce (transform.forward * moveSpeed * 500);
-				}
-			}
-			else{
-				// We've reached the target. Clear out all memory of it and await further instructions.
-				target = Vector3.zero;
-				setRails (false);
-			}
+			// We've reached the target. Clear out all memory of it and await further instructions.
+			navTarget = Vector3.zero;
+			setRails (false);
 		}
 	}
 
@@ -121,11 +104,11 @@ public class UnitController : MonoBehaviour {
 	}
 
 	public virtual void setTarget(Vector3 target){
-		this.target = target;
+		this.navTarget = target;
 	}
 
 	public virtual void setATarget(UnitController target){
-		this.Atarget = target;
+		this.attackTarget = target;
 	}
 
 	public virtual void setRails(bool railSetting){
@@ -137,9 +120,9 @@ public class UnitController : MonoBehaviour {
 
 	public virtual void registerClick(UnitController unit){
 		if (unit.selectable == true) {
-			target=unit.transform.position;
+			navTarget=unit.transform.position;
 		} else {
-			Atarget = unit;
+			attackTarget = unit;
 			AdjustPosition ();
 		}
 	}
@@ -156,22 +139,16 @@ public class UnitController : MonoBehaviour {
 
 	//checks to see if enemy is within range to attack
 	public virtual bool TargetInRange(){
-		Vector3 targetLocation = Atarget.transform.position;
-		Vector3 direction = targetLocation - transform.position;
-		if(direction.sqrMagnitude < attackRange * attackRange) {
-			return true;
-		}
-		return false;
+
+		return Vector3.Distance (transform.position, attackTarget.transform.position) < attackRange;
 	}
+	
 	//checks to see if ready to attack again
 	public virtual bool ReadyToAttack(){
-		if (attackCharge >= attackRate) {
-			return true;
-		} else {
-			return false;
-		}
-
+		
+		return attackCharge >= attackRate;
 	}
+	
 	//move towards attacker
 	public virtual void AdjustPosition(){
 		if (path != null && onRails) {
@@ -190,14 +167,14 @@ public class UnitController : MonoBehaviour {
                 pathRefreshCount++;
 			}
 		} else {
-			navigationController.registerClick (this, Atarget.transform.position);
+			navigationController.registerClick (this, attackTarget.transform.position);
 		}
 	}
 
 	//Perform Attack
 	public virtual void Attack(){
 		attackCharge = 0;
-		Atarget.Hit (gameObject.GetComponent<UnitController>());
+		attackTarget.Hit (gameObject.GetComponent<UnitController>());
 	}
 	
 	//Take Damage
@@ -209,8 +186,8 @@ public class UnitController : MonoBehaviour {
 		//healthBar.value -= attacker.attackStr;
 		//healthBar.value = health;
 
-		if (Atarget == null) {
-			Atarget=attacker;
+		if (attackTarget == null) {
+			attackTarget=attacker;
 		}
 		if(!attackers.Contains (attacker)){
 			attackers.Add(attacker);
@@ -218,7 +195,7 @@ public class UnitController : MonoBehaviour {
 		//Kill this Unit, first resetting all attacking units to having no target
 		if (health < 1) {
 			foreach(UnitController a in attackers){
-				a.Atarget=null;
+				a.attackTarget=null;
 				a.attackers.Remove(this);
 
 			}

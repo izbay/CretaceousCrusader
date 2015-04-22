@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class QuarrierController : PlayerUnitController {
@@ -10,15 +10,15 @@ public class QuarrierController : PlayerUnitController {
 	}
 
 	public void registerClick(StoneController unit){
-			Atarget = unit;
+			attackTarget = unit;
 		AdjustPosition ();
 	}
 	//Perform Attack
 	public override void Attack(){
-		if (Atarget is StoneController) {
+		if (attackTarget is StoneController) {
 			if (currentCarry < maxCarry) {
 				attackCharge = 0;
-				Atarget.Hit (gameObject.GetComponent<UnitController> ());
+				attackTarget.Hit (gameObject.GetComponent<UnitController> ());
 				currentCarry += attackStr;
 				if (currentCarry >= maxCarry) {
 					if(!returning){
@@ -33,7 +33,7 @@ public class QuarrierController : PlayerUnitController {
 	protected override void Update(){
 		base.Update ();
 		if (returning) {
-			if(Vector3.Distance(curr_pos,KeepTransform)<20f){
+			if(Vector3.Distance(curr_pos,keepTransform)<20f){
 				UnloadResources();
 			}
 		}
@@ -43,10 +43,10 @@ public class QuarrierController : PlayerUnitController {
 		returning = true;
 	}
 	public void UnloadResources(){
-		target = Vector3.zero;
+		navTarget = Vector3.zero;
 		setRails (false);
 		returning = false;
-		Keep.addRock(currentCarry);
+		keep.addRock(currentCarry);
 		currentCarry = 0;
 
 	}

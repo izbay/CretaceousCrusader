@@ -6,30 +6,31 @@ public class PlayerUnitController : UnitController {
 	public int maxCarry;
 	public int currentCarry;
 	public int energy;
+	
 	//To be used when changing clases
 	public int classID;
 	public int changeID;
+	
 	//Food Consumption Stuff
 	public float standingConsumption;
 	public float walkingConsumption;
 
-	public KeepManager Keep;
+	public KeepManager keep;
+	public Vector3 keepTransform;
+	
 	public bool returning;
 	public bool changing;
-	public Vector3 KeepTransform;
+	
 	private TerrainBuilder tb;
 
 	protected override void Start ()
 	{
-		Keep = GameObject.FindGameObjectWithTag("Player").GetComponent<KeepManager>();
-		KeepTransform = Keep.transform.position+(Keep.transform.forward*5);
+		keep = GameObject.FindGameObjectWithTag("Player").GetComponent<KeepManager>();
+		keepTransform = keep.transform.position+(keep.transform.forward*5);
 		tb = GameObject.Find ("Terrain").GetComponent<TerrainBuilder> ();
 		base.Start ();
-		selectable = true;
-		returning = false;
-		changing = false;
-
 	}
+	
 	public override void SavePosition ()
 	{
 		base.SavePosition ();
@@ -38,7 +39,7 @@ public class PlayerUnitController : UnitController {
 			float hunger = (Vector3.Distance (transform.position,curr_pos) * walkingConsumption) / 40f;
 			hunger += (standingConsumption * Time.deltaTime) / 80f;
 			hunger *= tb.getHungerWeight(transform.position);
-			if(Keep.requestFood (hunger) < hunger){
+			if(keep.requestFood (hunger) < hunger){
 				health -= 0.1f;
 			};
 		}
@@ -47,9 +48,9 @@ public class PlayerUnitController : UnitController {
 	protected override void Update(){
 		base.Update ();
 		if (changing) {
-			if(Vector3.Distance(curr_pos, Keep.transform.position)<20f){
+			if(Vector3.Distance(curr_pos, keep.transform.position)<20f){
 				if(changeID!=classID){
-					Keep.changeUnit(this,changeID);
+					keep.changeUnit(this,changeID);
 					changing=false;
 				}
 			}
@@ -63,10 +64,8 @@ public class PlayerUnitController : UnitController {
 			returnToKeep();
 		}
 	}
+	
 	public void returnToKeep(){
-		navigationController.registerClick(this, KeepTransform);
-			
+		navigationController.registerClick(this, keepTransform);
 	}
-
-
 }

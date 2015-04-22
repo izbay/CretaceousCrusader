@@ -13,18 +13,15 @@ public class DinoController : UnitController
 
 	void Awake()
 	{
+		navigationController = GameObject.FindGameObjectWithTag("global_nav").GetComponent<NavigationController>();
 		playerUnitsNearby = new List<PlayerUnitController>();
 		dinosNearby = new List<DinoController>();
-		stateDelegate = Idle;
 	}
 
 	protected override void Start()
 	{
         pathRefreshRate = 1000;
-		navigationController = GameObject.FindGameObjectWithTag("global_nav").GetComponent<NavigationController>();
-
-		selectable = false;
-
+		stateDelegate = Idle;
 	}
 	
 	protected override void Update()
@@ -34,25 +31,24 @@ public class DinoController : UnitController
 	
 	protected void Idle()
 	{
-//		navigationController.registerClick (this, Atarget.transform.position);
-
 		// get startled when a player unit comes nearby
 		if (playerUnitsNearby.Count > 0)
 		{
 			stateDelegate = Startled;
 		}
+		
 		// wander around
-		if (target == Vector3.zero) {
-			navigationController.registerClick(this, (transform.position + new Vector3 (Random.Range (-100, 100), 0, Random.Range (-100, 100))));
-			//setPath (navController.getPath (
-			//	transform.position, transform.position + new Vector3 (Random.Range (0, 100), 0, Random.Range (0, 100))));
-			stateDelegate=Move;
+		if (navTarget == Vector3.zero)
+		{
+			navigationController.registerClick(this, transform.position + new Vector3(Random.Range(-100, 100), 0, Random.Range(-100, 100)));
+				
+			stateDelegate = Moving;
 		} 
 	}
 	
-	protected void Move()
+	protected void Moving()
 	{
-		if (target != Vector3.zero)
+		if (navTarget != Vector3.zero)
 		{	
 			Seek ();
 		}
@@ -82,7 +78,7 @@ public class DinoController : UnitController
 		else
 		{
 			path=null;
-			target = Vector3.zero;
+			navTarget = Vector3.zero;
 			setRails (false);
 			stateDelegate=Idle;
 		}
@@ -90,14 +86,14 @@ public class DinoController : UnitController
 	
 	protected override void Seek ()
 	{
-		Debug.DrawLine (transform.position, target, Color.magenta);
+		Debug.DrawLine (transform.position, navTarget, Color.magenta);
 		
-		float distance = Vector3.Distance (new Vector3(transform.position.x,0,transform.position.z),new Vector3(target.x,0,target.z));
+		float distance = Vector3.Distance (new Vector3(transform.position.x,0,transform.position.z),new Vector3(navTarget.x,0,navTarget.z));
 		
-		if (distance >= 1f || (Atarget != null && distance >= attackRange))
+		if (distance >= 1f || (attackTarget != null && distance >= attackRange))
 		{
 			
-			Vector3 targetDir = new Vector3 (target.x, 0, target.z) - new Vector3 (transform.position.x, 0, transform.position.z);
+			Vector3 targetDir = new Vector3 (navTarget.x, 0, navTarget.z) - new Vector3 (transform.position.x, 0, transform.position.z);
 			Quaternion targetRotation = Quaternion.LookRotation (targetDir);
 			
 			transform.rotation = Quaternion.RotateTowards (transform.rotation, targetRotation, turnSpeed);
@@ -111,7 +107,7 @@ public class DinoController : UnitController
 		else
 		{
 			// We've reached the target.
-			target = Vector3.zero;
+			navTarget = Vector3.zero;
 			setRails (false);
 		}
 	}
@@ -119,7 +115,7 @@ public class DinoController : UnitController
 	
 	private void Startled()
 	{
-		// catch if the player units have backed away before get here
+		// catch if the player units have backed away before we get here
 		if (playerUnitsNearby.Count == 0)
 			stateDelegate = Idle;
 			
@@ -147,7 +143,7 @@ public class DinoController : UnitController
 	
 	private void Attacking()
 	{
-		if (Atarget == null)
+		if (attackTarget == null)
 		{
 			// get a target
 		}
@@ -184,7 +180,7 @@ public class DinoController : UnitController
 		{
 			dinosNearby.Add (other.GetComponent<DinoController>());
 		}
-		else if (other.CompareTag("unit"))
+		else if (other.CompareTag("lancer"))
 		{
 			playerUnitsNearby.Add (other.GetComponent<PlayerUnitController>());
 		}
@@ -196,7 +192,7 @@ public class DinoController : UnitController
 		{
 			dinosNearby.Remove (other.GetComponent<DinoController>());
 		}
-		else if (other.CompareTag("unit"))
+		else if (other.CompareTag("lancer"))
 		{
 			playerUnitsNearby.Remove (other.GetComponent<PlayerUnitController>());
 		}

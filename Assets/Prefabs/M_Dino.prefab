@@ -31,7 +31,7 @@ GameObject:
   - 114: {fileID: 11424162}
   m_Layer: 9
   m_Name: M_Dino
-  m_TagString: Untagged
+  m_TagString: dino
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -181,9 +181,9 @@ MonoBehaviour:
   attackRange: 10
   turnSpeed: 5
   moveSpeed: 10
-  selectable: 1
+  selectable: 0
   unitHealth: {fileID: 0}
-  Atarget: {fileID: 0}
+  attackTarget: {fileID: 0}
   attackers: []
 --- !u!136 &13624162
 CapsuleCollider:

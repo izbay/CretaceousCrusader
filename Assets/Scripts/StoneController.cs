@@ -16,7 +16,7 @@ public class StoneController : UnitController {
 
 		//Kill this Unit, first resetting all attacking units to having no target
 		if (health < 1) {
-			attacker.Atarget=null;
+			attacker.attackTarget=null;
 			GameObject.Destroy(gameObject);
 		}
 	}

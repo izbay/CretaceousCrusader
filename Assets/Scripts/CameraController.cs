@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class CameraController : MonoBehaviour {
@@ -62,7 +62,7 @@ public class CameraController : MonoBehaviour {
 					int layerHit = hit.transform.gameObject.layer;
 					if(layerHit==LayerMask.NameToLayer("Water")){
 						navigationController.registerClick (hit.point);
-						unitController.Atarget=null;
+						unitController.attackTarget=null;
 					}else if(layerHit==LayerMask.NameToLayer("Enemy Unit")){
 						unitController.registerClick(hit.transform.gameObject.GetComponent<UnitController>());
 					}else if(layerHit == LayerMask.NameToLayer("Stone")){
@@ -73,7 +73,7 @@ public class CameraController : MonoBehaviour {
 						if(unitController is QuarrierController){
 							navigationController.registerClick(Keep.transform.position);
 							(unitController as QuarrierController).ReturnResources();
-							unitController.Atarget=null;
+							unitController.attackTarget=null;
 						}
 					}else {
 					}
