@@ -59,8 +59,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 167574}
   m_LocalRotation: {x: 0, y: -.469833136, z: 0, w: .88275528}
-  m_LocalPosition: {x: 182.699997, y: 4.9000001, z: 126.900002}
-  m_LocalScale: {x: .100000001, y: .100000001, z: .100000001}
+  m_LocalPosition: {x: 481.538361, y: 80.1546097, z: 1806.13013}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 467576}
   m_Father: {fileID: 0}
@@ -171,7 +171,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 167574}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1a30e275431669439625f1ca472becb, type: 3}
+  m_Script: {fileID: 11500000, guid: 36a92f1b16fa8824f9fb724326930b73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   health: 500
@@ -182,6 +182,7 @@ MonoBehaviour:
   moveSpeed: 10
   selectable: 1
   unitHealth: {fileID: 0}
+  target: {x: 0, y: 0, z: 0}
   Atarget: {fileID: 0}
   attackers: []
 --- !u!136 &13667578
@@ -193,10 +194,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 70
-  m_Height: 250
+  m_Radius: 11
+  m_Height: 31
   m_Direction: 1
-  m_Center: {x: 0, y: 100, z: 0}
+  m_Center: {x: 0, y: 16.2000008, z: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

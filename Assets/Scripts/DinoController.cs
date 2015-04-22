@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class DinoController : UnitController
 {
-	protected NavigationController navController;
 
 	// TODO keep separate lists for each unit type
 	protected List<PlayerUnitController> playerUnitsNearby;
@@ -12,24 +11,22 @@ public class DinoController : UnitController
 	// TODO keep separate lists for each dino type
 	protected List<DinoController> dinosNearby;
 	
-	protected Vector3 navTarget;
-
-	protected delegate void StateDelegate();
-	protected StateDelegate stateDelegate;
-	
 	private int pathRefreshRate = 300;
 	private int pathRefreshCount;
 
 	void Awake()
 	{
-		navController = GameObject.FindGameObjectWithTag("global_nav").GetComponent<NavigationController>();
 		playerUnitsNearby = new List<PlayerUnitController>();
 		dinosNearby = new List<DinoController>();
+		stateDelegate = Idle;
 	}
 
 	protected override void Start()
 	{
-		stateDelegate = Idle;
+		navigationController = GameObject.FindGameObjectWithTag("global_nav").GetComponent<NavigationController>();
+
+		selectable = false;
+
 	}
 	
 	protected override void Update()
@@ -39,22 +36,27 @@ public class DinoController : UnitController
 	
 	private void Idle()
 	{
+		Debug.Log ("IDLE");
 //		navigationController.registerClick (this, Atarget.transform.position);
-		
-		// wander around
-		setPath(navController.getPath(
-			transform.position, transform.position + new Vector3 (Random.Range (0, 100), 0, Random.Range (0, 100))));
-	 	
-	 	// get startled when a player unit comes nearby
-	 	if (playerUnitsNearby.Count > 0)
-	 	{
+
+		// get startled when a player unit comes nearby
+		if (playerUnitsNearby.Count > 0)
+		{
 			stateDelegate = Startled;
-	 	}
+		}
+		// wander around
+		if (target == Vector3.zero) {
+			navigationController.registerClick(this, (transform.position + new Vector3 (Random.Range (-100, 100), 0, Random.Range (-100, 100))));
+			//setPath (navController.getPath (
+			//	transform.position, transform.position + new Vector3 (Random.Range (0, 100), 0, Random.Range (0, 100))));
+			stateDelegate=Move;
+		} 
 	}
 	
 	private void Move()
 	{
-		if (navTarget != Vector3.zero)
+		Debug.Log ("MOVE");
+		if (target != Vector3.zero)
 		{	
 			Seek ();
 		}
@@ -67,13 +69,13 @@ public class DinoController : UnitController
 			// Get a new path every time we hit the pathRefreshRate
 			if (pathRefreshCount == pathRefreshRate)
 			{
-				path = navController.getPath (transform.position, path[path.Count - 1]);
+				path = navigationController.getPath (transform.position, path[path.Count - 1]);
 				pathRefreshCount = 0;
 			}
 			else
 			{
-				List<Vector3> returnPath = navController.quickScanPath (transform.position, path[path.Count - 1]);
-				if (!navController.pathIsInvalid (returnPath))
+				List<Vector3> returnPath = navigationController.quickScanPath (transform.position, path[path.Count - 1]);
+				if (!navigationController.pathIsInvalid (returnPath))
 				{
 					path = returnPath;
 				}
@@ -83,17 +85,18 @@ public class DinoController : UnitController
 		}
 		else
 		{
-			path = null;
-			navTarget = Vector3.zero;
+			path=null;
+			target = Vector3.zero;
 			setRails (false);
+			stateDelegate=Idle;
 		}
 	}
 	
 	protected override void Seek ()
 	{
-		Debug.DrawLine (transform.position, navTarget, Color.magenta);
+		Debug.DrawLine (transform.position, target, Color.magenta);
 		
-		float distance = Vector3.Distance (transform.position,target);
+		float distance = Vector3.Distance (new Vector3(transform.position.x,0,transform.position.z),new Vector3(target.x,0,target.z));
 		
 		if (distance >= 1f || (Atarget != null && distance >= attackRange))
 		{
@@ -120,6 +123,7 @@ public class DinoController : UnitController
 	
 	private void Startled()
 	{
+		Debug.Log ("STARTLED");
 		// catch if the player units have backed away before get here
 		if (playerUnitsNearby.Count == 0)
 			stateDelegate = Idle;
@@ -148,6 +152,7 @@ public class DinoController : UnitController
 	
 	private void Attacking()
 	{
+		Debug.Log ("ATTACKING");
 		if (Atarget == null)
 		{
 			// get a target
@@ -164,6 +169,7 @@ public class DinoController : UnitController
 	
 	private void Fleeing()
 	{
+		Debug.Log ("FLEEING");
 		// Check if player is nearby
 		if (playerUnitsNearby.Count == 0)
 		{
@@ -173,7 +179,7 @@ public class DinoController : UnitController
 		else
 		{
 			// Run away from the player unit
-			navController.getPath(
+			navigationController.getPath(
 				transform.position,
 				transform.position + (transform.position - playerUnitsNearby[0].transform.position).normalized * 100);
 		}
