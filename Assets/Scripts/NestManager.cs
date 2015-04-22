@@ -19,11 +19,11 @@ public class NestManager : MonoBehaviour {
 		if (random < 0.65f) {
 			//Small
 			type = 0;
-            maxDino = 5;
+            maxDino = 2;
 		} else {
 			//Medium
 			type = 1;
-            maxDino = 3;
+            maxDino = 1;
 			transform.localScale = new Vector3(2.5f,2.5f,2.5f);
 		}
 
@@ -42,11 +42,11 @@ public class NestManager : MonoBehaviour {
 		// Handle Respawns. If we lost everyone, remove nest.
         int alive = spawnedDinos.Count;
 		if (alive == 0) {
-			//remove nest
+            GameObject.Destroy(gameObject);
 		} else if (spawnedDinos.Count < maxDino) {
-			//spawn
-			if(spawnTick >= spawnSpeed){
-                spawnedDinos.Add(Instantiate(dinos[type], Vector3.zero, new Quaternion()) as GameObject);
+			if(spawnTick >= spawnSpeed)
+			{
+			    Spawn();
 				spawnTick = 0f;
 			} else {
 				spawnTick += Time.deltaTime;
@@ -74,8 +74,9 @@ public class NestManager : MonoBehaviour {
     }
 
 	void pruneTheDead(){
+        //creates a list of null gameObjects
         var deadDinos = spawnedDinos.Where(x => (x == null));
-        foreach (GameObject g in spawnedDinos)
+        foreach (GameObject g in deadDinos)
         {
             spawnedDinos.Remove(g);
 		}

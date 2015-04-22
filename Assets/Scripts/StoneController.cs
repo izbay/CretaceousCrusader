@@ -27,4 +27,9 @@ public class StoneController : UnitController {
 		
 		curr_pos = transform.position;
 	}
+
+    protected override void Update()
+    {
+        
+    }
 }

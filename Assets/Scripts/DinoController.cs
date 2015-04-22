@@ -10,9 +10,6 @@ public class DinoController : UnitController
 	
 	// TODO keep separate lists for each dino type
 	protected List<DinoController> dinosNearby;
-	
-	private int pathRefreshRate = 300;
-	private int pathRefreshCount;
 
 	void Awake()
 	{
@@ -23,6 +20,7 @@ public class DinoController : UnitController
 
 	protected override void Start()
 	{
+        pathRefreshRate = 1000;
 		navigationController = GameObject.FindGameObjectWithTag("global_nav").GetComponent<NavigationController>();
 
 		selectable = false;
@@ -34,9 +32,8 @@ public class DinoController : UnitController
 		stateDelegate();
 	}
 	
-	private void Idle()
+	protected void Idle()
 	{
-		Debug.Log ("IDLE");
 //		navigationController.registerClick (this, Atarget.transform.position);
 
 		// get startled when a player unit comes nearby
@@ -53,9 +50,8 @@ public class DinoController : UnitController
 		} 
 	}
 	
-	private void Move()
+	protected void Move()
 	{
-		Debug.Log ("MOVE");
 		if (target != Vector3.zero)
 		{	
 			Seek ();
@@ -123,7 +119,6 @@ public class DinoController : UnitController
 	
 	private void Startled()
 	{
-		Debug.Log ("STARTLED");
 		// catch if the player units have backed away before get here
 		if (playerUnitsNearby.Count == 0)
 			stateDelegate = Idle;
@@ -152,7 +147,6 @@ public class DinoController : UnitController
 	
 	private void Attacking()
 	{
-		Debug.Log ("ATTACKING");
 		if (Atarget == null)
 		{
 			// get a target
@@ -169,7 +163,6 @@ public class DinoController : UnitController
 	
 	private void Fleeing()
 	{
-		Debug.Log ("FLEEING");
 		// Check if player is nearby
 		if (playerUnitsNearby.Count == 0)
 		{

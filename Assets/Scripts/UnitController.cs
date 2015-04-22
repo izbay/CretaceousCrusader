@@ -18,7 +18,8 @@ public class UnitController : MonoBehaviour {
 	protected Vector3 curr_pos;
 	protected bool onRails = false;
 	protected List<Vector3> path;
-	protected int counter = 0;
+    protected int pathRefreshCount = 0;
+    protected int pathRefreshRate;
 	public  UnitController Atarget;
 	protected float attackCharge=0f;
 	public List<UnitController> attackers;
@@ -27,7 +28,9 @@ public class UnitController : MonoBehaviour {
 	protected StateDelegate stateDelegate;
 
 	// Use this for initialization
-	protected virtual void Start () {
+	protected virtual void Start ()
+	{
+	    pathRefreshRate = 300;
 		navigationController = GameObject.FindGameObjectWithTag("global_nav").GetComponent<NavigationController>();
 		SavePosition ();
 	}
@@ -44,15 +47,16 @@ public class UnitController : MonoBehaviour {
 
 		if(path != null && path.Count > 1 && onRails){
 			setTarget(path[1]);
-			if(counter == 300){
+            if (pathRefreshCount == pathRefreshRate)
+            {
 				path = navigationController.getPath (curr_pos, path[path.Count-1]);
-				counter = 0;
+                pathRefreshCount = 0;
 			} else {
 				List<Vector3> returnPath = navigationController.quickScanPath (curr_pos, path[path.Count-1]);
 				if(!navigationController.pathIsInvalid (returnPath)){
 					path = returnPath;
 				}
-				counter++;
+                pathRefreshCount++;
 			}
 		} else {
 			path = null;
@@ -174,15 +178,16 @@ public class UnitController : MonoBehaviour {
 			if(path.Count > 1){
 				setTarget (path [1]);
 			}
-			if (counter == 300) {
+            if (pathRefreshCount == pathRefreshRate)
+            {
 				path = navigationController.getPath (curr_pos, path [path.Count - 1]);
-				counter = 0;
+                pathRefreshCount = 0;
 			} else {
 				List<Vector3> returnPath = navigationController.quickScanPath (curr_pos, path [path.Count - 1]);
 				if (!navigationController.pathIsInvalid (returnPath)) {
 					path = returnPath;
 				}
-				counter++;
+                pathRefreshCount++;
 			}
 		} else {
 			navigationController.registerClick (this, Atarget.transform.position);
@@ -219,21 +224,6 @@ public class UnitController : MonoBehaviour {
 			}
 			GameObject.Destroy(gameObject);
 		}
-		unitHealth.size = health / 100f;
+		//unitHealth.size = health / 100f;
 	}
-	/*
-	//Perform Attack
-	public void Attack(){
-		attackCharge = 0;
-		Atarget.Hit (attackStr);
-	}
-	
-	//Take Damage
-	public void Hit(int damage){
-		health -= damage;
-		//Kill this Unit
-		if (health < 1) {
-			GameObject.Destroy(gameObject);
-		}
-	}*/
 }

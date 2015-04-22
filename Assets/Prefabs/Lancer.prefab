@@ -212,9 +212,9 @@ MonoBehaviour:
   health: 100
   attackStr: 10
   attackRate: 1
-  attackRange: 10
-  turnSpeed: 2
-  moveSpeed: 10
+  attackRange: 15
+  turnSpeed: 4
+  moveSpeed: 15
   selectable: 1
   unitHealth: {fileID: 0}
   Atarget: {fileID: 0}
