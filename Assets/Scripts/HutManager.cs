@@ -8,18 +8,16 @@ public class HutManager : MonoBehaviour {
 
 	private MeshRenderer modelrenderer; 
 	private Material[] modelmaterials;
+	private KeepManager keep;
 
 	// Use this for initialization
 	void Start () {
-		modelrenderer = transform.GetComponentInChildren< MeshRenderer >();
-		modelmaterials = modelrenderer.materials;
+		keep = GameObject.FindGameObjectWithTag("Player").GetComponent<KeepManager>();
 		varyHutDimensions ();
 	}
 	
 	// Update is called once per frame
-	void Update () {
-
-	}
+	void Update () {}
 
 	void varyHutDimensions(){
 		float height = Random.Range (0.95f,1.1f);
@@ -30,8 +28,13 @@ public class HutManager : MonoBehaviour {
 		transform.localScale = new Vector3(width, width, height);
 	}
 
-	void planningTextures(bool valid){
+	public void planningTextures(bool valid){
 		Material useMat;
+		if(modelrenderer == null){
+			modelrenderer = transform.GetComponentInChildren< MeshRenderer >();
+			modelmaterials = modelrenderer.materials;
+		}
+
 		if (valid) {
 			useMat = placementMaterials [0];
 		} else {
@@ -43,12 +46,21 @@ public class HutManager : MonoBehaviour {
 		modelrenderer.materials = modelmaterials;
 	}
 
-	void restoreTextures(){
+	public void restoreTextures(){
+		if(modelrenderer == null){
+			modelrenderer = transform.GetComponentInChildren< MeshRenderer >();
+			modelmaterials = modelrenderer.materials;
+		}
+
 		if(defaultMaterials.Length == modelmaterials.Length) {
 			for(int i = 0; i < modelmaterials.Length; i++) {
 				modelmaterials[i] = defaultMaterials[i];
 			}
 			modelrenderer.materials = modelmaterials;
 		}
+
+		keep.maxUnitCount += 3;
+		// Refresh the button graphics.
+		keep.alterSpawnCount(0);
 	}
 }

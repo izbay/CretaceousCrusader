@@ -8,9 +8,13 @@ public class KeepManager : MonoBehaviour {
 	public GameObject[] units;
 	public Sprite[] unitIco;
 	public PlayerUnitController selected;
+	public bool placingHut;
+	public GameObject hutPrefab;
+	public int maxUnitCount = 5;
 
+	private GameObject hutPlacement;
+	private HutManager hutPlacementManager;
 	private GameObject UI;
-	private int maxUnitCount = 5;
 	private int spawnLimit = 5;
 	private float foodQty = 5f;
 	private float rockQty = 0f;
@@ -20,6 +24,8 @@ public class KeepManager : MonoBehaviour {
 	private float spawnSpeed = 30f;
 	private float baseFoodRegen = 2f;
 	private float farmerBonusFood = 0.2f;
+	private float hutCost = 200f;
+	private TerrainBuilder tb;
 
 	private Text resourceIndicator;
 	private Text spawnCountIndicator;
@@ -31,6 +37,7 @@ public class KeepManager : MonoBehaviour {
 		UI = GameObject.Find ("Canvas");
 		Camera.main.GetComponent<CameraController>().keepTransform = this.transform;
 		Camera.main.GetComponent<CameraController>().seekKeep = true;
+		tb = GameObject.Find("Terrain").GetComponent<TerrainBuilder>();
 
 		resourceIndicator = UI.transform.Find("Info_Panel/Resources").GetComponent<Text>();
 		spawnCountIndicator = UI.transform.Find("Info_Panel/Unit_Cap_Control/Respawn").GetComponent<Text>();
@@ -57,6 +64,42 @@ public class KeepManager : MonoBehaviour {
 		} else {
 			spawnTimerIndicator.text = "";
 			spawnTick = 0f;
+		}
+
+		if(placingHut){
+			dragHut ();
+		}
+	}
+
+	private void dragHut(){
+		int biome = tb.getBiomeAtWorldCoord(hutPlacement.transform.position);
+		bool isValid = !(biome == 0 || biome == 5) && Vector3.Distance(transform.position, hutPlacement.transform.position) < 200f;
+		hutPlacementManager.planningTextures (isValid);
+
+		if (Input.GetMouseButton (0) && isValid) {
+			hutPlacementManager.restoreTextures();
+			hutPlacement = null;
+			hutPlacementManager = null;
+			placingHut = false;
+			rockQty -= hutCost;
+			return;
+		}
+
+		if (Input.GetMouseButton (1)) {
+			GameObject.Destroy (hutPlacement);
+			hutPlacement = null;
+			hutPlacementManager = null;
+			placingHut = false;
+			return;
+		}
+
+		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+		RaycastHit hit;
+		if (Physics.Raycast (ray, out hit)){
+			int layerHit = hit.transform.gameObject.layer;
+			if(layerHit==LayerMask.NameToLayer("Water")){
+				hutPlacement.transform.position = hit.point;
+			}
 		}
 	}
 
@@ -147,21 +190,26 @@ public class KeepManager : MonoBehaviour {
 		if(isUnit){
 			unitPanel[1].image.enabled = !unitPanel[1].image.enabled;
 			unitPanel[2].image.enabled = !unitPanel[2].image.enabled;
-		} else {
-			Debug.Log("Build a Hut");
+		} else if(rockQty >= hutCost) {
+			placingHut = true;
+			hutPlacement = Instantiate (hutPrefab, transform.position, transform.rotation) as GameObject;
+			hutPlacementManager = hutPlacement.GetComponent<HutManager>();
 		}
 	}
 
 	public void displayKeepButton(){
-		unitPanel[0].image.sprite = unitIco[3];
-		unitPanel[0].image.enabled = true;
+		if(rockQty >= hutCost){
+			unitPanel[0].image.sprite = unitIco[3];
+			unitPanel[0].image.enabled = true;
+		} else {
+			unitPanel[0].image.enabled = false;
+		}
 		unitPanel[1].image.enabled = false;
 		unitPanel[2].image.enabled = false;
 	}
 
 	public void changeUnit(PlayerUnitController unit, int id){
-
-				// Command the unit to change. This is a placeholder.
+		// Command the unit to change. This is a placeholder.
 			GameObject newUnit = Instantiate (units[id], unit.transform.position,unit.transform.rotation) as GameObject;
 			GameObject.Destroy(unit.transform.root.gameObject);
 		if (selected.GetInstanceID() == unit.GetInstanceID()) {

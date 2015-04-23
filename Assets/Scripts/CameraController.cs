@@ -20,6 +20,7 @@ public class CameraController : MonoBehaviour {
 	private Vector3 oldPos;
 	private Vector3 panOrigin;
 	private KeepManager selectionController;
+
 	// Use this for initialization
 	void Start () {
 		Keep = GameObject.FindGameObjectWithTag("Player");
@@ -35,47 +36,49 @@ public class CameraController : MonoBehaviour {
 
 	private void registerClicks(){
 		//Left Mouse Button
-		if(Input.GetMouseButtonDown (0)){
-			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-			RaycastHit hit;
-			if (Physics.Raycast (ray, out hit)){
-				int layerHit = hit.transform.gameObject.layer;
-				Keep.GetComponentInChildren<Projector>().enabled = false;
-				if (layerHit==LayerMask.NameToLayer("Unit")){
-					unitController= hit.transform.root.GetComponent<UnitController>();
-					selectionController.registerClick(unitController);
-				}else if(!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()){
-					selectionController.registerClick (null);
-					if(layerHit == LayerMask.NameToLayer("Keep")){
-						Keep.GetComponentInChildren<Projector>().enabled = true;
-						selectionController.displayKeepButton();
-					}
-				}
-			}
-		}
-		//Right Mouse Button
-		if (Input.GetMouseButton (1)) {
-			if(unitController!=null){
+		if(!selectionController.placingHut){
+			if(Input.GetMouseButtonDown (0)){
 				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 				RaycastHit hit;
 				if (Physics.Raycast (ray, out hit)){
 					int layerHit = hit.transform.gameObject.layer;
-					if(layerHit==LayerMask.NameToLayer("Water")){
-						navigationController.registerClick (hit.point);
-						unitController.attackTarget=null;
-					}else if(layerHit==LayerMask.NameToLayer("Enemy Unit")){
-						unitController.registerClick(hit.transform.gameObject.GetComponent<UnitController>());
-					}else if(layerHit == LayerMask.NameToLayer("Stone")){
-						if(unitController is QuarrierController){
-							unitController.registerClick(hit.transform.gameObject.GetComponent<StoneController>());
+					Keep.GetComponentInChildren<Projector>().enabled = false;
+					if (layerHit==LayerMask.NameToLayer("Unit")){
+						unitController= hit.transform.root.GetComponent<UnitController>();
+						selectionController.registerClick(unitController);
+					}else if(!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()){
+						selectionController.registerClick (null);
+						if(layerHit == LayerMask.NameToLayer("Keep")){
+							Keep.GetComponentInChildren<Projector>().enabled = true;
+							selectionController.displayKeepButton();
 						}
-					}else if(layerHit == LayerMask.NameToLayer("Keep")){
-						if(unitController is QuarrierController){
-							navigationController.registerClick(Keep.transform.position);
-							(unitController as QuarrierController).ReturnResources();
+					}
+				}
+			}
+			//Right Mouse Button
+			if (Input.GetMouseButton (1)) {
+				if(unitController!=null){
+					Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+					RaycastHit hit;
+					if (Physics.Raycast (ray, out hit)){
+						int layerHit = hit.transform.gameObject.layer;
+						if(layerHit==LayerMask.NameToLayer("Water")){
+							navigationController.registerClick (hit.point);
 							unitController.attackTarget=null;
+						}else if(layerHit==LayerMask.NameToLayer("Enemy Unit")){
+							unitController.registerClick(hit.transform.gameObject.GetComponent<UnitController>());
+						}else if(layerHit == LayerMask.NameToLayer("Stone")){
+							if(unitController is QuarrierController){
+								unitController.registerClick(hit.transform.gameObject.GetComponent<StoneController>());
+							}
+						}else if(layerHit == LayerMask.NameToLayer("Keep")){
+							if(unitController is QuarrierController){
+								navigationController.registerClick(Keep.transform.position);
+								(unitController as QuarrierController).ReturnResources();
+								unitController.attackTarget=null;
+							}
+						}else {
 						}
-					}else {
 					}
 				}
 			}
