@@ -38,6 +38,17 @@ public class UnitController : MonoBehaviour {
 	
 	// Update is called once per frame
 	protected virtual void Update () {
+
+		//Kill this Unit, first resetting all attacking units to having no target
+		if (health < 1) {
+			foreach(UnitController a in attackers){
+				a.attackTarget=null;
+				a.attackers.Remove(this);
+				
+			}
+			GameObject.Destroy(gameObject);
+		}
+
 		// If a target exists, move to it.
 		if (navTarget != Vector3.zero) {	
 			Seek ();
@@ -191,15 +202,6 @@ public class UnitController : MonoBehaviour {
 		}
 		if(!attackers.Contains (attacker)){
 			attackers.Add(attacker);
-		}
-		//Kill this Unit, first resetting all attacking units to having no target
-		if (health < 1) {
-			foreach(UnitController a in attackers){
-				a.attackTarget=null;
-				a.attackers.Remove(this);
-
-			}
-			GameObject.Destroy(gameObject);
 		}
 		//unitHealth.size = health / 100f;
 	}

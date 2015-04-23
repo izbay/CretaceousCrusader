@@ -51,10 +51,15 @@ public class KeepManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		int unitTotal = totalUnits ();
+		if(unitTotal == 0){
+			Application.LoadLevel("Lose");
+		}
+
 		generateFood();
 
 		resourceIndicator.text = "(♨) "+foodQty.ToString ("F0")+"   (ロ) "+rockQty.ToString ("F0");
-		spawnCountIndicator.text = totalUnits() + " / " + spawnLimit;
+		spawnCountIndicator.text = unitTotal + " / " + spawnLimit;
 		if (totalUnits() < spawnLimit) {
 			if(spawnTick < spawnSpeed){
 				spawnTimerIndicator.text = "(↻) " + Mathf.RoundToInt(spawnSpeed-spawnTick).ToString ();
