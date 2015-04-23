@@ -132,6 +132,7 @@ public class TerrainBuilder : MonoBehaviour {
 		KeepLocations = Shuffle(KeepLocations, 800);
 
 		PlaceKeep ();
+		PlaceBigDino ();
 		
 		terrain.terrainData.SetAlphamaps (0, 0, alphaData);
 		terrain.terrainData.SetHeights (0,0,height);
@@ -148,6 +149,24 @@ public class TerrainBuilder : MonoBehaviour {
 		keep.transform.rotation = Quaternion.Euler (0, 180, 0);//UnityEngine.Random.Range(0, 360), 0);
 		//keep.transform.parent = transform;
 		keep.GetComponent<KeepManager>().Spawn(new int[]{1,0,0,0,1});
+	}
+
+	private void PlaceBigDino(){
+		GameObject dino = GameObject.Find ("L_Dino");
+		int biggestIndex = 1;
+		float biggestDistance = 0f;
+
+		for(int i=1; i<KeepLocations.Count; i++){
+			float distance = Vector3.Distance (KeepLocations[0],KeepLocations[i]);
+			if(distance > 4000f){ // Good enough.
+				dino.transform.position = KeepLocations[i];
+				return;
+			} else if(distance > biggestDistance){
+				biggestDistance = distance;
+				biggestIndex = i;
+			}
+		}
+		dino.transform.position = KeepLocations[biggestIndex];
 	}
 
 	IEnumerator Place(GameObject obj, int num, List<Vector3> list){

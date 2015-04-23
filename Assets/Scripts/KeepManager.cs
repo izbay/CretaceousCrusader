@@ -12,12 +12,14 @@ public class KeepManager : MonoBehaviour {
 	public GameObject hutPrefab;
 	public int maxUnitCount = 5;
 
+	private bool rotatingHut = false;
 	private GameObject hutPlacement;
 	private HutManager hutPlacementManager;
 	private GameObject UI;
+	private bool clickSpamLimiter;
 	private int spawnLimit = 5;
 	private float foodQty = 5f;
-	private float rockQty = 0f;
+	private float rockQty = 2000f;
 	private float foodTick = 0f;
 	private float foodSpeed = 10f;
 	private float spawnTick = 0f;
@@ -72,33 +74,52 @@ public class KeepManager : MonoBehaviour {
 	}
 
 	private void dragHut(){
-		int biome = tb.getBiomeAtWorldCoord(hutPlacement.transform.position);
-		bool isValid = !(biome == 0 || biome == 5) && Vector3.Distance(transform.position, hutPlacement.transform.position) < 200f;
-		hutPlacementManager.planningTextures (isValid);
+		if(rotatingHut){
+			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+			RaycastHit hit;
+			if (Physics.Raycast (ray, out hit)){
+				Vector3 sourcePosition = new Vector3(hutPlacement.transform.position.x, hit.point.y, hutPlacement.transform.position.z);
+				hutPlacement.transform.rotation = Quaternion.LookRotation(sourcePosition-hit.point, transform.up);
+			}
 
-		if (Input.GetMouseButton (0) && isValid) {
-			hutPlacementManager.restoreTextures();
-			hutPlacement = null;
-			hutPlacementManager = null;
-			placingHut = false;
-			rockQty -= hutCost;
-			return;
-		}
+			if(!(Input.GetMouseButton (0) || Input.GetMouseButton (1))){
+				clickSpamLimiter = true;
+			}
 
-		if (Input.GetMouseButton (1)) {
-			GameObject.Destroy (hutPlacement);
-			hutPlacement = null;
-			hutPlacementManager = null;
-			placingHut = false;
-			return;
-		}
+			if(clickSpamLimiter && (Input.GetMouseButton (0) || Input.GetMouseButton (1))){
+				hutPlacement = null;
+				hutPlacementManager = null;
+				placingHut = false;
+				rotatingHut = false;
+			}
+		} else {
+			int biome = tb.getBiomeAtWorldCoord(hutPlacement.transform.position);
+			bool isValid = !(biome == 0 || biome == 5) && Vector3.Distance(transform.position, hutPlacement.transform.position) < 200f;
+			hutPlacementManager.planningTextures (isValid);
 
-		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-		RaycastHit hit;
-		if (Physics.Raycast (ray, out hit)){
-			int layerHit = hit.transform.gameObject.layer;
-			if(layerHit==LayerMask.NameToLayer("Water")){
-				hutPlacement.transform.position = hit.point;
+			if (Input.GetMouseButton (0) && isValid) {
+				hutPlacementManager.restoreTextures();
+				rotatingHut = true;
+				clickSpamLimiter = false;
+				rockQty -= hutCost;
+				return;
+			}
+
+			if (Input.GetMouseButton (1)) {
+				GameObject.Destroy (hutPlacement);
+				hutPlacement = null;
+				hutPlacementManager = null;
+				placingHut = false;
+				return;
+			}
+
+			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+			RaycastHit hit;
+			if (Physics.Raycast (ray, out hit)){
+				int layerHit = hit.transform.gameObject.layer;
+				if(layerHit==LayerMask.NameToLayer("Water")){
+					hutPlacement.transform.position = hit.point;
+				}
 			}
 		}
 	}

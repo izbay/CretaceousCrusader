@@ -6,12 +6,17 @@ public class HutManager : MonoBehaviour {
 	public Material[] defaultMaterials;
 	public Material[] placementMaterials;
 
+	private bool isInitialized = false;
+	private CapsuleCollider capsuleCollider;
 	private MeshRenderer modelrenderer; 
 	private Material[] modelmaterials;
 	private KeepManager keep;
 
 	// Use this for initialization
 	void Start () {
+		if(!isInitialized){
+			init ();
+		}
 		keep = GameObject.FindGameObjectWithTag("Player").GetComponent<KeepManager>();
 		varyHutDimensions ();
 	}
@@ -25,15 +30,22 @@ public class HutManager : MonoBehaviour {
 		// Trend away from the center.
 		height *= height;
 		width *= width;
-		transform.localScale = new Vector3(width, width, height);
+		transform.localScale = new Vector3(width, height, width);
+	}
+
+	private void init(){
+		capsuleCollider = GetComponentInChildren< CapsuleCollider >();
+		modelrenderer = transform.GetComponentInChildren< MeshRenderer >();
+		modelmaterials = modelrenderer.materials;
 	}
 
 	public void planningTextures(bool valid){
 		Material useMat;
-		if(modelrenderer == null){
-			modelrenderer = transform.GetComponentInChildren< MeshRenderer >();
-			modelmaterials = modelrenderer.materials;
+		if(!isInitialized){
+			init ();
 		}
+
+		capsuleCollider.enabled = false;
 
 		if (valid) {
 			useMat = placementMaterials [0];
@@ -47,10 +59,11 @@ public class HutManager : MonoBehaviour {
 	}
 
 	public void restoreTextures(){
-		if(modelrenderer == null){
-			modelrenderer = transform.GetComponentInChildren< MeshRenderer >();
-			modelmaterials = modelrenderer.materials;
+		if(!isInitialized){
+			init();
 		}
+
+		capsuleCollider.enabled = true;
 
 		if(defaultMaterials.Length == modelmaterials.Length) {
 			for(int i = 0; i < modelmaterials.Length; i++) {
