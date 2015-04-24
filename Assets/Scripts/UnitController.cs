@@ -12,10 +12,12 @@ public class UnitController : MonoBehaviour {
 	public float turnSpeed;
 	public float moveSpeed;
 	public bool selectable;
-	public Scrollbar unitHealth;
-	public  UnitController attackTarget;
+	public UnitController attackTarget;
 	public List<UnitController> attackers;
-	
+	public Slider sliderPrefab;
+
+	protected float maxHealth;
+	protected Slider healthBar;
 	protected NavigationController navigationController;
 	protected Vector3 navTarget = Vector3.zero;
 	protected Vector3 curr_pos;
@@ -24,20 +26,32 @@ public class UnitController : MonoBehaviour {
     protected int pathRefreshCount = 0;
     protected int pathRefreshRate;
 	protected float attackCharge=0f;
-
+	protected Canvas canvas;
 	protected delegate void StateDelegate();
 	protected StateDelegate stateDelegate;
 
 	// Use this for initialization
 	protected virtual void Start ()
 	{
-	    pathRefreshRate = 300;
-		navigationController = GameObject.FindGameObjectWithTag("global_nav").GetComponent<NavigationController>();
+		maxHealth = health;
+		pathRefreshRate = 300;
+		GameObject globalNav = GameObject.FindGameObjectWithTag("global_nav");
+		if(globalNav != null){
+			navigationController = globalNav.GetComponent<NavigationController>();
+		}
 		SavePosition ();
+
+		canvas = GameObject.Find ("Canvas").GetComponent<Canvas>();
+		healthBar = Instantiate (sliderPrefab,transform.position,Quaternion.Euler (0,0,0)) as Slider;
+		healthBar.transform.SetParent(canvas.transform, false);
 	}
-	
+
 	// Update is called once per frame
 	protected virtual void Update () {
+		if(healthBar != null){
+			Vector3 target = Camera.main.WorldToViewportPoint(transform.position);
+			healthBar.transform.position = new Vector3(target.x*canvas.GetComponent<RectTransform>().rect.width, target.y*canvas.GetComponent<RectTransform>().rect.height + 25f, target.z);
+		}
 
 		CheckHealth();
 
@@ -85,15 +99,20 @@ public class UnitController : MonoBehaviour {
 	
 	protected void CheckHealth()
 	{
-		//Kill this Unit, first resetting all attacking units to having no target
+//Kill this Unit, first resetting all attacking units to having no target
 		if (health < 1)
 		{
 			GameObject.Destroy(gameObject);
+		} else if(healthBar != null){
+			healthBar.GetComponent<Slider>().value = health / maxHealth;
 		}
 	}
 	
 	void OnDestroy()
 	{
+		if(healthBar != null){
+			GameObject.Destroy(healthBar.transform.gameObject);
+		}
 		foreach(UnitController a in attackers)
 		{
 			a.attackTarget=null;

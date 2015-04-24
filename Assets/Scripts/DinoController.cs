@@ -15,7 +15,6 @@ public class DinoController : UnitController
 
 	void Awake()
 	{
-		navigationController = GameObject.FindGameObjectWithTag("global_nav").GetComponent<NavigationController>();
 		playerUnitsNearby = new List<PlayerUnitController>();
 		dinosNearby = new List<DinoController>();
 	}
@@ -24,12 +23,15 @@ public class DinoController : UnitController
 	{
         pathRefreshRate = 1000;
 		stateDelegate = Idle;
+		base.Start();
 	}
 	
 	protected override void Update()
 	{
-		CheckHealth();
-		stateDelegate();
+		base.Update();
+		if(stateDelegate != null){
+			stateDelegate();
+		}
 	}
 	
 	protected virtual void Idle()
@@ -43,11 +45,13 @@ public class DinoController : UnitController
 		// wander around TODO add a random wait time or chance
 		if (navTarget == Vector3.zero)
 		{
-			Vector3 newPos = nest.transform.position + new Vector3(Random.Range(-100, 100), 0, Random.Range(-100, 100));
-			newPos.x = Mathf.Clamp(newPos.x, 1, 2999);
-			newPos.y = Mathf.Clamp(newPos.y, 1, 2999);
-			navigationController.registerClick(this, newPos);
-			stateDelegate = Moving;
+			if(nest != null){
+				Vector3 newPos = nest.transform.position + new Vector3(Random.Range(-100, 100), 0, Random.Range(-100, 100));
+				newPos.x = Mathf.Clamp(newPos.x, 1, 2999);
+				newPos.y = Mathf.Clamp(newPos.y, 1, 2999);
+				navigationController.registerClick(this, newPos);
+				stateDelegate = Moving;
+			}
 		} 
 	}
 	
