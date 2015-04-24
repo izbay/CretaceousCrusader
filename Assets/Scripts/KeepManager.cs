@@ -259,7 +259,7 @@ public class KeepManager : MonoBehaviour {
 		// Command the unit to change. This is a placeholder.
 			GameObject newUnit = Instantiate (units[id], unit.transform.position,unit.transform.rotation) as GameObject;
 			GameObject.Destroy(unit.transform.root.gameObject);
-		if (selected.GetInstanceID() == unit.GetInstanceID()) {
+		if (selected!= null && selected.GetInstanceID() == unit.GetInstanceID()) {
 			registerClick (null);
 			GameObject.Find ("Main Camera").GetComponent<CameraController> ().unitController = newUnit.GetComponent<UnitController> ();
 			registerClick (newUnit.GetComponent<UnitController> ());
