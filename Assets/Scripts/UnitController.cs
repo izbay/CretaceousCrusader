@@ -51,16 +51,19 @@ public class UnitController : MonoBehaviour {
 
 		if(path != null && path.Count > 1 && onRails){
 			setTarget(path[1]);
-            if (pathRefreshCount == pathRefreshRate)
-            {
-				path = navigationController.getPath (curr_pos, path[path.Count-1]);
-                pathRefreshCount = 0;
+			if (pathRefreshCount == pathRefreshRate)
+			{
+				path = navigationController.registerClick(this, path[path.Count-1]);
+				pathRefreshCount = 0;
 			} else {
-				List<Vector3> returnPath = navigationController.quickScanPath (curr_pos, path[path.Count-1]);
+				List<Vector3> returnPath = navigationController.quickScanPath (transform.position, path[path.Count-1]);
 				if(!navigationController.pathIsInvalid (returnPath)){
 					path = returnPath;
 				}
-                pathRefreshCount++;
+				/**if(path != null){
+					drawPath(path);
+				}*/
+				pathRefreshCount++;
 			}
 		} else {
 			path = null;
@@ -99,8 +102,8 @@ public class UnitController : MonoBehaviour {
 	}
 
 	protected virtual void Seek () {
-		Debug.DrawLine (curr_pos, navTarget, Color.magenta);
-
+		//Debug.DrawLine (curr_pos, navTarget, Color.magenta);
+		
 		float distance = Vector3.Distance (curr_pos,navTarget);
 		if (distance >= 1f || (attackTarget != null && distance >= attackRange)) {
 
@@ -121,8 +124,10 @@ public class UnitController : MonoBehaviour {
 	
 
 	public virtual void setPath (List<Vector3> path){
-		this.path = path;
-		setRails (true);
+		if(this.path == null || path != null){
+			this.path = path;
+			setRails (true);
+		}
 	}
 
 	public virtual void setTarget(Vector3 target){
@@ -145,6 +150,7 @@ public class UnitController : MonoBehaviour {
 			navTarget=unit.transform.position;
 		} else {
 			attackTarget = unit;
+			navigationController.registerClick(this, attackTarget.transform.position);
 			AdjustPosition ();
 		}
 	}
@@ -172,7 +178,7 @@ public class UnitController : MonoBehaviour {
 			}
 			if (pathRefreshCount == pathRefreshRate)
 			{
-				path = navigationController.getPath (curr_pos, path [path.Count - 1]);
+				navigationController.registerClick(this, attackTarget.transform.position);
 				pathRefreshCount = 0;
 			} else {
 				List<Vector3> returnPath = navigationController.quickScanPath (curr_pos, path [path.Count - 1]);
@@ -182,7 +188,10 @@ public class UnitController : MonoBehaviour {
 				pathRefreshCount++;
 			}
 		} else {
-			navigationController.registerClick (this, attackTarget.transform.position);
+			//navigationController.registerClick (this, attackTarget.transform.position);
+			path = null;
+			navTarget = Vector3.zero;
+			setRails (false);
 		}
 	}
 	
@@ -214,5 +223,11 @@ public class UnitController : MonoBehaviour {
 			attackers.Add(attacker);
 		}
 		//unitHealth.size = health / 100f;
+	}
+	
+	void drawPath(List<Vector3> path){
+		for(int i=1; i<path.Count; i++){
+			Debug.DrawLine (path[i-1],path[i],Color.magenta);
+		}
 	}
 }
