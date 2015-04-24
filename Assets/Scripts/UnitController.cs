@@ -53,7 +53,7 @@ public class UnitController : MonoBehaviour {
 			setTarget(path[1]);
 			if (pathRefreshCount == pathRefreshRate)
 			{
-				path = navigationController.registerClick(this, path[path.Count-1]);
+				navigationController.registerClick(this, path[path.Count-1]);
 				pathRefreshCount = 0;
 			} else {
 				List<Vector3> returnPath = navigationController.quickScanPath (transform.position, path[path.Count-1]);
