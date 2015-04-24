@@ -35,7 +35,7 @@ public class KeepManager : MonoBehaviour {
 	private Text spawnCountIndicator;
 	private Text spawnTimerIndicator;
 	private Button[] unitPanel = new Button[3];
-
+	private bool escHeld = false;
 	// Use this for initialization
 	void Start () {
 		UI = GameObject.Find ("Canvas");
@@ -53,6 +53,7 @@ public class KeepManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(Input.GetKeyDown (KeyCode.Escape))escHeld = !escHeld;
 		int unitTotal = totalUnits ();
 		if(unitTotal == 0){
 			Application.LoadLevel("Lose");
@@ -77,6 +78,17 @@ public class KeepManager : MonoBehaviour {
 
 		if(placingHut){
 			dragHut ();
+		}
+	}
+
+	void OnGUI(){
+		//if(Input.GetKeyDown (KeyCode.Escape))escHeld = !escHeld; //put this in update
+		if(escHeld){
+			float w = Screen.width / 2f;
+			float h = Screen.height / 2f;
+			if(GUI.Button (new Rect(w-50f,h-10f,100,20),"Forfeit")){
+				Application.LoadLevel ("Title");
+			}
 		}
 	}
 
