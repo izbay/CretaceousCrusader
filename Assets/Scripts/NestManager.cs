@@ -24,7 +24,7 @@ public class NestManager : MonoBehaviour {
 			//Medium
 			type = 1;
             maxDino = 2;
-			transform.localScale = new Vector3(2.5f,2.5f,2.5f);
+			transform.localScale = new Vector3(2f,2f,2f);
 		}
 
 		// Initial Spawn
@@ -40,7 +40,8 @@ public class NestManager : MonoBehaviour {
     // Update is called once per frame
 	void Update () {
 		// Handle Respawns. If we lost everyone, remove nest.
-        int alive = spawnedDinos.Count;
+		pruneTheDead();
+		int alive = spawnedDinos.Count;
 		if (alive == 0) {
             GameObject.Destroy(gameObject);
 		} else if (spawnedDinos.Count < maxDino) {
@@ -76,11 +77,12 @@ public class NestManager : MonoBehaviour {
     }
 
 	void pruneTheDead(){
-        //creates a list of null gameObjects
-        var deadDinos = spawnedDinos.Where(x => (x == null));
-        foreach (GameObject g in deadDinos)
+        // apparently we can't do this more efficiently as enumeration over an altered list throws errors
+		for(int i=spawnedDinos.Count-1; i>=0; i--)
         {
-            spawnedDinos.Remove(g);
+            if(spawnedDinos[i]==null){
+				spawnedDinos.RemoveAt (i);
+			}
 		}
 	}
 }
