@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class KeepManager : MonoBehaviour {
 
@@ -24,11 +25,12 @@ public class KeepManager : MonoBehaviour {
 	private float foodSpeed = 10f;
 	private float spawnTick = 0f;
 	private float spawnSpeed = 30f;
+	private float spawnMod = 0f;
 	private float baseFoodRegen = 2f;
 	private float farmerBonusFood = 0.2f;
 	private float hutCost = 200f;
 	private TerrainBuilder tb;
-
+	private List<float> harmonicNums = new List<float>();
 	private Text resourceIndicator;
 	private Text spawnCountIndicator;
 	private Text spawnTimerIndicator;
@@ -61,8 +63,8 @@ public class KeepManager : MonoBehaviour {
 		resourceIndicator.text = "(♨) "+foodQty.ToString ("F0")+"   (ロ) "+rockQty.ToString ("F0");
 		spawnCountIndicator.text = unitTotal + " / " + spawnLimit;
 		if (totalUnits() < spawnLimit) {
-			if(spawnTick < spawnSpeed){
-				spawnTimerIndicator.text = "(↻) " + Mathf.RoundToInt(spawnSpeed-spawnTick).ToString ();
+			if(spawnTick < spawnSpeed + spawnMod){
+				spawnTimerIndicator.text = "(↻) " + Mathf.RoundToInt(spawnSpeed+spawnMod-spawnTick).ToString ();
 				spawnTick += Time.deltaTime;
 			} else {
 				Spawn();
@@ -151,8 +153,27 @@ public class KeepManager : MonoBehaviour {
 			int farmerCnt = GameObject.FindGameObjectsWithTag("farmer").Length;
 			foodQty += baseFoodRegen + farmerBonusFood * farmerCnt;
 			foodTick = 0f;
+
+			spawnMod = getHarmonicNum(farmerCnt) * -5f;
 		} else {
 			foodTick += Time.deltaTime;
+		}
+	}
+
+	private float getHarmonicNum(int num){
+		if(num <= harmonicNums.Count){
+			return harmonicNums[num-1];
+		} else if (num == 0){
+			return 0;
+		} else {
+			for(int i=harmonicNums.Count-1; i<num; i++){
+				if(i == -1){
+					harmonicNums.Add (0.5f);
+				} else {
+					harmonicNums.Add (harmonicNums[i]+(1f/(i+3)));
+				}
+			}
+			return harmonicNums[harmonicNums.Count-1];
 		}
 	}
 
