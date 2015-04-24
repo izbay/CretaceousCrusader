@@ -26,7 +26,9 @@ public class DinoController : UnitController
 	
 	protected override void Update()
 	{
-		stateDelegate();
+		if(stateDelegate != null){
+			stateDelegate();
+		}
 	}
 	
 	protected void Idle()

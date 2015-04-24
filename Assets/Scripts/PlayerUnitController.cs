@@ -38,7 +38,9 @@ public class PlayerUnitController : UnitController {
 		if(curr_pos != Vector3.zero){
 			float hunger = (Vector3.Distance (transform.position,curr_pos) * walkingConsumption) / 40f;
 			hunger += (standingConsumption * Time.deltaTime) / 80f;
-			hunger *= tb.getHungerWeight(transform.position);
+			if(tb != null){
+				hunger *= tb.getHungerWeight(transform.position);
+			}
 			if(keep.requestFood (hunger) < hunger){
 				health -= 0.1f;
 			};
