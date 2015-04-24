@@ -161,10 +161,10 @@ public class KeepManager : MonoBehaviour {
 	}
 
 	private float getHarmonicNum(int num){
-		if(num <= harmonicNums.Count){
-			return harmonicNums[num-1];
-		} else if (num == 0){
+		if (num <= 0){
 			return 0;
+		} else if(num <= harmonicNums.Count){
+			return harmonicNums[num-1];
 		} else {
 			for(int i=harmonicNums.Count-1; i<num; i++){
 				if(i == -1){
