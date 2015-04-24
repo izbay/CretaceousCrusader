@@ -7,10 +7,13 @@ public class NavigationController : MonoBehaviour {
 	private KeepManager selection;
 	private UnitController subject;
 	private List<Node> nodes = new List<Node>();
+	private TerrainBuilder tb;
+
 	enum NodeStates {inactive, open, closed, start, end};
 
 	void Start () {
 		selection = GameObject.FindGameObjectWithTag("Player").GetComponent<KeepManager>();
+		tb = GameObject.Find ("Terrain").GetComponent<TerrainBuilder> ();
 		StartCoroutine(generateNavMap());
 	}
 
@@ -32,14 +35,14 @@ public class NavigationController : MonoBehaviour {
 		subject = selection.getSelected ();
 		if (subject != null) {
 			subject.setATarget(obj);
-			subject.setPath(getPath(subject.transform.position,obj.transform.position));
+			registerClick(subject,obj.transform.position);
 		}
 	}
 
 	public bool pathIsInvalid(List<Vector3> returnPath){
 		return returnPath != null && returnPath.Count == 2 && returnPath[0] == Vector3.zero && returnPath[1] == Vector3.zero;
 	}
-	
+
 	private bool isObstructed(Node start, Node end, float cap = 500f){
 		float distance = Vector3.Distance (start.location,end.location);
 		if(distance > cap) return true;
@@ -56,7 +59,7 @@ public class NavigationController : MonoBehaviour {
 		}
 		for(int i=0;i<4;i++){
 			if(Physics.Raycast (corners[i], corners[i+4]-corners[i], distance, obstructionLayers)){
-				Debug.DrawLine(corners[i], corners[i+4], Color.red);
+				//Debug.DrawLine(corners[i], corners[i+4], Color.red);
 				return true;
 			}
 		}
@@ -65,14 +68,13 @@ public class NavigationController : MonoBehaviour {
 
 	private bool isUnwalkable(Vector3 start, Vector3 end){
 		bool rtnVal = false;
-		for (float percent = 0f; percent <= 1f; percent += 0.1f) {
+		for (float percent = 0.05f; percent <= 1f; percent += 0.05f) {
 			rtnVal = rtnVal || isUnwalkable (start + (end - start) * percent);
 		}
 		return rtnVal;
 	}
 
 	private bool isUnwalkable(Vector3 position){
-		TerrainBuilder tb = GameObject.Find ("Terrain").GetComponent<TerrainBuilder> ();
 		if (tb == null) {
 			return false;
 		}
@@ -96,10 +98,10 @@ public class NavigationController : MonoBehaviour {
 		// If we can get there without hitting a wall, just go there!
 		
 		if (!isObstructed(startNode,endNode, Mathf.Infinity)){
-			Debug.DrawLine(start,end, Color.green);
+			//Debug.DrawLine(start,end, Color.green);
 			return new List<Vector3> {start, end};
 		} else {
-			Debug.DrawLine(start,end, Color.red);
+			//Debug.DrawLine(start,end, Color.red);
 			// Encoding for solution not found.
 			return new List<Vector3> {Vector3.zero, Vector3.zero};
 		}
@@ -155,26 +157,26 @@ public class NavigationController : MonoBehaviour {
 		}
 		
 		// Initialize all of our virtual nodes.
-		for(int i=0;i<nodes.Count;i++){
-			for(int j=i+1; j<nodes.Count; j++){
+		for(int k=0;k<nodes.Count;k++){
+			for(int j=k+1; j<nodes.Count; j++){
 				// Check if the path between the nodes is obstructed. If not, add it as a connection!
-				if(!isObstructed(nodes[i],nodes[j])){
-					nodes[i].addConnection (nodes[j]);
-					nodes[j].addConnection (nodes[i]);
-					Debug.DrawLine (nodes[i].location,nodes[j].location,Color.magenta);
+				if(!isObstructed(nodes[k],nodes[j])){
+					nodes[k].addConnection (nodes[j]);
+					nodes[j].addConnection (nodes[k]);
+					//Debug.DrawLine (nodes[k].location,nodes[j].location,Color.magenta);
 				}
 			}
 			
 			// Remove useless nodes.
-			if(nodes[i].connections.Count == 0){
-				nodes.Remove (nodes[i--]);
+			if(nodes[k].connections.Count == 0){
+				nodes.Remove (nodes[k--]);
 				continue;
 			}
 			yield return null;
 		}
 	}
 
-	public List<Vector3> getPath(Vector3 start, Vector3 end){
+	public List<Vector3> getPath(Vector3 start, Vector3 end, float maxDist = 1500f){
 		Node startNode = new Node(start, int.MinValue, NodeStates.start);
 		Node endNode = new Node(end, int.MaxValue, NodeStates.end);
 
@@ -186,21 +188,21 @@ public class NavigationController : MonoBehaviour {
 		for(int i=0;i<nodes.Count;i++){
 
 			// Check if the node connects to the end target. If so, add it as a connection!
-			if(!isObstructed(nodes[i],endNode, 1000f)){
+			if(!isObstructed(nodes[i],endNode, maxDist)){
 				nodes[i].addConnection (endNode);
 				//endNode.addConnection (nodes[i]);
-				Debug.DrawLine (nodes[i].location,endNode.location,Color.green);
+				//Debug.DrawLine (nodes[i].location,endNode.location,Color.green);
 			}
 			
 			// Check which nodes connect to the starting point.
-			if(!isObstructed(startNode,nodes[i], 1000f)){
+			if(!isObstructed(startNode,nodes[i], maxDist)){
 				nodes[i].previous = startNode;
 				nodes[i].state = NodeStates.open;
 				nodes[i].score = getScore(startNode,nodes[i],endNode);
 				//nodes[i].addConnection(startNode);
 				//startNode.addConnection(nodes[i]);
 				//Debug.Log (nodes[i].label+" connects to start with score: "+nodes[i].score+". Opening "+nodes[i].label+".");
-				Debug.DrawLine (nodes[i].location,startNode.location,Color.white);
+				//Debug.DrawLine (nodes[i].location,startNode.location,Color.white);
 			}
 		}
 		bool completedSearch = false, foundAPath = false;
@@ -224,7 +226,7 @@ public class NavigationController : MonoBehaviour {
 						if(nodes[i].connections[j].state == NodeStates.end){
 							//Debug.Log (nodes[i].label+" connects to End!");
 							foundAPath = true;
-							completedSearch = true; // This shouldn't be here. Testing.
+							//completedSearch = true; // This shouldn't be here. Testing.
 							endNode.addConnection (nodes[i]);
 						} else if(nodes[i].connections[j].state == NodeStates.inactive){
 							nodes[i].connections[j].addPossiblePrev(nodes[i]);
@@ -260,11 +262,14 @@ public class NavigationController : MonoBehaviour {
 					prospectivePath.Add (ptr);
 					if (ptr == null){
 						score += 1000000;
+						break;
 					} else {
 						ptr = ptr.previous; // Some cases this is null. Likely due to cleanup. Must be debugged.
 					}
 				}
-				prospectivePath.Add (ptr);
+				if(ptr == startNode){
+					prospectivePath.Add (ptr);
+				}
 				
 				if(score < lowestScore){
 					lowestScore = score;
@@ -275,19 +280,24 @@ public class NavigationController : MonoBehaviour {
 			List<Vector3> path = new List<Vector3>();
 			//Debug.Log ("Best path found:");
 			for(int i=shortestRoute.Count-1;i>=0;i--){
-				/**if (shortestRoute[i].label==int.MinValue)
+				/**Debug.ClearDeveloperConsole();
+				if (shortestRoute[i].label==int.MinValue)
 					Debug.Log ("Start");
 				else if(shortestRoute[i].label==int.MaxValue)
 					Debug.Log ("End");
 				else
-					Debug.Log(shortestRoute[i].label); **/
+					Debug.Log(shortestRoute[i].label);*/
 				path.Add (shortestRoute[i].location);
 			}
 			doCleanup();
 			return path;
 		} else {
 			doCleanup();
-			return null;
+			if(maxDist == 1000f){
+				return getPath (start, end, Mathf.Infinity);
+			} else {
+				return null;
+			}
 		}
 	}
 
@@ -295,6 +305,7 @@ public class NavigationController : MonoBehaviour {
 		for(int i=0;i<nodes.Count;i++){
 			nodes[i].possiblePrevious = new List<Node>();
 			nodes[i].previous = null;
+			nodes[i].state = NodeStates.inactive;
 			for(int j=0;j<nodes[i].connections.Count;j++){
 				if(nodes[i].connections[j].label == int.MaxValue || nodes[i].connections[j].label == int.MinValue){
 					nodes[i].connections.RemoveAt(j--);

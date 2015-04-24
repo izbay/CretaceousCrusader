@@ -18,8 +18,8 @@ public class KeepManager : MonoBehaviour {
 	private GameObject UI;
 	private bool clickSpamLimiter;
 	private int spawnLimit = 5;
-	private float foodQty = 5f;
-	private float rockQty = 2000f;
+	private float foodQty = 10f;
+	private float rockQty = 0f;
 	private float foodTick = 0f;
 	private float foodSpeed = 10f;
 	private float spawnTick = 0f;
