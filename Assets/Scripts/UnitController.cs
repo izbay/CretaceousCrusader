@@ -39,15 +39,7 @@ public class UnitController : MonoBehaviour {
 	// Update is called once per frame
 	protected virtual void Update () {
 
-		//Kill this Unit, first resetting all attacking units to having no target
-		if (health < 1) {
-			foreach(UnitController a in attackers){
-				a.attackTarget=null;
-				a.attackers.Remove(this);
-				
-			}
-			GameObject.Destroy(gameObject);
-		}
+		CheckHealth();
 
 		// If a target exists, move to it.
 		if (navTarget != Vector3.zero) {	
@@ -83,6 +75,28 @@ public class UnitController : MonoBehaviour {
 		}
 	
 	}
+	
+	public virtual void SavePosition () {
+		curr_pos = transform.position;
+	}
+	
+	protected void CheckHealth()
+	{
+		//Kill this Unit, first resetting all attacking units to having no target
+		if (health < 1)
+		{
+			GameObject.Destroy(gameObject);
+		}
+	}
+	
+	void OnDestroy()
+	{
+		foreach(UnitController a in attackers)
+		{
+			a.attackTarget=null;
+			a.attackers.Remove(this);
+		}
+	}
 
 	protected virtual void Seek () {
 		Debug.DrawLine (curr_pos, navTarget, Color.magenta);
@@ -104,10 +118,7 @@ public class UnitController : MonoBehaviour {
 			setRails (false);
 		}
 	}
-
-	public virtual void SavePosition () {
-		curr_pos = transform.position;
-	}
+	
 
 	public virtual void setPath (List<Vector3> path){
 		this.path = path;
@@ -138,26 +149,19 @@ public class UnitController : MonoBehaviour {
 		}
 	}
 
-
 	protected virtual void BeginAttack() {
 		if (TargetInRange () && ReadyToAttack ()) {
 			Attack ();
-
+			
 		} else {
 			AdjustPosition ();
 		}
 	}
-
+	
 	//checks to see if enemy is within range to attack
 	public virtual bool TargetInRange(){
-
-		return Vector3.Distance (transform.position, attackTarget.transform.position) < attackRange;
-	}
-	
-	//checks to see if ready to attack again
-	public virtual bool ReadyToAttack(){
 		
-		return attackCharge >= attackRate;
+		return Vector3.Distance (transform.position, attackTarget.transform.position) < attackRange;
 	}
 	
 	//move towards attacker
@@ -166,20 +170,26 @@ public class UnitController : MonoBehaviour {
 			if(path.Count > 1){
 				setTarget (path [1]);
 			}
-            if (pathRefreshCount == pathRefreshRate)
-            {
+			if (pathRefreshCount == pathRefreshRate)
+			{
 				path = navigationController.getPath (curr_pos, path [path.Count - 1]);
-                pathRefreshCount = 0;
+				pathRefreshCount = 0;
 			} else {
 				List<Vector3> returnPath = navigationController.quickScanPath (curr_pos, path [path.Count - 1]);
 				if (!navigationController.pathIsInvalid (returnPath)) {
 					path = returnPath;
 				}
-                pathRefreshCount++;
+				pathRefreshCount++;
 			}
 		} else {
 			navigationController.registerClick (this, attackTarget.transform.position);
 		}
+	}
+	
+	//checks to see if ready to attack again
+	public virtual bool ReadyToAttack(){
+		
+		return attackCharge >= attackRate;
 	}
 
 	//Perform Attack

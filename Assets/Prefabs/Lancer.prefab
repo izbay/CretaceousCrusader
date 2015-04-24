@@ -88,8 +88,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 167810}
-  m_LocalRotation: {x: 0, y: .897139728, z: 0, w: .44174701}
-  m_LocalPosition: {x: 1119.07446, y: 59.8179893, z: 1396.72534}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 497180}
@@ -217,7 +217,7 @@ MonoBehaviour:
   moveSpeed: 15
   selectable: 1
   unitHealth: {fileID: 0}
-  Atarget: {fileID: 0}
+  attackTarget: {fileID: 0}
   attackers: []
   maxCarry: 0
   currentCarry: 0
@@ -226,10 +226,10 @@ MonoBehaviour:
   changeID: 0
   standingConsumption: 7.5
   walkingConsumption: 15
-  Keep: {fileID: 0}
+  keep: {fileID: 0}
+  keepTransform: {x: 0, y: 0, z: 0}
   returning: 0
   changing: 0
-  KeepTransform: {x: 0, y: 0, z: 0}
 --- !u!119 &11997180
 Projector:
   m_ObjectHideFlags: 1

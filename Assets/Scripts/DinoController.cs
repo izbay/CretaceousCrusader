@@ -6,10 +6,12 @@ public class DinoController : UnitController
 {
 
 	// TODO keep separate lists for each unit type
-	protected List<PlayerUnitController> playerUnitsNearby;
+	public List<PlayerUnitController> playerUnitsNearby;
 	
 	// TODO keep separate lists for each dino type
-	protected List<DinoController> dinosNearby;
+	public List<DinoController> dinosNearby;
+	
+	protected NestManager nest;
 
 	void Awake()
 	{
@@ -26,10 +28,11 @@ public class DinoController : UnitController
 	
 	protected override void Update()
 	{
+		CheckHealth();
 		stateDelegate();
 	}
 	
-	protected void Idle()
+	protected virtual void Idle()
 	{
 		// get startled when a player unit comes nearby
 		if (playerUnitsNearby.Count > 0)
@@ -37,17 +40,24 @@ public class DinoController : UnitController
 			stateDelegate = Startled;
 		}
 		
-		// wander around
+		// wander around TODO add a random wait time or chance
 		if (navTarget == Vector3.zero)
 		{
-			navigationController.registerClick(this, transform.position + new Vector3(Random.Range(-100, 100), 0, Random.Range(-100, 100)));
-				
+			Vector3 newPos = nest.transform.position + new Vector3(Random.Range(-100, 100), 0, Random.Range(-100, 100));
+			newPos.x = Mathf.Clamp(newPos.x, 1, 2999);
+			newPos.y = Mathf.Clamp(newPos.y, 1, 2999);
+			navigationController.registerClick(this, newPos);
 			stateDelegate = Moving;
 		} 
 	}
 	
-	protected void Moving()
+	protected virtual void Moving()
 	{
+		if (playerUnitsNearby.Count > 0)
+		{
+			stateDelegate = Startled;
+		}
+	
 		if (navTarget != Vector3.zero)
 		{	
 			Seek ();
@@ -77,10 +87,10 @@ public class DinoController : UnitController
 		}
 		else
 		{
-			path=null;
+			path = null;
 			navTarget = Vector3.zero;
 			setRails (false);
-			stateDelegate=Idle;
+			stateDelegate = Idle;
 		}
 	}
 	
@@ -113,8 +123,9 @@ public class DinoController : UnitController
 	}
 	
 	
-	private void Startled()
+	protected virtual void Startled()
 	{
+		Debug.Log ("Startled!");
 		// catch if the player units have backed away before we get here
 		if (playerUnitsNearby.Count == 0)
 			stateDelegate = Idle;
@@ -122,14 +133,13 @@ public class DinoController : UnitController
 		else
 		{
 			// look at the player unit
-			transform.LookAt (playerUnitsNearby[0].transform);
-			
-//			Vector3 targetDir = new Vector3 (target.x, 0, target.z) - new Vector3 (transform.position.x, 0, transform.position.z);
-//			Quaternion targetRotation = Quaternion.LookRotation (targetDir);
-//			transform.rotation = Quaternion.RotateTowards (transform.rotation, targetRotation, turnSpeed);
+			Vector3 targetDir = playerUnitsNearby[0].transform.position - transform.position;
+			targetDir.z = 0;
+			Quaternion targetRotation = Quaternion.LookRotation (targetDir);
+			transform.rotation = Quaternion.RotateTowards (transform.rotation, targetRotation, turnSpeed);
 			
 			// TODO vary the response based on player unit type (i.e. always attack farmers & quarriers, run from lancers)
-			if (playerUnitsNearby.Count > dinosNearby.Count)
+			if (playerUnitsNearby.Count > dinosNearby.Count + 1)
 			{
 				stateDelegate = Fleeing;
 			}
@@ -141,24 +151,37 @@ public class DinoController : UnitController
 		}
 	}
 	
-	private void Attacking()
+	protected virtual void Attacking()
 	{
-		if (attackTarget == null)
+		Debug.Log ("Attacking!");
+		if (playerUnitsNearby.Count == 0)
 		{
-			// get a target
+			attackTarget = null;
+			stateDelegate = Idle;
 		}
 		else
 		{
-			// if distance < attackRange
-				// move towards the target
-				
-			// else
-				// perform an attack
+			if (attackTarget == null)
+			{
+				// get a target
+				attackTarget = playerUnitsNearby[0];
+			}
+			else
+			{
+				// if distance < attackRange
+					// move towards the target
+					
+				// else
+					// perform an attack
+				Debug.Log ("Beginning attack");
+//				BeginAttack();
+			}
 		}
 	}
 	
-	private void Fleeing()
+	protected virtual void Fleeing()
 	{
+		Debug.Log ("Fleeing!");
 		// Check if player is nearby
 		if (playerUnitsNearby.Count == 0)
 		{
@@ -168,9 +191,10 @@ public class DinoController : UnitController
 		else
 		{
 			// Run away from the player unit
-			navigationController.getPath(
-				transform.position,
+			navigationController.registerClick(this, 
 				transform.position + (transform.position - playerUnitsNearby[0].transform.position).normalized * 100);
+				
+			stateDelegate = Moving;
 		}
 	}
 	
@@ -180,7 +204,7 @@ public class DinoController : UnitController
 		{
 			dinosNearby.Add (other.GetComponent<DinoController>());
 		}
-		else if (other.CompareTag("lancer"))
+		else if (other.CompareTag("lancer") || other.CompareTag("quarrier") || other.CompareTag("farmer"))
 		{
 			playerUnitsNearby.Add (other.GetComponent<PlayerUnitController>());
 		}
@@ -192,9 +216,21 @@ public class DinoController : UnitController
 		{
 			dinosNearby.Remove (other.GetComponent<DinoController>());
 		}
-		else if (other.CompareTag("lancer"))
+		else if (other.CompareTag("lancer") || other.CompareTag("quarrier") || other.CompareTag("farmer"))
 		{
 			playerUnitsNearby.Remove (other.GetComponent<PlayerUnitController>());
+		}
+	}
+	
+	public NestManager Nest
+	{
+		get
+		{
+			return nest;
+		}
+		set
+		{
+			nest = value;
 		}
 	}
 }

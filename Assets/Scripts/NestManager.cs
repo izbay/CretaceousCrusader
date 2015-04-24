@@ -19,11 +19,11 @@ public class NestManager : MonoBehaviour {
 		if (random < 0.65f) {
 			//Small
 			type = 0;
-            maxDino = 2;
+            maxDino = 3;
 		} else {
 			//Medium
 			type = 1;
-            maxDino = 1;
+            maxDino = 2;
 			transform.localScale = new Vector3(2.5f,2.5f,2.5f);
 		}
 
@@ -69,7 +69,9 @@ public class NestManager : MonoBehaviour {
         // Spawn the units
         for (int i = 0; i < unitList.Length; i++)
         {
-            spawnedDinos.Add(Instantiate(dinos[unitList[i]], positions[i], transform.rotation) as GameObject);
+			GameObject newDino = Instantiate(dinos[unitList[i]], positions[i], transform.rotation) as GameObject;
+			newDino.GetComponent<DinoController>().Nest = this;
+            spawnedDinos.Add(newDino);
         }
     }
 

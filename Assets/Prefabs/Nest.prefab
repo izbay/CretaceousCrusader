@@ -53,7 +53,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 163054}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1860.26233, y: 78.2548676, z: 2161.69458}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 463052}
@@ -116,6 +116,7 @@ MonoBehaviour:
   dinos:
   - {fileID: 138826, guid: 8e2e1f909a53d464ebe77906c44775c7, type: 2}
   - {fileID: 124156, guid: 21b756bb7bfafee48a6ab9cb1ea18a2a, type: 2}
+  spawnedDinos: []
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
