@@ -13,8 +13,13 @@ public class NestManager : MonoBehaviour {
 	private float spawnTick = 0f;
 	private float spawnSpeed = 30f;
 
+	private Transform dinoParent;
+
 	// Use this for initialization
 	void Start () {
+	
+		dinoParent = GameObject.Find ("Dinos").transform;
+	
 		float random = Random.Range (0, 1f);
 		if (random < 0.65f) {
 			//Small
@@ -72,6 +77,7 @@ public class NestManager : MonoBehaviour {
         {
 			GameObject newDino = Instantiate(dinos[unitList[i]], positions[i], transform.rotation) as GameObject;
 			newDino.GetComponent<DinoController>().Nest = this;
+			newDino.transform.parent = dinoParent;
             spawnedDinos.Add(newDino);
         }
     }

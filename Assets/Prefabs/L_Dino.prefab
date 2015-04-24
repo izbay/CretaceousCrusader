@@ -178,16 +178,16 @@ MonoBehaviour:
   health: 500
   attackStr: 100
   attackRate: 5
-  attackRange: 10
+  attackRange: 20
   turnSpeed: 2
   moveSpeed: 10
   selectable: 0
-  unitHealth: {fileID: 0}
   attackTarget: {fileID: 0}
   attackers: []
   sliderPrefab: {fileID: 11424286, guid: 3af583ca14c5be24997e5e1d69afe92f, type: 2}
   playerUnitsNearby: []
   dinosNearby: []
+  foodValue: 0
 --- !u!135 &13595160
 SphereCollider:
   m_ObjectHideFlags: 1

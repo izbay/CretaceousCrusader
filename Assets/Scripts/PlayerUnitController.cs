@@ -50,7 +50,7 @@ public class PlayerUnitController : UnitController {
 	protected override void Update(){
 		base.Update ();
 		if (changing) {
-			if(Vector3.Distance(curr_pos, keep.transform.position)<20f){
+			if(Vector3.Distance(transform.position, keep.transform.position)<20f){
 				if(changeID!=classID){
 					keep.changeUnit(this,changeID);
 					changing=false;

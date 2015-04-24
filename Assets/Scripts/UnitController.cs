@@ -108,7 +108,7 @@ public class UnitController : MonoBehaviour {
 		}
 	}
 	
-	void OnDestroy()
+	protected virtual void OnDestroy()
 	{
 		if(healthBar != null){
 			GameObject.Destroy(healthBar.transform.gameObject);

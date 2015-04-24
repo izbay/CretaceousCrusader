@@ -183,12 +183,12 @@ MonoBehaviour:
   turnSpeed: 5
   moveSpeed: 10
   selectable: 0
-  unitHealth: {fileID: 0}
   attackTarget: {fileID: 0}
   attackers: []
   sliderPrefab: {fileID: 11424286, guid: 3af583ca14c5be24997e5e1d69afe92f, type: 2}
   playerUnitsNearby: []
   dinosNearby: []
+  foodValue: 25
 --- !u!135 &13533954
 SphereCollider:
   m_ObjectHideFlags: 1

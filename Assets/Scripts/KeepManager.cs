@@ -154,7 +154,7 @@ public class KeepManager : MonoBehaviour {
 		}
 	}
 
-	private int totalUnits(){
+	public int totalUnits(){
 		return 	GameObject.FindGameObjectsWithTag("farmer").Length +
 				GameObject.FindGameObjectsWithTag("quarrier").Length +
 				GameObject.FindGameObjectsWithTag("lancer").Length;
@@ -308,5 +308,9 @@ public class KeepManager : MonoBehaviour {
 	}
 	public void addRock(int r){
 		rockQty+=r;
+	}
+	
+	public void addFood(int f){
+		foodQty += f;
 	}
 }

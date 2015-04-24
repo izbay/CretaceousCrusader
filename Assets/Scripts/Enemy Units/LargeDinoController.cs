@@ -29,4 +29,13 @@ public class LargeDinoController : DinoController
 		transform.LookAt (playerUnitsNearby[0].transform);
 		stateDelegate = Attacking;
 	}
+	
+	protected override void OnDestroy()
+	{
+		base.OnDestroy();
+		if (keep != null && keep.totalUnits() != 0)
+		{
+			Application.LoadLevel("Win");
+		}
+	}
 }

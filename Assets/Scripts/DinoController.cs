@@ -4,17 +4,17 @@ using System.Collections.Generic;
 
 public class DinoController : UnitController
 {
-
-	// TODO keep separate lists for each unit type
+	// TODO keep separate lists for each unit and dino type
 	public List<PlayerUnitController> playerUnitsNearby;
-	
-	// TODO keep separate lists for each dino type
 	public List<DinoController> dinosNearby;
+	public int foodValue;
 	
+	protected KeepManager keep;
 	protected NestManager nest;
 
 	void Awake()
 	{
+		keep = GameObject.FindObjectOfType<KeepManager>();
 		playerUnitsNearby = new List<PlayerUnitController>();
 		dinosNearby = new List<DinoController>();
 	}
@@ -172,12 +172,17 @@ public class DinoController : UnitController
 			}
 			else
 			{
+				// look at the target
+				Vector3 targetDir = attackTarget.transform.position - transform.position;
+				targetDir.z = 0;
+				Quaternion targetRotation = Quaternion.LookRotation (targetDir);
+				transform.rotation = Quaternion.RotateTowards (transform.rotation, targetRotation, turnSpeed);
+				
 				// if distance < attackRange
 					// move towards the target
 					
 				// else
 					// perform an attack
-				Debug.Log ("Beginning attack");
 //				BeginAttack();
 			}
 		}
@@ -235,6 +240,15 @@ public class DinoController : UnitController
 		set
 		{
 			nest = value;
+		}
+	}
+	
+	protected override void OnDestroy()
+	{
+		base.OnDestroy();
+		if (keep != null)
+		{
+			keep.addFood(foodValue);
 		}
 	}
 }

@@ -212,11 +212,10 @@ MonoBehaviour:
   health: 100
   attackStr: 10
   attackRate: 1
-  attackRange: 15
+  attackRange: 20
   turnSpeed: 4
   moveSpeed: 15
   selectable: 1
-  unitHealth: {fileID: 0}
   attackTarget: {fileID: 0}
   attackers: []
   sliderPrefab: {fileID: 11424286, guid: 3af583ca14c5be24997e5e1d69afe92f, type: 2}
