@@ -28,6 +28,9 @@ public class QuarrierController : PlayerUnitController
 				currentCarry += attackStr;
 				if (currentCarry >= maxCarry)
 				{
+					if(currentCarry > maxCarry){
+						currentCarry = maxCarry;
+					}
 					if(!returning)
 					{
 						ReturnResources();
