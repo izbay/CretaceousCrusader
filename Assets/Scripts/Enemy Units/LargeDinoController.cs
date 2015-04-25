@@ -12,22 +12,29 @@ public class LargeDinoController : DinoController
 			stateDelegate = StartledState;
 		}
 		
-		// wander around TODO add a random wait time or chance
-		if (navTarget == Vector3.zero)
+		else
 		{
-			Vector3 newPos = this.transform.position + new Vector3(Random.Range(-100, 100), 0, Random.Range(-100, 100));
-			// clamp to terrain boundary
-			newPos.x = Mathf.Clamp(newPos.x, 1, 2999);
-			newPos.y = Mathf.Clamp(newPos.y, 1, 2999);
-		
-			navigationController.registerClick(this, newPos);
-			stateDelegate = MovingState;
+			// wander around TODO add a random wait time or chance
+			if (navTarget == Vector3.zero)
+			{
+				Vector3 newPos = this.transform.position + new Vector3(Random.Range(-100, 100), 0, Random.Range(-100, 100));
+				// clamp to terrain boundary
+				newPos.x = Mathf.Clamp(newPos.x, 1, 2999);
+				newPos.z = Mathf.Clamp(newPos.z, 1, 2999);
+				navigationController.registerClick(this, newPos);
+			}
+			
+			Move();
 		}
 	}
 	
 	protected override void StartledState()
 	{
-		transform.LookAt (playerUnitsNearby[0].transform);
+		// look at the player unit
+		Vector3 targetDir = playerUnitsNearby[0].transform.position - transform.position;
+		targetDir.y = 0;
+		Quaternion targetRotation = Quaternion.LookRotation (targetDir);
+		transform.rotation = Quaternion.RotateTowards (transform.rotation, targetRotation, turnSpeed);
 		stateDelegate = AttackingState;
 	}
 	

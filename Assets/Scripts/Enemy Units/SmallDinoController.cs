@@ -17,7 +17,7 @@ public class SmallDinoController : DinoController
 		{
 			// look at the player unit
 			Vector3 targetDir = playerUnitsNearby[0].transform.position - transform.position;
-			targetDir.z = 0;
+			targetDir.y = 0;
 			Quaternion targetRotation = Quaternion.LookRotation (targetDir);
 			transform.rotation = Quaternion.RotateTowards (transform.rotation, targetRotation, turnSpeed);
 			
