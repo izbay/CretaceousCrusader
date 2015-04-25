@@ -285,7 +285,7 @@ public class KeepManager : MonoBehaviour {
 	public void changeUnitClass(int id){
 		for (int i=0; i<units.Length; i++) {
 			if (unitPanel [id].image.sprite == unitIco [i] && unitPanel[id].image.enabled) {
-				selected.changeClass (i);
+				selected.ChangeClass (i);
 			}
 		}
 	}

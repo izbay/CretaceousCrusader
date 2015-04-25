@@ -34,7 +34,7 @@ public class NavigationController : MonoBehaviour {
 	public void registerClick(UnitController obj){
 		subject = selection.getSelected ();
 		if (subject != null) {
-			subject.setATarget(obj);
+			subject.setAttackTarget(obj);
 			registerClick(subject,obj.transform.position);
 		}
 	}

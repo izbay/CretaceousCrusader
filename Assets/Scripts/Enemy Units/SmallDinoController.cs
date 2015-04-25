@@ -3,12 +3,15 @@ using System.Collections;
 
 public class SmallDinoController : DinoController
 {
-	protected override void Startled()
+	protected override void StartledState()
 	{
-		Debug.Log ("Startled!");
+		Debug.Log ("STARTLED");
 		// catch if the player units have backed away before we get here
 		if (playerUnitsNearby.Count == 0)
-			stateDelegate = Idle;
+		{
+		Debug.Log ("IDLE");
+			stateDelegate = IdleState;
+		}
 		
 		else
 		{
@@ -21,12 +24,13 @@ public class SmallDinoController : DinoController
 			// TODO vary the response based on player unit type (i.e. always attack farmers & quarriers, run from lancers)
 			if (playerUnitsNearby.Count + 2 > dinosNearby.Count)
 			{
-				stateDelegate = Fleeing;
+				stateDelegate = FleeingState;
 			}
 			
 			else
 			{
-				stateDelegate = Attacking;
+				// TODO set all nearby dinos to attack the same target (or all from the same nest)
+				stateDelegate = AttackingState;
 			}
 		}
 	}

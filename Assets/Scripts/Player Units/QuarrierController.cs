@@ -1,48 +1,65 @@
 using UnityEngine;
 using System.Collections;
 
-public class QuarrierController : PlayerUnitController {
-
+public class QuarrierController : PlayerUnitController
+{
 	protected override void Start ()
 	{
 		base.Start ();
 		classID = 1;
 	}
 
-	public void registerClick(StoneController unit){
-			attackTarget = unit;
-		AdjustPosition ();
+	public void registerClick(StoneController unit)
+	{
+		attackTarget = unit;
+		Move();
 	}
+	
 	//Perform Attack
-	public override void Attack(){
-		if (attackTarget is StoneController) {
-			if (currentCarry < maxCarry) {
+	public override void Attack()
+	{
+		if (attackTarget is StoneController)
+		{
+			if (currentCarry < maxCarry)
+			{
 				attackCharge = 0;
 				attackTarget.Hit (gameObject.GetComponent<UnitController> ());
 				currentCarry += attackStr;
-				if (currentCarry >= maxCarry) {
-					if(!returning){
+				if (currentCarry >= maxCarry)
+				{
+					if(!returning)
+					{
 						ReturnResources();
 					}
 				}
 			}
-		} else {
+		}
+		else
+		{
 			base.Attack();
 		}
 	}
-	protected override void Update(){
+	
+	protected override void Update()
+	{
 		base.Update ();
-		if (returning) {
-			if(Vector3.Distance(curr_pos,keepTransform)<20f){
+		if (returning)
+		{
+			if(Vector3.Distance(last_pos,keepOffsetPos)<20f)
+			{
 				UnloadResources();
 			}
 		}
 	}
-	public void ReturnResources(){
-		returnToKeep ();
+	
+	public void ReturnResources()
+	{
+		ReturnToKeep ();
 		returning = true;
 	}
-	public void UnloadResources(){
+	
+	public void UnloadResources()
+	{
 		navTarget = Vector3.zero;
 		setRails (false);
 		returning = false;

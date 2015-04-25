@@ -213,12 +213,11 @@ MonoBehaviour:
   attackStr: 0
   attackRate: 0
   attackRange: 0
+  attackTarget: {fileID: 0}
+  attackers: []
   turnSpeed: 5
   moveSpeed: 6
   selectable: 1
-  unitHealth: {fileID: 0}
-  attackTarget: {fileID: 0}
-  attackers: []
   sliderPrefab: {fileID: 11424286, guid: 3af583ca14c5be24997e5e1d69afe92f, type: 2}
   maxCarry: 0
   currentCarry: 0
@@ -227,10 +226,10 @@ MonoBehaviour:
   changeID: 0
   standingConsumption: 3
   walkingConsumption: 0
-  keep: {fileID: 0}
-  keepTransform: {x: 0, y: 0, z: 0}
+  keepOffsetPos: {x: 0, y: 0, z: 0}
   returning: 0
   changing: 0
+  wanderDistance: 30
 --- !u!119 &11927130
 Projector:
   m_ObjectHideFlags: 1

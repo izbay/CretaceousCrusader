@@ -85,7 +85,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 124156}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 786.503845, y: 46.3485718, z: 1696.33826}
+  m_LocalPosition: {x: 900.260315, y: 90.2881317, z: 1625.49658}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 424156}
@@ -180,11 +180,11 @@ MonoBehaviour:
   attackStr: 50
   attackRate: 5
   attackRange: 10
+  attackTarget: {fileID: 0}
+  attackers: []
   turnSpeed: 5
   moveSpeed: 10
   selectable: 0
-  attackTarget: {fileID: 0}
-  attackers: []
   sliderPrefab: {fileID: 11424286, guid: 3af583ca14c5be24997e5e1d69afe92f, type: 2}
   playerUnitsNearby: []
   dinosNearby: []
@@ -199,7 +199,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 20
+  m_Radius: 30
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &13624162
 CapsuleCollider:

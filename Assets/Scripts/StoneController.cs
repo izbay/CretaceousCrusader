@@ -3,10 +3,11 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class StoneController : UnitController {
-	
-	new protected void Start(){
 
-		selectable = false;
+	// TODO make this not a child of UnitController...
+	protected override void Start ()
+	{
+		
 	}
 
 	//Take Damage
@@ -22,10 +23,6 @@ public class StoneController : UnitController {
 	}
 	public override void setRails(bool railSetting){
 
-	}
-	public override void SavePosition () {
-		
-		curr_pos = transform.position;
 	}
 
     protected override void Update()
