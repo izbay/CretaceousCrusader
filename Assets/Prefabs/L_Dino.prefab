@@ -28,6 +28,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 467576}
   - 95: {fileID: 9567576}
+  - 114: {fileID: 11439522}
+  - 82: {fileID: 8216234}
   m_Layer: 9
   m_Name: AnimationContainer
   m_TagString: Untagged
@@ -60,7 +62,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 167574}
   m_LocalRotation: {x: 0, y: -.469833136, z: 0, w: .88275528}
-  m_LocalPosition: {x: 777.099976, y: 80.9000015, z: 1717.80005}
+  m_LocalPosition: {x: 2066.90771, y: 69.1917572, z: 143.820984}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 467576}
@@ -134,6 +136,64 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!82 &8216234
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 167576}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 2
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: .00200000009
+      value: 1
+      inSlope: -3.17738461
+      outSlope: -3.17738461
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: -.155170739
+      outSlope: -.155170739
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
 --- !u!95 &9567576
 Animator:
   serializedVersion: 3
@@ -164,6 +224,20 @@ Animator:
   m_ApplyRootMotion: 1
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &11439522
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 167576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf513ffa135e21e438a5e94ce2a0216f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  step: {fileID: 8300000, guid: 400c7a5bbaf5bbc449d509a9de802021, type: 3}
+  roar: {fileID: 8300000, guid: 85cc9786907921a479dd6ed29e2d66a2, type: 3}
+  hit: {fileID: 8300000, guid: 1bc803f2de132af4d8d069d3f54c590b, type: 3}
 --- !u!114 &11467578
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -178,12 +252,12 @@ MonoBehaviour:
   health: 500
   attackStr: 100
   attackRate: 5
-  attackRange: 20
+  attackRange: 30
+  attackTarget: {fileID: 0}
+  attackers: []
   turnSpeed: 2
   moveSpeed: 10
   selectable: 0
-  attackTarget: {fileID: 0}
-  attackers: []
   sliderPrefab: {fileID: 11424286, guid: 3af583ca14c5be24997e5e1d69afe92f, type: 2}
   playerUnitsNearby: []
   dinosNearby: []

@@ -39,11 +39,13 @@ public class UnitController : MonoBehaviour
 	
 	protected delegate void StateDelegate();
 	protected StateDelegate stateDelegate;
+	protected AnimationController anim;
 
 	protected virtual void Start ()
 	{
 		keep = GameObject.FindObjectOfType<KeepManager>();
-	
+		anim = transform.GetComponentInChildren<AnimationController>();
+
 		maxHealth = health;
 		pathRefreshRate = 300;
 		GameObject globalNav = GameObject.FindGameObjectWithTag("global_nav");
@@ -176,7 +178,8 @@ public class UnitController : MonoBehaviour
 	{
 		if (health <= 0)
 		{
-			GameObject.Destroy(gameObject);
+			anim.disappearAnim(gameObject);
+			return;
 		}
 		
 		if (healthBar != null)
@@ -253,8 +256,7 @@ public class UnitController : MonoBehaviour
 	public virtual void setRails(bool railSetting)
 	{
 		onRails = railSetting;
-		Animator anim = transform.Find("AnimationContainer").GetComponent<Animator>();
-		anim.SetBool("onRails", railSetting);
+		anim.setRails(railSetting);
 	}
 
 	public virtual bool TargetInRange()
@@ -271,6 +273,7 @@ public class UnitController : MonoBehaviour
 	public virtual void Attack()
 	{
 		attackCharge = 0;
+		anim.attackAnim();
 		attackTarget.Hit(gameObject.GetComponent<UnitController>());
 	}
 	
@@ -278,7 +281,7 @@ public class UnitController : MonoBehaviour
 	public virtual void Hit(UnitController attacker)
 	{
 		health -= attacker.attackStr;
-
+		anim.flinchAnim();
 		if (attackTarget == null)
 		{
 			attackTarget = attacker;

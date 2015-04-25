@@ -23,6 +23,7 @@ public class QuarrierController : PlayerUnitController
 			if (currentCarry < maxCarry)
 			{
 				attackCharge = 0;
+				anim.attackAnim();
 				attackTarget.Hit (gameObject.GetComponent<UnitController> ());
 				currentCarry += attackStr;
 				if (currentCarry >= maxCarry)

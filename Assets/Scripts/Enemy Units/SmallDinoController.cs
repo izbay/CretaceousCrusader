@@ -5,11 +5,11 @@ public class SmallDinoController : DinoController
 {
 	protected override void StartledState()
 	{
-		Debug.Log ("STARTLED");
+		//Debug.Log ("STARTLED");
 		// catch if the player units have backed away before we get here
 		if (playerUnitsNearby.Count == 0)
 		{
-		Debug.Log ("IDLE");
+		//Debug.Log ("IDLE");
 			stateDelegate = IdleState;
 		}
 		

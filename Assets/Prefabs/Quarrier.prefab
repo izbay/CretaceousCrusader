@@ -62,6 +62,8 @@ GameObject:
   - 4: {fileID: 410308}
   - 95: {fileID: 9510306}
   - 122: {fileID: 12282170}
+  - 114: {fileID: 11495038}
+  - 82: {fileID: 8278256}
   m_Layer: 8
   m_Name: AnimationContainer
   m_TagString: Untagged
@@ -100,7 +102,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 110306}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 802.952026, y: 46.3651352, z: 1690.77087}
+  m_LocalPosition: {x: 269.373077, y: 11.8779192, z: 95.1678238}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 406752}
@@ -168,6 +170,64 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!82 &8278256
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 110308}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 2
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: .00200000009
+      value: 1
+      inSlope: -3.17738461
+      outSlope: -3.17738461
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: -.155170739
+      outSlope: -.155170739
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
 --- !u!95 &9510304
 Animator:
   serializedVersion: 3
@@ -210,15 +270,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
-  attackStr: 25
+  attackStr: 7
   attackRate: 1
   attackRange: 10
+  attackTarget: {fileID: 0}
+  attackers: []
   turnSpeed: 1
   moveSpeed: 15
   selectable: 1
-  unitHealth: {fileID: 0}
-  attackTarget: {fileID: 0}
-  attackers: []
   sliderPrefab: {fileID: 11424286, guid: 3af583ca14c5be24997e5e1d69afe92f, type: 2}
   maxCarry: 100
   currentCarry: 0
@@ -227,10 +286,23 @@ MonoBehaviour:
   changeID: 0
   standingConsumption: 4
   walkingConsumption: 8
-  keep: {fileID: 0}
-  keepTransform: {x: 0, y: 0, z: 0}
+  keepOffsetPos: {x: 0, y: 0, z: 0}
   returning: 0
   changing: 0
+--- !u!114 &11495038
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 110308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf513ffa135e21e438a5e94ce2a0216f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  step: {fileID: 8300000, guid: 400c7a5bbaf5bbc449d509a9de802021, type: 3}
+  roar: {fileID: 0}
+  hit: {fileID: 8300000, guid: 1bc803f2de132af4d8d069d3f54c590b, type: 3}
 --- !u!119 &11906752
 Projector:
   m_ObjectHideFlags: 1

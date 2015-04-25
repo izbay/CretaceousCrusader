@@ -10,6 +10,8 @@ GameObject:
   - 4: {fileID: 467806}
   - 95: {fileID: 9594046}
   - 122: {fileID: 12226044}
+  - 114: {fileID: 11480408}
+  - 82: {fileID: 8207398}
   m_Layer: 8
   m_Name: AnimationContainer
   m_TagString: Untagged
@@ -89,7 +91,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 167810}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 778.236511, y: 46.3775406, z: 1704.53479}
+  m_LocalPosition: {x: 283.801575, y: 10.3910437, z: 94.3546448}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 497180}
@@ -168,6 +170,64 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!82 &8207398
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 167806}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 2
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: .00200000009
+      value: 1
+      inSlope: -3.17738461
+      outSlope: -3.17738461
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: -.155170739
+      outSlope: -.155170739
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
 --- !u!95 &9592778
 Animator:
   serializedVersion: 3
@@ -229,6 +289,20 @@ MonoBehaviour:
   keepOffsetPos: {x: 0, y: 0, z: 0}
   returning: 0
   changing: 0
+--- !u!114 &11480408
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 167806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf513ffa135e21e438a5e94ce2a0216f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  step: {fileID: 8300000, guid: aca4ed142210d2a4eacf580c3b1fbf19, type: 3}
+  roar: {fileID: 0}
+  hit: {fileID: 8300000, guid: 1bc803f2de132af4d8d069d3f54c590b, type: 3}
 --- !u!119 &11997180
 Projector:
   m_ObjectHideFlags: 1
