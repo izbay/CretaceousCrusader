@@ -417,7 +417,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 19
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 11424162, guid: 21b756bb7bfafee48a6ab9cb1ea18a2a, type: 2}
+    - {fileID: 11427184, guid: 21b756bb7bfafee48a6ab9cb1ea18a2a, type: 2}
+    - {fileID: 8226730, guid: 21b756bb7bfafee48a6ab9cb1ea18a2a, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 21b756bb7bfafee48a6ab9cb1ea18a2a, type: 2}
   m_RootGameObject: {fileID: 703453395}
   m_IsPrefabParent: 0
@@ -461,7 +464,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 20
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 11424162, guid: 21b756bb7bfafee48a6ab9cb1ea18a2a, type: 2}
+    - {fileID: 11427184, guid: 21b756bb7bfafee48a6ab9cb1ea18a2a, type: 2}
+    - {fileID: 8226730, guid: 21b756bb7bfafee48a6ab9cb1ea18a2a, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 21b756bb7bfafee48a6ab9cb1ea18a2a, type: 2}
   m_RootGameObject: {fileID: 1862239682}
   m_IsPrefabParent: 0
@@ -773,7 +779,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 11438828, guid: 8e2e1f909a53d464ebe77906c44775c7, type: 2}
+    - {fileID: 11443494, guid: 8e2e1f909a53d464ebe77906c44775c7, type: 2}
+    - {fileID: 8266822, guid: 8e2e1f909a53d464ebe77906c44775c7, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 8e2e1f909a53d464ebe77906c44775c7, type: 2}
   m_RootGameObject: {fileID: 832313332}
   m_IsPrefabParent: 0
@@ -1201,7 +1210,7 @@ GameObject:
   - 4: {fileID: 703453396}
   - 136: {fileID: 703453399}
   - 54: {fileID: 703453398}
-  - 114: {fileID: 703453397}
+  - 135: {fileID: 703453397}
   m_Layer: 9
   m_Name: M_Dino
   m_TagString: dino
@@ -1222,28 +1231,19 @@ Transform:
   - {fileID: 558195900}
   m_Father: {fileID: 0}
   m_RootOrder: 18
---- !u!114 &703453397
-MonoBehaviour:
+--- !u!135 &703453397
+SphereCollider:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11424162, guid: 21b756bb7bfafee48a6ab9cb1ea18a2a,
+  m_PrefabParentObject: {fileID: 13533954, guid: 21b756bb7bfafee48a6ab9cb1ea18a2a,
     type: 2}
   m_PrefabInternal: {fileID: 91085885}
   m_GameObject: {fileID: 703453395}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2db5c2956651424c9383e789703d212, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 50
-  attackStr: 50
-  attackRate: 5
-  attackRange: 10
-  turnSpeed: 5
-  moveSpeed: 10
-  selectable: 0
-  unitHealth: {fileID: 0}
-  attackTarget: {fileID: 0}
-  attackers: []
+  serializedVersion: 2
+  m_Radius: 30
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &703453398
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2405,7 +2405,6 @@ GameObject:
   - 4: {fileID: 832313337}
   - 136: {fileID: 832313336}
   - 54: {fileID: 832313335}
-  - 114: {fileID: 832313334}
   - 135: {fileID: 832313333}
   m_Layer: 9
   m_Name: S_Dino
@@ -2425,30 +2424,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: .5
+  m_Radius: 40
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &832313334
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11438828, guid: 8e2e1f909a53d464ebe77906c44775c7,
-    type: 2}
-  m_PrefabInternal: {fileID: 497785495}
-  m_GameObject: {fileID: 832313332}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f6ee60e3d67be94bae6b1930ab47835, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 20
-  attackStr: 10
-  attackRate: 5
-  attackRange: 10
-  turnSpeed: 5
-  moveSpeed: 10
-  selectable: 0
-  unitHealth: {fileID: 0}
-  attackTarget: {fileID: 0}
-  attackers: []
 --- !u!54 &832313335
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3294,7 +3271,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 11424162, guid: 21b756bb7bfafee48a6ab9cb1ea18a2a, type: 2}
+    - {fileID: 11427184, guid: 21b756bb7bfafee48a6ab9cb1ea18a2a, type: 2}
+    - {fileID: 8226730, guid: 21b756bb7bfafee48a6ab9cb1ea18a2a, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 21b756bb7bfafee48a6ab9cb1ea18a2a, type: 2}
   m_RootGameObject: {fileID: 1536555022}
   m_IsPrefabParent: 0
@@ -3309,7 +3289,7 @@ GameObject:
   - 4: {fileID: 1536555026}
   - 136: {fileID: 1536555025}
   - 54: {fileID: 1536555024}
-  - 114: {fileID: 1536555023}
+  - 135: {fileID: 1536555023}
   m_Layer: 9
   m_Name: M_Dino
   m_TagString: dino
@@ -3317,28 +3297,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1536555023
-MonoBehaviour:
+--- !u!135 &1536555023
+SphereCollider:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11424162, guid: 21b756bb7bfafee48a6ab9cb1ea18a2a,
+  m_PrefabParentObject: {fileID: 13533954, guid: 21b756bb7bfafee48a6ab9cb1ea18a2a,
     type: 2}
   m_PrefabInternal: {fileID: 1476967286}
   m_GameObject: {fileID: 1536555022}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2db5c2956651424c9383e789703d212, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 50
-  attackStr: 50
-  attackRate: 5
-  attackRange: 10
-  turnSpeed: 5
-  moveSpeed: 10
-  selectable: 0
-  unitHealth: {fileID: 0}
-  attackTarget: {fileID: 0}
-  attackers: []
+  serializedVersion: 2
+  m_Radius: 30
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &1536555024
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3421,7 +3392,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 22
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 11438828, guid: 8e2e1f909a53d464ebe77906c44775c7, type: 2}
+    - {fileID: 11443494, guid: 8e2e1f909a53d464ebe77906c44775c7, type: 2}
+    - {fileID: 8266822, guid: 8e2e1f909a53d464ebe77906c44775c7, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 8e2e1f909a53d464ebe77906c44775c7, type: 2}
   m_RootGameObject: {fileID: 1651994706}
   m_IsPrefabParent: 0
@@ -3515,7 +3489,6 @@ GameObject:
   - 4: {fileID: 1651994707}
   - 136: {fileID: 1651994711}
   - 54: {fileID: 1651994710}
-  - 114: {fileID: 1651994709}
   - 135: {fileID: 1651994708}
   m_Layer: 9
   m_Name: S_Dino
@@ -3548,30 +3521,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: .5
+  m_Radius: 40
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1651994709
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11438828, guid: 8e2e1f909a53d464ebe77906c44775c7,
-    type: 2}
-  m_PrefabInternal: {fileID: 1536802728}
-  m_GameObject: {fileID: 1651994706}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f6ee60e3d67be94bae6b1930ab47835, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 20
-  attackStr: 10
-  attackRate: 5
-  attackRange: 10
-  turnSpeed: 5
-  moveSpeed: 10
-  selectable: 0
-  unitHealth: {fileID: 0}
-  attackTarget: {fileID: 0}
-  attackers: []
 --- !u!54 &1651994710
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3612,7 +3563,7 @@ GameObject:
   - 4: {fileID: 1862239683}
   - 136: {fileID: 1862239686}
   - 54: {fileID: 1862239685}
-  - 114: {fileID: 1862239684}
+  - 135: {fileID: 1862239684}
   m_Layer: 9
   m_Name: M_Dino
   m_TagString: dino
@@ -3633,28 +3584,19 @@ Transform:
   - {fileID: 1188772010}
   m_Father: {fileID: 0}
   m_RootOrder: 19
---- !u!114 &1862239684
-MonoBehaviour:
+--- !u!135 &1862239684
+SphereCollider:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11424162, guid: 21b756bb7bfafee48a6ab9cb1ea18a2a,
+  m_PrefabParentObject: {fileID: 13533954, guid: 21b756bb7bfafee48a6ab9cb1ea18a2a,
     type: 2}
   m_PrefabInternal: {fileID: 96000425}
   m_GameObject: {fileID: 1862239682}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2db5c2956651424c9383e789703d212, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 50
-  attackStr: 50
-  attackRate: 5
-  attackRange: 10
-  turnSpeed: 5
-  moveSpeed: 10
-  selectable: 0
-  unitHealth: {fileID: 0}
-  attackTarget: {fileID: 0}
-  attackers: []
+  serializedVersion: 2
+  m_Radius: 30
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &1862239685
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -113,7 +113,7 @@ public class UnitController : MonoBehaviour
 			else
 			{
 				// Move towards the enemy
-				navigationController.registerClick(this, attackTarget.transform.position);
+				//navigationController.registerClick(this, attackTarget.transform.position);
 				Move();
 			}
 		}
