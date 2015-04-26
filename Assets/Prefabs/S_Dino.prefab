@@ -27,7 +27,6 @@ GameObject:
   - 136: {fileID: 13638828}
   - 54: {fileID: 5438828}
   - 114: {fileID: 11438828}
-  - 135: {fileID: 13515436}
   m_Layer: 9
   m_Name: S_Dino
   m_TagString: dino
@@ -53,6 +52,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &193300
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 493300}
+  - 135: {fileID: 13593300}
+  - 114: {fileID: 11493300}
+  m_Layer: 2
+  m_Name: NearbyUnitSensor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &438824
 Transform:
   m_ObjectHideFlags: 1
@@ -73,10 +89,11 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 138826}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 814.198669, y: 46.3531456, z: 1688.3739}
+  m_LocalPosition: {x: 782.958252, y: 66.4772415, z: 1609.35376}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 438824}
+  - {fileID: 493300}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &438828
@@ -91,6 +108,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 438824}
   m_RootOrder: 0
+--- !u!4 &493300
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 193300}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 438826}
+  m_RootOrder: 1
 --- !u!23 &2338828
 Renderer:
   m_ObjectHideFlags: 1
@@ -188,12 +217,23 @@ MonoBehaviour:
   playerUnitsNearby: []
   dinosNearby: []
   foodValue: 15
---- !u!135 &13515436
+--- !u!114 &11493300
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 193300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ad96ac01be09d341b67fb0d617afdcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!135 &13593300
 SphereCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 138826}
+  m_GameObject: {fileID: 193300}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1

@@ -157,30 +157,6 @@ public class DinoController : UnitController
 		}
 	}
 	
-	void OnTriggerEnter(Collider other)
-	{
-		if (other.CompareTag("dino"))
-		{
-			dinosNearby.Add(other.GetComponent<DinoController>());
-		}
-		else if (other.CompareTag("lancer") || other.CompareTag("quarrier") || other.CompareTag("farmer"))
-		{
-			playerUnitsNearby.Add(other.GetComponent<PlayerUnitController>());
-		}
-	}
-	
-	void OnTriggerExit(Collider other)
-	{
-		if (other.CompareTag("dino"))
-		{
-			dinosNearby.Remove(other.GetComponent<DinoController>());
-		}
-		else if (other.CompareTag("lancer") || other.CompareTag("quarrier") || other.CompareTag("farmer"))
-		{
-			playerUnitsNearby.Remove(other.GetComponent<PlayerUnitController>());
-		}
-	}
-	
 	protected override void OnDestroy()
 	{
 		base.OnDestroy();
