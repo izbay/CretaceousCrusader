@@ -29,7 +29,6 @@ GameObject:
   - 136: {fileID: 13624162}
   - 54: {fileID: 5424162}
   - 114: {fileID: 11424162}
-  - 135: {fileID: 13533954}
   m_Layer: 9
   m_Name: M_Dino
   m_TagString: dino
@@ -50,6 +49,23 @@ GameObject:
   - 82: {fileID: 8226730}
   m_Layer: 9
   m_Name: AnimationContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &190590
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 490590}
+  - 135: {fileID: 13590590}
+  - 114: {fileID: 11490590}
+  m_Layer: 2
+  m_Name: NearbyUnitSensor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87,12 +103,25 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 124156}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2011.39978, y: 69.8529739, z: 130.006866}
+  m_LocalPosition: {x: 2231.2998, y: 57.91185, z: 1929.76306}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 424156}
+  - {fileID: 490590}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!4 &490590
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 190590}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 424160}
+  m_RootOrder: 1
 --- !u!23 &2306232
 Renderer:
   m_ObjectHideFlags: 1
@@ -263,14 +292,25 @@ MonoBehaviour:
   step: {fileID: 8300000, guid: 400c7a5bbaf5bbc449d509a9de802021, type: 3}
   roar: {fileID: 8300000, guid: 27487b7b9d914c54db0d57949e5e3003, type: 3}
   hit: {fileID: 8300000, guid: 1bc803f2de132af4d8d069d3f54c590b, type: 3}
---- !u!135 &13533954
+--- !u!114 &11490590
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 190590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ad96ac01be09d341b67fb0d617afdcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!135 &13590590
 SphereCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 124156}
+  m_GameObject: {fileID: 190590}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 30

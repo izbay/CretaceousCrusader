@@ -1,5 +1,22 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &149972
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 449972}
+  - 135: {fileID: 13549972}
+  - 114: {fileID: 11449972}
+  m_Layer: 2
+  m_Name: NearbyUnitSensor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &167574
 GameObject:
   m_ObjectHideFlags: 0
@@ -11,7 +28,6 @@ GameObject:
   - 136: {fileID: 13667578}
   - 54: {fileID: 5467578}
   - 114: {fileID: 11467578}
-  - 135: {fileID: 13595160}
   m_Layer: 9
   m_Name: L_Dino
   m_TagString: dino
@@ -55,6 +71,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &449972
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 149972}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 467574}
+  m_RootOrder: 1
 --- !u!4 &467574
 Transform:
   m_ObjectHideFlags: 1
@@ -62,10 +90,11 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 167574}
   m_LocalRotation: {x: 0, y: -.469833136, z: 0, w: .88275528}
-  m_LocalPosition: {x: 2066.90771, y: 69.1917572, z: 143.820984}
+  m_LocalPosition: {x: 777.099976, y: 80.9000015, z: 1717.80005}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 467576}
+  - {fileID: 449972}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &467576
@@ -238,6 +267,17 @@ MonoBehaviour:
   step: {fileID: 8300000, guid: 400c7a5bbaf5bbc449d509a9de802021, type: 3}
   roar: {fileID: 8300000, guid: 85cc9786907921a479dd6ed29e2d66a2, type: 3}
   hit: {fileID: 8300000, guid: 1bc803f2de132af4d8d069d3f54c590b, type: 3}
+--- !u!114 &11449972
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 149972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ad96ac01be09d341b67fb0d617afdcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11467578
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -262,12 +302,12 @@ MonoBehaviour:
   playerUnitsNearby: []
   dinosNearby: []
   foodValue: 0
---- !u!135 &13595160
+--- !u!135 &13549972
 SphereCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 167574}
+  m_GameObject: {fileID: 149972}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
