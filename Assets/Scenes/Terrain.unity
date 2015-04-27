@@ -874,7 +874,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf513ffa135e21e438a5e94ce2a0216f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  step: {fileID: 8300000, guid: 400c7a5bbaf5bbc449d509a9de802021, type: 3}
+  step: {fileID: 8300000, guid: e28d735153c353b4fbf91e7ed47f8641, type: 3}
   roar: {fileID: 8300000, guid: 85cc9786907921a479dd6ed29e2d66a2, type: 3}
   hit: {fileID: 8300000, guid: 1bc803f2de132af4d8d069d3f54c590b, type: 3}
 --- !u!82 &475931398
@@ -2990,6 +2990,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 11439522, guid: 087b9d70c7b0c4a4ca6dff82448d9ad2, type: 2}
+      propertyPath: step
+      value: 
+      objectReference: {fileID: 8300000, guid: e28d735153c353b4fbf91e7ed47f8641, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 087b9d70c7b0c4a4ca6dff82448d9ad2, type: 2}
   m_RootGameObject: {fileID: 1466881885}

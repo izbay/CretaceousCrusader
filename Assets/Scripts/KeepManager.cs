@@ -105,11 +105,20 @@ public class KeepManager : MonoBehaviour {
 				clickSpamLimiter = true;
 			}
 
-			if(clickSpamLimiter && (Input.GetMouseButton (0) || Input.GetMouseButton (1))){
+			if(clickSpamLimiter && (Input.GetMouseButton (0))){
+				hutPlacementManager.restoreTextures();
+				rockQty -= hutCost;
 				hutPlacement = null;
 				hutPlacementManager = null;
 				placingHut = false;
 				rotatingHut = false;
+			} else if(Input.GetMouseButton (1)){
+				GameObject.Destroy (hutPlacement);
+				hutPlacement = null;
+				hutPlacementManager = null;
+				placingHut = false;
+				rotatingHut = false;
+				return;
 			}
 		} else {
 			int biome = tb.getBiomeAtWorldCoord(hutPlacement.transform.position);
@@ -117,10 +126,8 @@ public class KeepManager : MonoBehaviour {
 			hutPlacementManager.planningTextures (isValid);
 
 			if (Input.GetMouseButton (0) && isValid) {
-				hutPlacementManager.restoreTextures();
 				rotatingHut = true;
 				clickSpamLimiter = false;
-				rockQty -= hutCost;
 				return;
 			}
 

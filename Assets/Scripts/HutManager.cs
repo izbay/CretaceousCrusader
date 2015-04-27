@@ -5,12 +5,14 @@ public class HutManager : MonoBehaviour {
 
 	public Material[] defaultMaterials;
 	public Material[] placementMaterials;
+	public AudioClip initSound;
 
 	private bool isInitialized = false;
 	private CapsuleCollider capsuleCollider;
 	private MeshRenderer modelrenderer; 
 	private Material[] modelmaterials;
 	private KeepManager keep;
+	private AudioSource aux;
 
 	// Use this for initialization
 	void Start () {
@@ -37,6 +39,7 @@ public class HutManager : MonoBehaviour {
 		capsuleCollider = GetComponentInChildren< CapsuleCollider >();
 		modelrenderer = transform.GetComponentInChildren< MeshRenderer >();
 		modelmaterials = modelrenderer.materials;
+		aux = transform.gameObject.GetComponent<AudioSource>();
 	}
 
 	public void planningTextures(bool valid){
@@ -62,6 +65,8 @@ public class HutManager : MonoBehaviour {
 		if(!isInitialized){
 			init();
 		}
+
+		aux.PlayOneShot(initSound);
 
 		capsuleCollider.enabled = true;
 
