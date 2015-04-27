@@ -14,6 +14,7 @@ public class PlayerUnitController : UnitController {
 	//Food Consumption Stuff
 	public float standingConsumption;
 	public float walkingConsumption;
+	public Material[] targetMaterials;
 	protected Vector3 last_pos;
 
 	public Vector3 keepOffsetPos;
@@ -21,20 +22,53 @@ public class PlayerUnitController : UnitController {
 	public bool returning;
 	public bool changing;
 	
-	private TerrainBuilder tb;
+	protected TerrainBuilder tb;
+	protected bool isSelected = false;
+	protected GameObject selectionIndicator;
+	protected GameObject targetIndicator;
+
+	public void toggleSelected(){
+		isSelected = !isSelected;	
+		if(selectionIndicator != null){
+			selectionIndicator.GetComponent<Projector>().enabled = isSelected;
+			if(!isSelected){
+				targetIndicator.GetComponent<Projector>().enabled = isSelected;
+			}
+		}
+	}
+
+	protected void updateTargetIndicator(){
+		Projector targetProjector = targetIndicator.GetComponent<Projector>();
+		targetIndicator.transform.rotation = Quaternion.Euler (90f,0f,0f);
+		if(attackTarget != null){
+			targetIndicator.transform.position = attackTarget.transform.position + new Vector3(0f,20f,0f);
+			targetProjector.material = targetMaterials[1];
+			targetProjector.enabled = true;
+		} else if (path != null){
+			targetIndicator.transform.position = path[path.Count-1] + new Vector3(0f,5f,0f);
+			targetProjector.material = targetMaterials[0];
+			targetProjector.enabled = true;
+		} else {
+			targetProjector.enabled = false;
+		}
+	}
 
 	protected override void Start ()
 	{
 		keep = GameObject.FindGameObjectWithTag("Player").GetComponent<KeepManager>();
 		keepOffsetPos = keep.transform.position+(keep.transform.forward*5);
 		tb = GameObject.Find ("Terrain").GetComponent<TerrainBuilder> ();
+		selectionIndicator = transform.FindChild ("Selection Projector").gameObject;
+		targetIndicator = transform.FindChild ("Target Projector").gameObject;
 		base.Start ();
 	}
 
 	protected override void Update()
 	{
 		base.Update ();
-		
+		if(isSelected){
+			updateTargetIndicator();
+		}
 //		Debug.Log (stateDelegate.Method.Name);
 		
 		 CheckHunger();

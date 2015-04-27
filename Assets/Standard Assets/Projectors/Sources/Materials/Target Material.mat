@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Light Material
+  m_Name: Target Material
   m_Shader: {fileID: 4800000, guid: ab70c098a52a04be88096d20e1540cb8, type: 3}
   m_ShaderKeywords: []
   m_CustomRenderQueue: -1
@@ -17,7 +17,7 @@ Material:
         first:
           name: _ShadowTex
         second:
-          m_Texture: {fileID: 2800000, guid: 1d1047510e787184cad1b17e4393d00e, type: 3}
+          m_Texture: {fileID: 2800000, guid: f68440b1cc2df014aa32fa450d817740, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -32,7 +32,7 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 0, g: .784313738, b: 1, a: 1}
+        second: {r: .58431375, g: 0, b: 1, a: 1}
 --- !u!1002 &2100001
 EditorExtensionImpl:
   serializedVersion: 6

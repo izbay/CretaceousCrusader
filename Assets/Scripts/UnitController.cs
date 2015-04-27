@@ -25,8 +25,8 @@ public class UnitController : MonoBehaviour
 	
 	protected NavigationController navigationController;
 	protected Vector3 navTarget = Vector3.zero;
-	protected int pathRefreshCount = 0;
-	protected int pathRefreshRate;
+	protected float pathRefreshCount = 0;
+	protected float pathRefreshRate;
 	protected List<Vector3> path;
 	
 	protected bool onRails = false;
@@ -47,7 +47,7 @@ public class UnitController : MonoBehaviour
 		anim = transform.GetComponentInChildren<AnimationController>();
 
 		maxHealth = health;
-		pathRefreshRate = 300;
+		pathRefreshRate = 5f;
 		GameObject globalNav = GameObject.FindGameObjectWithTag("global_nav");
 		
 		if(globalNav != null)
@@ -146,10 +146,14 @@ public class UnitController : MonoBehaviour
 		if(path != null && path.Count > 1 && onRails)
 		{
 			setNavTarget(path[1]);
-			if (pathRefreshCount == pathRefreshRate)
+			if (pathRefreshCount >= pathRefreshRate)
 			{
-				navigationController.registerClick(this, path[path.Count - 1]);
-				pathRefreshCount = 0;
+				if(attackTarget != null){
+					navigationController.registerClick(this, attackTarget.transform.position);
+				} else {
+					navigationController.registerClick(this, path[path.Count - 1]);
+				}
+				pathRefreshCount = 0f;
 			}
 			else
 			{
@@ -162,8 +166,11 @@ public class UnitController : MonoBehaviour
 				/**if(path != null){
 					drawPath(path);
 				}*/
-				
-				pathRefreshCount++;
+				if(attackTarget != null && Vector3.Distance (transform.position,attackTarget.transform.position) < 100f){
+					pathRefreshCount += Time.deltaTime * 3f;
+				} else {
+					pathRefreshCount += Time.deltaTime;
+				}
 			}
 		}
 		else

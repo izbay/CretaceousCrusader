@@ -212,7 +212,7 @@ public class KeepManager : MonoBehaviour {
 		if (unit != null) {
 			if (unit.selectable == true) {
 				if (selected != null) {
-					selected.transform.Find ("Selection Projector").GetComponent<Projector> ().enabled = false;
+					selected.toggleSelected();
 				}
 				selected = unit as PlayerUnitController;
 				int altIndex = 1;
@@ -225,7 +225,7 @@ public class KeepManager : MonoBehaviour {
 				}
 				unitPanel[0].image.enabled = true;
 				if (selected != null) {
-					selected.transform.Find ("Selection Projector").GetComponent<Projector> ().enabled = true;
+					selected.toggleSelected ();
 				}
 			}
 		} else {
@@ -233,7 +233,7 @@ public class KeepManager : MonoBehaviour {
 			unitPanel[1].image.enabled = false;
 			unitPanel[2].image.enabled = false;
 			if (selected != null) {
-				selected.transform.Find ("Selection Projector").GetComponent<Projector> ().enabled = false;
+				selected.toggleSelected();
 			}
 			selected = null;
 		}

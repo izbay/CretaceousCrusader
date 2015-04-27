@@ -1,5 +1,21 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &102490
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 402490}
+  - 119: {fileID: 11902490}
+  m_Layer: 2
+  m_Name: Selection Projector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &127130
 GameObject:
   m_ObjectHideFlags: 0
@@ -10,7 +26,7 @@ GameObject:
   - 4: {fileID: 427130}
   - 119: {fileID: 11927130}
   m_Layer: 2
-  m_Name: Selection Projector
+  m_Name: Target Projector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71,6 +87,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &402490
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 102490}
+  m_LocalRotation: {x: .707106829, y: 0, z: 0, w: .707106829}
+  m_LocalPosition: {x: 0, y: 11.7200003, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 477626}
+  m_RootOrder: 0
 --- !u!4 &427130
 Transform:
   m_ObjectHideFlags: 1
@@ -78,11 +106,11 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 127130}
   m_LocalRotation: {x: .707106829, y: 0, z: 0, w: .707106829}
-  m_LocalPosition: {x: 0, y: 11.7200003, z: 0}
+  m_LocalPosition: {x: 0, y: 10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 477626}
-  m_RootOrder: 0
+  m_RootOrder: 2
 --- !u!4 &477626
 Transform:
   m_ObjectHideFlags: 1
@@ -90,11 +118,12 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 177626}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 253.778748, y: 10.4961271, z: 99.4274139}
+  m_LocalPosition: {x: 724.030823, y: 51.1948662, z: 1728.94934}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 427130}
+  - {fileID: 402490}
   - {fileID: 477628}
+  - {fileID: 427130}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &477628
@@ -300,10 +329,31 @@ MonoBehaviour:
   changeID: 0
   standingConsumption: 3
   walkingConsumption: 0
+  targetMaterials:
+  - {fileID: 2100000, guid: d0dc46f710ef5184493e693e48ec5936, type: 2}
+  - {fileID: 2100000, guid: 328e66b5e6c6389409295c35ddfaeee1, type: 2}
   keepOffsetPos: {x: 0, y: 0, z: 0}
   returning: 0
   changing: 0
   wanderDistance: 30
+--- !u!119 &11902490
+Projector:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 102490}
+  m_Enabled: 0
+  serializedVersion: 2
+  m_NearClipPlane: .100000001
+  m_FarClipPlane: 75
+  m_FieldOfView: 15
+  m_AspectRatio: 1
+  m_Orthographic: 0
+  m_OrthographicSize: 2
+  m_Material: {fileID: 2100000, guid: a9cdb98423c19412bbac43b1fb623c48, type: 2}
+  m_IgnoreLayers:
+    serializedVersion: 2
+    m_Bits: 4294967279
 --- !u!119 &11927130
 Projector:
   m_ObjectHideFlags: 1
@@ -314,11 +364,11 @@ Projector:
   serializedVersion: 2
   m_NearClipPlane: .100000001
   m_FarClipPlane: 75
-  m_FieldOfView: 15
+  m_FieldOfView: 50
   m_AspectRatio: 1
   m_Orthographic: 0
   m_OrthographicSize: 2
-  m_Material: {fileID: 2100000, guid: a9cdb98423c19412bbac43b1fb623c48, type: 2}
+  m_Material: {fileID: 2100000, guid: 328e66b5e6c6389409295c35ddfaeee1, type: 2}
   m_IgnoreLayers:
     serializedVersion: 2
     m_Bits: 4294967279
