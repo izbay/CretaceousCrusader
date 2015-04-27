@@ -34,6 +34,8 @@ public class PlayerUnitController : UnitController {
 			if(!isSelected){
 				targetIndicator.GetComponent<Projector>().enabled = isSelected;
 			}
+		} else {
+			transform.FindChild ("Selection Projector").gameObject.GetComponent<Projector>().enabled = true;
 		}
 	}
 
