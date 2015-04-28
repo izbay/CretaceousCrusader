@@ -21,8 +21,7 @@ public class PlayerUnitController : UnitController {
 	
 	public bool returning;
 	public bool changing;
-	
-	protected TerrainBuilder tb;
+
 	protected bool isSelected = false;
 	protected GameObject selectionIndicator;
 	protected GameObject targetIndicator;
@@ -46,7 +45,7 @@ public class PlayerUnitController : UnitController {
 			targetIndicator.transform.position = attackTarget.transform.position + new Vector3(0f,20f,0f);
 			targetProjector.material = targetMaterials[1];
 			targetProjector.enabled = true;
-		} else if (path != null){
+		} else if (path != null && path.Count > 1){
 			targetIndicator.transform.position = path[path.Count-1] + new Vector3(0f,5f,0f);
 			targetProjector.material = targetMaterials[0];
 			targetProjector.enabled = true;
@@ -59,7 +58,6 @@ public class PlayerUnitController : UnitController {
 	{
 		keep = GameObject.FindGameObjectWithTag("Player").GetComponent<KeepManager>();
 		keepOffsetPos = keep.transform.position+(keep.transform.forward*5);
-		tb = GameObject.Find ("Terrain").GetComponent<TerrainBuilder> ();
 		selectionIndicator = transform.FindChild ("Selection Projector").gameObject;
 		targetIndicator = transform.FindChild ("Target Projector").gameObject;
 		base.Start ();

@@ -40,12 +40,13 @@ public class UnitController : MonoBehaviour
 	protected delegate void StateDelegate();
 	protected StateDelegate stateDelegate;
 	protected AnimationController anim;
+	protected TerrainBuilder tb;
 
 	protected virtual void Start ()
 	{
 		keep = GameObject.FindObjectOfType<KeepManager>();
 		anim = transform.GetComponentInChildren<AnimationController>();
-
+		tb = GameObject.Find ("Terrain").GetComponent<TerrainBuilder>();
 		maxHealth = health;
 		pathRefreshRate = 5f;
 		GameObject globalNav = GameObject.FindGameObjectWithTag("global_nav");
@@ -64,6 +65,10 @@ public class UnitController : MonoBehaviour
 
 	protected virtual void Update()
 	{
+		Vector3 ground = tb.toGroundLevel(transform.position);
+		if(Vector3.Distance (transform.position, ground) > 5f){
+			transform.position = ground;
+		}
 		CheckHealth();
 		
 		if (stateDelegate != null)

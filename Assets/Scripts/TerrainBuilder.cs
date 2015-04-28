@@ -224,11 +224,11 @@ public class TerrainBuilder : MonoBehaviour {
 		TerrainData td = terrain.terrainData;
 		int j = Mathf.RoundToInt (td.heightmapWidth * position.z / td.size.z);
 		int i = Mathf.RoundToInt (td.heightmapHeight * position.x / td.size.x);
-		return td.GetHeight (i, j) / td.size.y;
+		return td.GetHeight (i, j);
 	}
 
 	public int getBiomeAtWorldCoord(Vector3 position){
-		float height = getHeightAtWorldCoord (position);
+		float height = getHeightAtWorldCoord (position) / terrain.terrainData.size.y;
 		if (height <= biomeLevels [0] - 0.00348f) {
 			return 0;
 		} else if (height >= biomeLevels[5] + 0.035f){
