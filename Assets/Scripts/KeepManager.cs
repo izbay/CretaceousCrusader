@@ -98,7 +98,9 @@ public class KeepManager : MonoBehaviour {
 			RaycastHit hit;
 			if (Physics.Raycast (ray, out hit)){
 				Vector3 sourcePosition = new Vector3(hutPlacement.transform.position.x, hit.point.y, hutPlacement.transform.position.z);
-				hutPlacement.transform.rotation = Quaternion.LookRotation(sourcePosition-hit.point, transform.up);
+				if(sourcePosition-hit.point != Vector3.zero){
+					hutPlacement.transform.rotation = Quaternion.LookRotation(sourcePosition-hit.point, transform.up);
+				}
 			}
 
 			if(!(Input.GetMouseButton (0) || Input.GetMouseButton (1))){
