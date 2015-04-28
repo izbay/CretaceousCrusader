@@ -14,7 +14,9 @@ public class CameraController : MonoBehaviour {
 	public int scrollWidth;
 
 	public Transform keepTransform;
+    public Transform selectedTransform;
 	public bool seekKeep;
+    public bool seekSelected;
 
 	private GameObject Keep;
 	private Vector3 oldPos;
@@ -26,6 +28,7 @@ public class CameraController : MonoBehaviour {
 		Keep = GameObject.FindGameObjectWithTag("Player");
 		selectionController = Keep.GetComponent<KeepManager>();
 		seekKeep = true;
+	    seekSelected = false;
 	}
 	
 	// Update is called once per frame
@@ -94,12 +97,14 @@ public class CameraController : MonoBehaviour {
 		if(Input.GetMouseButtonDown(2))
 		{
 			seekKeep=false;
+		    seekSelected = false;
 			oldPos = transform.position;
 			panOrigin = Camera.main.ScreenToViewportPoint(Input.mousePosition);
 		}
 		
 		if (Input.GetMouseButton (2)) {
 			seekKeep=false;
+            seekSelected = false;
 			Vector3 pos = Camera.main.ScreenToViewportPoint (Input.mousePosition) - panOrigin;
 			pos.z = pos.y;
 			pos.y = 0;
@@ -108,7 +113,12 @@ public class CameraController : MonoBehaviour {
 		//starts to seek the Keep Object if H is hit
 		else if (Input.GetKeyDown ("h")) {
 			seekKeep=true;
-		} 
+        }
+        else if (Input.GetKeyDown("g") && !seekKeep && selectionController.getSelected() != null)
+        {
+            seekSelected = true;
+            selectedTransform = selectionController.getSelected().transform;
+        }
 		//seeks out the Keep object
 		/*else if (seekKeep) {
 			Vector3 origin = Camera.main.transform.position;
@@ -179,6 +189,7 @@ public class CameraController : MonoBehaviour {
 			if(destination != origin)
 			{
 				seekKeep=false;
+                seekSelected = false;
 				Camera.main.transform.position = Vector3.MoveTowards(origin, destination, Time.deltaTime * scrollSpeed);
 			}
 
@@ -186,7 +197,8 @@ public class CameraController : MonoBehaviour {
 				if(keepTransform != null){
 					destination = keepTransform.position;
 					destination.y=Camera.main.transform.position.y;
-					if (Vector3.Distance(destination,origin)> 175f) {
+                    destination.z -= 100f;
+					if (Vector3.Distance(destination,origin)> 0f) {
 						Camera.main.transform.position = Vector3.MoveTowards (origin, destination, Time.deltaTime * scrollSpeed*2);
 					}
 					else{
@@ -197,6 +209,27 @@ public class CameraController : MonoBehaviour {
 					seekKeep=false;
 				}
 			}
+            if (seekSelected)
+            {
+                if (selectionController != null)
+                {
+                    destination = selectedTransform.position;
+                    destination.y = Camera.main.transform.position.y;
+                    destination.z -= 100f;
+                    if (Vector3.Distance(destination, origin) > 0f)
+                    {
+                        Camera.main.transform.position = Vector3.MoveTowards(origin, destination, Time.deltaTime * scrollSpeed * 2);
+                    }
+                    else
+                    {
+                        seekSelected = false;
+                    }
+                }
+                else
+                {
+                    seekSelected = false;
+                }
+            }
 
 		}
 	}
