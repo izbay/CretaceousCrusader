@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class TitleScreen : MonoBehaviour {
-
+	public AudioClip startGame;
 	private bool escHeld;
 
 	// Use this for initialization
@@ -16,6 +16,7 @@ public class TitleScreen : MonoBehaviour {
 			if(Input.GetKeyDown (KeyCode.Escape))escHeld = !escHeld;
 		} else if (!escHeld && (Input.anyKey || Input.GetMouseButton (0) || Input.GetMouseButton (1))){
 			if(Application.loadedLevelName == "Title"){
+				transform.gameObject.GetComponent<AudioSource>().PlayOneShot(startGame);
 				Application.LoadLevel ("Terrain");
 			} else {
 				Application.LoadLevel ("Title");
