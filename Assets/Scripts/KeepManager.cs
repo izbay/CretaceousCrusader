@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 public class KeepManager : MonoBehaviour {
 
@@ -31,6 +32,7 @@ public class KeepManager : MonoBehaviour {
 	private float hutCost = 200f;
 	private TerrainBuilder tb;
 	private List<float> harmonicNums = new List<float>();
+    private List<PlayerUnitController> playerUnitList = new List<PlayerUnitController>();  
 	private Text resourceIndicator;
 	private Text spawnCountIndicator;
 	private Text spawnTimerIndicator;
@@ -209,11 +211,10 @@ public class KeepManager : MonoBehaviour {
 			positions[i] = basePos + horz;
 		}
 		// Spawn the units
-		for(int i=0; i<unitList.Length; i++){
-			//GameObject unit = 
-			Instantiate (units[unitList[i]], positions[i], transform.rotation);//as GameObject;
-			//unit.transform.parent = transform;
-			//unit.GetComponent<UnitController>().
+		for(int i=0; i<unitList.Length; i++)
+		{
+		    GameObject temp = Instantiate(units[unitList[i]], positions[i], transform.rotation) as GameObject;
+		    playerUnitList.Add(temp.GetComponent<PlayerUnitController>());
 		}
 	}
 
@@ -322,4 +323,40 @@ public class KeepManager : MonoBehaviour {
 	public void addFood(int f){
 		foodQty += f;
 	}
+
+    public void selectNext()
+    {
+        bool next = false;
+        for(int i =0; i < playerUnitList.Count;i++)
+        {
+            PlayerUnitController x = playerUnitList[i];
+            if (next == false)
+            {
+                if (selected.GetInstanceID().Equals(x.GetInstanceID()))
+                {
+                    next = true;
+                    if (i == playerUnitList.Count - 1)
+                    {
+                        registerClick(playerUnitList[0]);
+                        Camera.main.GetComponent<CameraController>().selectedTransform = getSelected().transform;
+                        Camera.main.GetComponent<CameraController>().seekSelected = true;
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                registerClick(x);
+                Camera.main.GetComponent<CameraController>().seekSelected = true;
+                return;
+            }
+        }
+
+    }
+
+    public void removeUnit(PlayerUnitController x)
+    {
+        playerUnitList.Remove(x);
+
+    }
 }

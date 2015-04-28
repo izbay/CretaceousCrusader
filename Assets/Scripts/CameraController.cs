@@ -119,6 +119,10 @@ public class CameraController : MonoBehaviour {
             seekSelected = true;
             selectedTransform = selectionController.getSelected().transform;
         }
+        else if (Input.GetKeyDown("n") && !seekKeep && selectionController.getSelected() != null)
+        {
+            selectionController.selectNext();
+        }
 		//seeks out the Keep object
 		/*else if (seekKeep) {
 			Vector3 origin = Camera.main.transform.position;
@@ -211,6 +215,7 @@ public class CameraController : MonoBehaviour {
 			}
             if (seekSelected)
             {
+                selectedTransform = selectionController.getSelected().transform;
                 if (selectionController != null)
                 {
                     destination = selectedTransform.position;

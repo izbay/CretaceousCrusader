@@ -136,7 +136,7 @@ public class PlayerUnitController : UnitController {
 				a.playerUnitsNearby.Remove(this);
 			}
 		}
-		
+		keep.removeUnit(this);
 		base.OnDestroy();
 	}
 }
