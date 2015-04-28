@@ -326,30 +326,40 @@ public class KeepManager : MonoBehaviour {
 
     public void selectNext()
     {
-        bool next = false;
-        for(int i =0; i < playerUnitList.Count;i++)
+        if (getSelected() != null)
         {
-            PlayerUnitController x = playerUnitList[i];
-            if (next == false)
+            bool next = false;
+            for (int i = 0; i < playerUnitList.Count; i++)
             {
-                if (selected.GetInstanceID().Equals(x.GetInstanceID()))
+                PlayerUnitController x = playerUnitList[i];
+                if (next == false)
                 {
-                    next = true;
-                    if (i == playerUnitList.Count - 1)
+                    if (selected.GetInstanceID().Equals(x.GetInstanceID()))
                     {
-                        registerClick(playerUnitList[0]);
-                        Camera.main.GetComponent<CameraController>().selectedTransform = getSelected().transform;
-                        Camera.main.GetComponent<CameraController>().seekSelected = true;
-                        return;
+                        next = true;
+                        if (i == playerUnitList.Count - 1)
+                        {
+                            registerClick(playerUnitList[0]);
+                            Camera.main.GetComponent<CameraController>().selectedTransform = getSelected().transform;
+                            Camera.main.GetComponent<CameraController>().seekSelected = true;
+                            return;
+                        }
                     }
                 }
+                else
+                {
+                    registerClick(x);
+                    Camera.main.GetComponent<CameraController>().seekSelected = true;
+                    return;
+                }
             }
-            else
-            {
-                registerClick(x);
-                Camera.main.GetComponent<CameraController>().seekSelected = true;
-                return;
-            }
+        }
+        else
+        {
+            registerClick(playerUnitList[0]);
+            Camera.main.GetComponent<CameraController>().selectedTransform = getSelected().transform;
+            Camera.main.GetComponent<CameraController>().seekSelected = true;
+            return;
         }
 
     }

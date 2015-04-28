@@ -119,7 +119,7 @@ public class CameraController : MonoBehaviour {
             seekSelected = true;
             selectedTransform = selectionController.getSelected().transform;
         }
-        else if (Input.GetKeyDown("n") && !seekKeep && selectionController.getSelected() != null)
+        else if (Input.GetKeyDown("n") && !seekKeep)
         {
             selectionController.selectNext();
         }
