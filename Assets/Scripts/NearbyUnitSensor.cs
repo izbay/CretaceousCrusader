@@ -14,7 +14,9 @@ public class NearbyUnitSensor : MonoBehaviour {
 	{
 		if (other.CompareTag("dino"))
 		{
-			parentDino.dinosNearby.Add(other.GetComponent<DinoController>());
+			if(parentDino != null){
+				parentDino.dinosNearby.Add(other.GetComponent<DinoController>());
+			}
 		}
 		else if (other.CompareTag("lancer") || other.CompareTag("quarrier") || other.CompareTag("farmer"))
 		{

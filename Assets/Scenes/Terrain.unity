@@ -2892,7 +2892,9 @@ MonoBehaviour:
   dragSpeed: 200
   scrollWidth: 25
   keepTransform: {fileID: 0}
+  selectedTransform: {fileID: 0}
   seekKeep: 0
+  seekSelected: 0
 --- !u!82 &2047553291
 AudioSource:
   m_ObjectHideFlags: 0

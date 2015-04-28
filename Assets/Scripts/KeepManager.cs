@@ -280,6 +280,7 @@ public class KeepManager : MonoBehaviour {
 	public void changeUnit(PlayerUnitController unit, int id){
 		// Command the unit to change. This is a placeholder.
 			GameObject newUnit = Instantiate (units[id], unit.transform.position,unit.transform.rotation) as GameObject;
+			playerUnitList.Add(newUnit.GetComponent<PlayerUnitController>());	
 			GameObject.Destroy(unit.transform.root.gameObject);
 		if (selected!= null && selected.GetInstanceID() == unit.GetInstanceID()) {
 			registerClick (null);

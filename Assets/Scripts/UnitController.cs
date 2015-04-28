@@ -65,10 +65,6 @@ public class UnitController : MonoBehaviour
 
 	protected virtual void Update()
 	{
-		Vector3 ground = tb.toGroundLevel(transform.position);
-		if(Vector3.Distance (transform.position, ground) > 5f){
-			transform.position = ground;
-		}
 		CheckHealth();
 		
 		if (stateDelegate != null)

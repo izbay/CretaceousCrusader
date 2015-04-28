@@ -50,10 +50,16 @@ public class DinoController : UnitController
 			{
 				if(nest != null)
 				{
-					Vector3 newPos = nest.transform.position + new Vector3(Random.Range(-100, 100), 0, Random.Range(-100, 100));
-					// clamp to terrain boundary
-					newPos.x = Mathf.Clamp(newPos.x, 1, 2999);
-					newPos.z = Mathf.Clamp(newPos.z, 1, 2999);
+					int biome;
+					Vector3 newPos;
+					do{
+						newPos = nest.transform.position + new Vector3(Random.Range(-100, 100), 0, Random.Range(-100, 100));
+						// clamp to terrain boundary
+						newPos.x = Mathf.Clamp(newPos.x, 1, 2999);
+						newPos.z = Mathf.Clamp(newPos.z, 1, 2999);
+						biome = tb.getBiomeAtWorldCoord(newPos);
+					} while (biome == 0 || biome == 5);
+
 					navigationController.registerClick(this, newPos);
 					//				stateDelegate = Moving;
 				}

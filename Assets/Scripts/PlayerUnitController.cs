@@ -65,6 +65,10 @@ public class PlayerUnitController : UnitController {
 
 	protected override void Update()
 	{
+		Vector3 ground = tb.toGroundLevel(transform.position);
+		if(Vector3.Distance (transform.position, ground) > 5f){
+			transform.position = ground;
+		}
 		base.Update ();
 		if(isSelected){
 			updateTargetIndicator();
