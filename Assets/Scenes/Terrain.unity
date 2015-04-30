@@ -1873,11 +1873,13 @@ MonoBehaviour:
   attackRate: 5
   attackRange: 30
   attackTarget: {fileID: 0}
+  assistTarget: {fileID: 0}
   attackers: []
   turnSpeed: 2
   moveSpeed: 10
   selectable: 0
   sliderPrefab: {fileID: 11424286, guid: 3af583ca14c5be24997e5e1d69afe92f, type: 2}
+  stateIndicator: 
   playerUnitsNearby: []
   dinosNearby: []
   foodValue: 0

@@ -67,20 +67,29 @@ public class CameraController : MonoBehaviour {
 						int layerHit = hit.transform.gameObject.layer;
 						if(layerHit==LayerMask.NameToLayer("Water") && !(unitController is FarmerController)){
 							navigationController.registerClick (hit.point);
+							unitController.assistTarget=null;
 							unitController.attackTarget=null;
 						}else if(layerHit==LayerMask.NameToLayer("Enemy Unit") && !(unitController is FarmerController)){
+							unitController.assistTarget=null;
 							unitController.registerClick(hit.transform.gameObject.GetComponent<UnitController>());
 						}else if(layerHit == LayerMask.NameToLayer("Stone")){
 							if(unitController is QuarrierController){
+								unitController.assistTarget=null;
 								unitController.registerClick(hit.transform.gameObject.GetComponent<StoneController>());
 							}
 						}else if(layerHit == LayerMask.NameToLayer("Keep")){
 							if(unitController is QuarrierController){
 								navigationController.registerClick(Keep.transform.position);
 								(unitController as QuarrierController).ReturnResources();
+								unitController.assistTarget=null;
 								unitController.attackTarget=null;
 							}
-						}else {
+						}else if(layerHit == LayerMask.NameToLayer ("Unit") && !(unitController is FarmerController)){
+							unitController.registerClick(hit.transform.gameObject.GetComponent<UnitController>());
+							unitController = hit.transform.gameObject.GetComponent<UnitController>();
+							selectionController.registerClick(unitController);
+							//unitController.attackTarget = null;
+							//unitController.assistTarget = hit.transform.gameObject.GetComponent<UnitController>();
 						}
 					}
 				}

@@ -11,6 +11,7 @@ public class UnitController : MonoBehaviour
 	public float attackRate;
 	public float attackRange;
 	public UnitController attackTarget;
+	public UnitController assistTarget;
 	public List<UnitController> attackers;
 	
 	public float turnSpeed;
@@ -20,6 +21,9 @@ public class UnitController : MonoBehaviour
 	
 	public Slider sliderPrefab;
 
+	public string stateIndicator;
+
+	protected float followRange = 5f;
 	protected float maxHealth;
 	protected Slider healthBar;
 	
@@ -80,23 +84,65 @@ public class UnitController : MonoBehaviour
 	
 	protected virtual void IdleState()
 	{
-		if (navTarget != Vector3.zero || path != null)
+		stateIndicator = "idle";
+		setRails (false);
+		if (assistTarget != null && !LeaderInRange())
+		{
+			stateDelegate = FollowingState;
+		}
+		else if (assistTarget == null && (navTarget != Vector3.zero || path != null))
 		{
 			stateDelegate = MovingState;
 		}
+		else
+		{
+			UpdateAssistTargetting();
+		}
 	}
-	
+
 	protected virtual void MovingState()
 	{
+		stateIndicator = "moving";
 		Move();
 		if (path == null && navTarget == Vector3.zero)
 		{
 			stateDelegate = IdleState;
 		}
 	}
-	
+
+	protected virtual void FollowingState()
+	{
+		stateIndicator="following";
+		if (assistTarget == null || LeaderInRange())
+		{
+			stateDelegate = IdleState;
+		}
+		else
+		{
+			UpdateAssistTargetting();
+			Move ();
+		}
+	}
+
+	protected virtual void UpdateAssistTargetting()
+	{
+		if(assistTarget != null)
+		{
+			if(assistTarget.attackTarget != null)
+			{
+				setAttackTarget(assistTarget.attackTarget);
+			}
+			else
+			{
+				attackTarget = null;
+			}
+		}
+	}
+
 	protected virtual void AttackingState()
 	{
+		stateIndicator = "attacking";
+		UpdateAssistTargetting();
 		if (attackTarget == null)
 		{
 			stateDelegate = IdleState;
@@ -122,9 +168,16 @@ public class UnitController : MonoBehaviour
 	
 	public virtual void registerClick(UnitController unit)
 	{
-		if (unit.selectable == true)
+		if(unit is FarmerController)
 		{
 			navTarget = unit.transform.position;
+		}
+		else if (unit.selectable == true)
+		{
+			assistTarget = unit;
+			attackTarget = null;
+			navigationController.registerClick(this, assistTarget.transform.position);
+			stateDelegate = FollowingState;
 		}
 		
 		else
@@ -151,6 +204,8 @@ public class UnitController : MonoBehaviour
 			{
 				if(attackTarget != null){
 					navigationController.registerClick(this, attackTarget.transform.position);
+				} else if(assistTarget != null){
+					navigationController.registerClick(this, assistTarget.transform.position);
 				} else {
 					navigationController.registerClick(this, path[path.Count - 1]);
 				}
@@ -176,9 +231,32 @@ public class UnitController : MonoBehaviour
 		}
 		else
 		{
-			path = null;
-			navTarget = Vector3.zero;
-			setRails(false);
+			if(assistTarget != null)
+			{
+				Vector3 targetPos = assistTarget.transform.position-(transform.position-assistTarget.transform.position).normalized*followRange;
+				if (pathRefreshCount >= pathRefreshRate && assistTarget != null && !LeaderInRange())
+				{
+					navigationController.registerClick(this, targetPos);
+					pathRefreshCount = 0f;
+				}
+				else
+				{
+					if(Vector3.Distance(transform.position, targetPos) > 250f)
+					{
+						pathRefreshCount += Time.deltaTime * 3f;
+					}
+					else
+					{
+						pathRefreshCount +=  Time.deltaTime * 10f;
+					}
+				}
+			}
+			else
+			{
+				path = null;
+				navTarget = Vector3.zero;
+				setRails(false);
+			}
 		}
 	}
 	
@@ -265,6 +343,11 @@ public class UnitController : MonoBehaviour
 	{
 		onRails = railSetting;
 		anim.setRails(railSetting);
+	}
+
+	public virtual bool LeaderInRange()
+	{
+		return Vector3.Distance (transform.position, assistTarget.transform.position) < followRange;
 	}
 
 	public virtual bool TargetInRange()
