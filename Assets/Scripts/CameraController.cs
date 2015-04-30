@@ -65,10 +65,10 @@ public class CameraController : MonoBehaviour {
 					RaycastHit hit;
 					if (Physics.Raycast (ray, out hit)){
 						int layerHit = hit.transform.gameObject.layer;
-						if(layerHit==LayerMask.NameToLayer("Water")){
+						if(layerHit==LayerMask.NameToLayer("Water") && !(unitController is FarmerController)){
 							navigationController.registerClick (hit.point);
 							unitController.attackTarget=null;
-						}else if(layerHit==LayerMask.NameToLayer("Enemy Unit")){
+						}else if(layerHit==LayerMask.NameToLayer("Enemy Unit") && !(unitController is FarmerController)){
 							unitController.registerClick(hit.transform.gameObject.GetComponent<UnitController>());
 						}else if(layerHit == LayerMask.NameToLayer("Stone")){
 							if(unitController is QuarrierController){

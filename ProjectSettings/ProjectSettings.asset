@@ -109,11 +109,11 @@ PlayerSettings:
   m_BuildTargetIcons:
   - m_BuildTarget: 
     m_Icons:
-    - m_Icon: {fileID: 0}
+    - m_Icon: {fileID: 2800000, guid: 0a1878665b4fb8945b846fd2b2135f57, type: 3}
       m_Size: 128
   - m_BuildTarget: Standalone
     m_Icons:
-    - m_Icon: {fileID: 2800000, guid: df2df5aceb9eb69438f830a5e12735ec, type: 3}
+    - m_Icon: {fileID: 2800000, guid: 0a1878665b4fb8945b846fd2b2135f57, type: 3}
       m_Size: 1024
     - m_Icon: {fileID: 0}
       m_Size: 512
@@ -121,13 +121,16 @@ PlayerSettings:
       m_Size: 256
     - m_Icon: {fileID: 0}
       m_Size: 128
-    - m_Icon: {fileID: 0}
+    - m_Icon: {fileID: 2800000, guid: 8d116206409c6b34788fca728f62446b, type: 3}
       m_Size: 48
     - m_Icon: {fileID: 0}
       m_Size: 32
     - m_Icon: {fileID: 0}
       m_Size: 16
-  m_BuildTargetBatching: []
+  m_BuildTargetBatching:
+  - m_BuildTarget: Standalone
+    m_StaticBatching: 1
+    m_DynamicBatching: 1
   webPlayerTemplate: APPLICATION:Default
   m_TemplateCustomTags: {}
   locationUsageDescription: 
@@ -222,7 +225,7 @@ PlayerSettings:
   metroPhoneSplashScreenImage: 
   metroPhoneSplashScreenImage140: 
   metroPhoneSplashScreenImage240: 
-  metroTileShortName: 
+  metroTileShortName: CretaceousCru
   metroCommandLineArgsFile: 
   metroTileShowName: 0
   metroMediumTileShowName: 0

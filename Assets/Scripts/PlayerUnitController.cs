@@ -30,7 +30,7 @@ public class PlayerUnitController : UnitController {
 		isSelected = !isSelected;	
 		if(selectionIndicator != null){
 			selectionIndicator.GetComponent<Projector>().enabled = isSelected;
-			if(!isSelected){
+			if(!isSelected && !(this is FarmerController)){
 				targetIndicator.GetComponent<Projector>().enabled = isSelected;
 			}
 		} else {
@@ -70,7 +70,7 @@ public class PlayerUnitController : UnitController {
 			transform.position = ground;
 		}
 		base.Update ();
-		if(isSelected){
+		if(isSelected && !(this is FarmerController)){
 			updateTargetIndicator();
 		}
 //		Debug.Log (stateDelegate.Method.Name);
