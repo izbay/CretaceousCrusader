@@ -48,7 +48,8 @@ public class LargeDinoController : DinoController
 					} while (biome == 0 || biome == 5);
 
 					float dist = Vector3.Distance (keepPos, newPos);
-					if(dist < bestDist){
+					// 33% chance to not take the closest path.
+					if(dist < bestDist || Random.Range (0f,1f) < 0.33f){
 						bestDist = dist;
 						bestPos = newPos;
 					}
@@ -75,7 +76,9 @@ public class LargeDinoController : DinoController
 		base.OnDestroy();
 		if (!loseFlag && keep != null && keep.totalUnits() != 0)
 		{
-			GameObject.Find("Princess(Clone)").GetComponent<PrincessController>().winFlag = true;
+			GameObject Princess = GameObject.Find("Princess(Clone)");
+			if(Princess != null)
+				Princess.GetComponent<PrincessController>().winFlag = true;
 			Application.LoadLevel("Win");
 		}
 	}

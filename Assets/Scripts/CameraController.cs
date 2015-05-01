@@ -23,7 +23,6 @@ public class CameraController : MonoBehaviour {
 	private Vector3 panOrigin;
 	private KeepManager selectionController;
 	private bool mapActive = false;
-	private bool toggleSpamLimiter = false;
 	private Camera mapCamera;
 
 	// Use this for initialization
@@ -98,14 +97,9 @@ public class CameraController : MonoBehaviour {
 					}
 				}
 			}
-			if(Input.GetKey (KeyCode.M)){
-				if(!toggleSpamLimiter){
-					toggleSpamLimiter = true;
-					mapActive = !mapActive;
-					mapCamera.enabled = mapActive;
-				}
-			} else if(toggleSpamLimiter){
-				toggleSpamLimiter = false;
+			if(Input.GetKeyDown (KeyCode.M)){
+				mapActive = !mapActive;
+				mapCamera.enabled = mapActive;
 			}
 		}
 	}

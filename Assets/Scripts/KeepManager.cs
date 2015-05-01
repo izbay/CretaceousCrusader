@@ -13,6 +13,7 @@ public class KeepManager : MonoBehaviour {
 	public bool placingHut;
 	public GameObject hutPrefab;
 	public int maxUnitCount = 5;
+	public Font font;
 
 	private bool rotatingHut = false;
 	private GameObject hutPlacement;
@@ -37,14 +38,16 @@ public class KeepManager : MonoBehaviour {
 	private Text spawnCountIndicator;
 	private Text spawnTimerIndicator;
 	private Button[] unitPanel = new Button[3];
-	private bool escHeld = false;
+	private bool escMenu = false;
+	private GameObject escButton;
 	// Use this for initialization
 	void Start () {
 		UI = GameObject.Find ("Canvas");
 		Camera.main.GetComponent<CameraController>().keepTransform = this.transform;
 		Camera.main.GetComponent<CameraController>().seekKeep = true;
 		tb = GameObject.Find("Terrain").GetComponent<TerrainBuilder>();
-
+		escButton = GameObject.Find ("Quit");
+		escButton.SetActive(false);
 		resourceIndicator = UI.transform.Find("Info_Panel/Resources").GetComponent<Text>();
 		spawnCountIndicator = UI.transform.Find("Info_Panel/Unit_Cap_Control/Respawn").GetComponent<Text>();
 		spawnTimerIndicator = UI.transform.Find("Info_Panel/Unit_Cap_Control/SpawnCountdown").GetComponent<Text>();
@@ -55,7 +58,10 @@ public class KeepManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetKeyDown (KeyCode.Escape))escHeld = !escHeld;
+		if(Input.GetKeyDown (KeyCode.Escape)){
+			escMenu = !escMenu;
+			escButton.SetActive(escMenu);
+		}
 		
 		int unitTotal = totalUnits ();
 
@@ -86,15 +92,11 @@ public class KeepManager : MonoBehaviour {
 		}
 	}
 
-	void OnGUI(){
-		//if(Input.GetKeyDown (KeyCode.Escape))escHeld = !escHeld; //put this in update
-		if(escHeld){
-			float w = Screen.width / 2f;
-			float h = Screen.height / 2f;
-			if(GUI.Button (new Rect(w-50f,h-10f,100,20),"Forfeit")){
-				Application.LoadLevel ("Title");
-			}
-		}
+	public void quitGame(){
+		GameObject LDino = GameObject.Find("L_Dino");
+		if(LDino != null)
+			LDino.GetComponent<LargeDinoController>().loseFlag = true;
+		Application.LoadLevel("Lose");
 	}
 
 	private void dragHut(){
@@ -206,6 +208,7 @@ public class KeepManager : MonoBehaviour {
 	public void Spawn(){
 		Spawn (new int[1] {0});
 	}
+
 	public void Spawn(int[] unitList){
 		Vector3[] positions = new Vector3[unitList.Length];
 		Vector3 basePos = transform.position + transform.forward.normalized * 5f;
@@ -217,7 +220,8 @@ public class KeepManager : MonoBehaviour {
 		for(int i=0; i<unitList.Length; i++)
 		{
 		    GameObject temp = Instantiate(units[unitList[i]], positions[i], transform.rotation) as GameObject;
-		    playerUnitList.Add(temp.GetComponent<PlayerUnitController>());
+			if(!(temp.GetComponent<PlayerUnitController>() is PrincessController))
+			   playerUnitList.Add(temp.GetComponent<PlayerUnitController>());
 		}
 	}
 

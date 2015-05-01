@@ -30,7 +30,9 @@ public class PrincessController : FarmerController {
 	{
 		base.OnDestroy();
 		if (!winFlag){
-			GameObject.Find("L_Dino").GetComponent<LargeDinoController>().loseFlag = true;
+			GameObject LDino = GameObject.Find("L_Dino");
+			if(LDino != null)
+				LDino.GetComponent<LargeDinoController>().loseFlag = true;
 			Application.LoadLevel("Lose");
 		}
 	}
