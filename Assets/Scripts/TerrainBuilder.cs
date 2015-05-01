@@ -13,6 +13,7 @@ public class TerrainBuilder : MonoBehaviour {
 	private float[,,] alphaData;
 	private int nestAmt = 15;
 	private int stoneAmt = 40;
+	private int treeAmt = 25;
 	private float spawnTick = 0f;
 	private float spawnSpeed = 30f;
 	private List<Vector3> KeepLocations = new List<Vector3>();
@@ -140,6 +141,7 @@ public class TerrainBuilder : MonoBehaviour {
 
 		StartCoroutine(Place (Objects[1], nestAmt, NestLocations));
 		StartCoroutine(Place (Objects[2], stoneAmt, RockLocations));
+		StartCoroutine(Place (Objects[4], treeAmt, NestLocations));
 	}
 
 	private void PlaceKeep(){
