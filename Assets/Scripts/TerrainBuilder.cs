@@ -174,25 +174,30 @@ public class TerrainBuilder : MonoBehaviour {
 	IEnumerator Place(GameObject obj, int num, List<Vector3> list){
 		List<Vector3> usedLocations = new List<Vector3>();
 		for(int k=0; k < num; k++){
-			bool foundFlag;
-			Vector3 proposedLocation = Vector3.zero;
-			do {
-				foundFlag = true;
-				proposedLocation = list[list.Count-1];
-				foreach (Vector3 v in usedLocations){
-					if (Vector3.Distance (v, proposedLocation) < 300f){
-						foundFlag = false;
+			try{	
+				bool foundFlag;
+				Vector3 proposedLocation = Vector3.zero;
+				do {
+					foundFlag = true;
+					proposedLocation = list[list.Count-1];
+					foreach (Vector3 v in usedLocations){
+						if (Vector3.Distance (v, proposedLocation) < 300f){
+							foundFlag = false;
+						}
 					}
+					list.RemoveAt (list.Count-1);
+				} while (!foundFlag && list.Count >= 1);
+				if (foundFlag){
+					GameObject node = Instantiate (obj, proposedLocation, Quaternion.Euler(0, UnityEngine.Random.Range(0, 360), 0)) as GameObject;
+					node.transform.parent = transform;
+					usedLocations.Add (proposedLocation);
 				}
-				list.RemoveAt (list.Count-1);
-			} while (!foundFlag && list.Count >= 1);
-			if (foundFlag){
-				GameObject node = Instantiate (obj, proposedLocation, Quaternion.Euler(0, UnityEngine.Random.Range(0, 360), 0)) as GameObject;
-				node.transform.parent = transform;
-				usedLocations.Add (proposedLocation);
+			} catch {
+				// Ignore problems due to indexing.
 			}
 			yield return null;
 		}
+		
 	}
 
 	private List<Vector3> Shuffle(List<Vector3> list, int cullingRadius){  

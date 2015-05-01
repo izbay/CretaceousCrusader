@@ -40,12 +40,15 @@ public class KeepManager : MonoBehaviour {
 	private Button[] unitPanel = new Button[3];
 	private bool escMenu = false;
 	private GameObject escButton;
+	private StatTracker statTracker;
+
 	// Use this for initialization
 	void Start () {
 		UI = GameObject.Find ("Canvas");
 		Camera.main.GetComponent<CameraController>().keepTransform = this.transform;
 		Camera.main.GetComponent<CameraController>().seekKeep = true;
 		tb = GameObject.Find("Terrain").GetComponent<TerrainBuilder>();
+		statTracker = GameObject.FindGameObjectWithTag("stat_tracker").GetComponent<StatTracker>();
 		escButton = GameObject.Find ("Quit");
 		escButton.SetActive(false);
 		resourceIndicator = UI.transform.Find("Info_Panel/Resources").GetComponent<Text>();
@@ -58,6 +61,7 @@ public class KeepManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		statTracker.time += Time.deltaTime;
 		if(Input.GetKeyDown (KeyCode.Escape)){
 			escMenu = !escMenu;
 			escButton.SetActive(escMenu);
@@ -171,9 +175,13 @@ public class KeepManager : MonoBehaviour {
 	}
 
 	public int totalUnits(){
-		return 	GameObject.FindGameObjectsWithTag("farmer").Length +
-				GameObject.FindGameObjectsWithTag("quarrier").Length +
-				GameObject.FindGameObjectsWithTag("lancer").Length;
+		int total = GameObject.FindGameObjectsWithTag("farmer").Length + // includes princesses...
+					GameObject.FindGameObjectsWithTag("quarrier").Length +
+					GameObject.FindGameObjectsWithTag("lancer").Length;
+		if(total > statTracker.maxUnits){
+			statTracker.maxUnits = total;
+		}
+		return total;
 	}
 
 	private void generateFood(){

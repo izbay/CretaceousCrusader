@@ -7,6 +7,10 @@ public class LargeDinoController : DinoController
 	protected GameObject mapIcon;
 	protected Vector3 keepPos;
 
+	protected float regenTick = 0f;
+	protected float regenSpeed = 20f;
+	protected float regenAmount = 1f;
+
 	protected override void Start()
 	{
 		keepPos = GameObject.FindGameObjectWithTag("Player").transform.position;
@@ -17,7 +21,24 @@ public class LargeDinoController : DinoController
 	protected override void Update()
 	{
 		mapIcon.transform.rotation = Quaternion.Euler (90,0,0);
+
+		if(regenTick > regenSpeed){
+			health += regenAmount;
+			if(health > maxHealth){
+				health = maxHealth;
+			}
+			regenTick = 0f;
+		} else {
+			regenTick += Time.deltaTime;
+		}
+
 		base.Update();
+	}
+
+	public override void Hit(UnitController attacker)
+	{
+		statTracker.LdinoHealth = health * 100f / maxHealth;
+		base.Hit (attacker);
 	}
 
 	protected override void IdleState()

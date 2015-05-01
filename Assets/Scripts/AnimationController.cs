@@ -12,7 +12,10 @@ public class AnimationController : MonoBehaviour {
 
 	private float roarTick = 0;
 	private float nextRoar = -1;
+	private StatTracker statTracker;
+
 	void Start () {
+		statTracker = GameObject.FindGameObjectWithTag("stat_tracker").GetComponent<StatTracker>();
 		anim = transform.gameObject.GetComponent<Animator>();
 		aux = transform.gameObject.GetComponent<AudioSource>();
 		if(roar != null){
@@ -72,6 +75,11 @@ public class AnimationController : MonoBehaviour {
 	}
 
 	public void hideThis(){
+		if(obj.GetComponent<UnitController>() is PlayerUnitController){
+			statTracker.unitsKilled += 1;
+		} else {
+			statTracker.dinosKilled += 1;
+		}
 		transform.GetComponentInChildren<MeshRenderer>().enabled = false;
 		GameObject.Destroy (obj);
 	}

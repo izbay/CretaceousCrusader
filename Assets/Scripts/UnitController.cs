@@ -45,12 +45,14 @@ public class UnitController : MonoBehaviour
 	protected StateDelegate stateDelegate;
 	protected AnimationController anim;
 	protected TerrainBuilder tb;
+	protected StatTracker statTracker;
 
 	protected virtual void Start ()
 	{
 		keep = GameObject.FindObjectOfType<KeepManager>();
 		anim = transform.GetComponentInChildren<AnimationController>();
 		tb = GameObject.Find ("Terrain").GetComponent<TerrainBuilder>();
+		statTracker = GameObject.FindGameObjectWithTag("stat_tracker").GetComponent<StatTracker>();
 		maxHealth = health;
 		pathRefreshRate = 5f;
 		GameObject globalNav = GameObject.FindGameObjectWithTag("global_nav");
