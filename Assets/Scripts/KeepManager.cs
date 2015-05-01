@@ -56,10 +56,13 @@ public class KeepManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(Input.GetKeyDown (KeyCode.Escape))escHeld = !escHeld;
+		
 		int unitTotal = totalUnits ();
+
+		/** This case is obsolete with the Princess change. If there are 0 units, she already ended the game.
 		if(unitTotal == 0){
 			Application.LoadLevel("Lose");
-		}
+		}*/
 
 		generateFood();
 
@@ -226,7 +229,7 @@ public class KeepManager : MonoBehaviour {
 				}
 				selected = unit as PlayerUnitController;
 				int altIndex = 1;
-				for(int i=0; i<units.Length; i++){
+				for(int i=0; i<units.Length-1; i++){
 					if(selected.transform.CompareTag (units[i].transform.tag)){
 						unitPanel[0].image.sprite = unitIco[i];
 					} else {
@@ -251,7 +254,7 @@ public class KeepManager : MonoBehaviour {
 
 	public void doPrimaryButtonAction(){
 		bool isUnit = false;
-		for(int i=0; i<units.Length; i++){
+		for(int i=0; i<units.Length-1; i++){
 			if(selected != null && selected.transform.CompareTag (units[i].transform.tag)){
 				isUnit = true;
 			}
@@ -294,7 +297,7 @@ public class KeepManager : MonoBehaviour {
 
 	}
 	public void changeUnitClass(int id){
-		for (int i=0; i<units.Length; i++) {
+		for (int i=0; i<units.Length-1; i++) {
 			if (unitPanel [id].image.sprite == unitIco [i] && unitPanel[id].image.enabled) {
 				selected.ChangeClass (i);
 			}

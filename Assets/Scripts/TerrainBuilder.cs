@@ -148,7 +148,7 @@ public class TerrainBuilder : MonoBehaviour {
 		keep.transform.position = KeepLocations[0];
 		keep.transform.rotation = Quaternion.Euler (0, 180, 0);//UnityEngine.Random.Range(0, 360), 0);
 		//keep.transform.parent = transform;
-		keep.GetComponent<KeepManager>().Spawn(new int[]{1,0,0,0,1});
+		keep.GetComponent<KeepManager>().Spawn(new int[]{1,0,3,0,1});
 	}
 
 	private void PlaceBigDino(){

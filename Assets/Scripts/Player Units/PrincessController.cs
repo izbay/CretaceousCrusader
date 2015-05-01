@@ -1,0 +1,35 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class PrincessController : FarmerController {
+	protected float regenTick = 0f;
+	protected float regenSpeed = 15f;
+	protected float regenAmount = 2f;
+
+	protected override void Start () {
+		base.Start ();
+		classID = 3;
+	}
+
+	protected override void Update() {
+		base.Update ();
+
+		if(regenTick > regenSpeed){
+			health += regenAmount;
+			if(health > maxHealth){
+				health = maxHealth;
+			}
+			regenTick = 0f;
+		} else {
+			regenTick += Time.deltaTime;
+		}
+	}
+
+	protected override void OnDestroy()
+	{
+		base.OnDestroy();
+		if (keep != null && keep.totalUnits() != 0){
+			Application.LoadLevel("Lose");
+		}
+	}
+}
