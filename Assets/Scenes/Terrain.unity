@@ -1893,6 +1893,7 @@ MonoBehaviour:
   playerUnitsNearby: []
   dinosNearby: []
   foodValue: 0
+  loseFlag: 0
 --- !u!54 &1466881888
 Rigidbody:
   m_ObjectHideFlags: 0

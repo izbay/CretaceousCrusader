@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class PrincessController : FarmerController {
+	public bool winFlag = false;
 	protected float regenTick = 0f;
 	protected float regenSpeed = 15f;
 	protected float regenAmount = 2f;
@@ -28,7 +29,8 @@ public class PrincessController : FarmerController {
 	protected override void OnDestroy()
 	{
 		base.OnDestroy();
-		if (keep != null && keep.totalUnits() != 0){
+		if (!winFlag){
+			GameObject.Find("L_Dino").GetComponent<LargeDinoController>().loseFlag = true;
 			Application.LoadLevel("Lose");
 		}
 	}
