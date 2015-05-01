@@ -3,6 +3,19 @@ using System.Collections;
 
 public class LargeDinoController : DinoController
 {
+	protected GameObject mapIcon;
+
+	protected override void Start()
+	{
+		mapIcon = transform.FindChild("MapIndicator").gameObject;
+		base.Start();
+	}
+
+	protected override void Update()
+	{
+		mapIcon.transform.rotation = Quaternion.Euler (90,0,0);
+		base.Update();
+	}
 
 	protected override void IdleState()
 	{
