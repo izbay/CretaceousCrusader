@@ -86,11 +86,11 @@ public class UnitController : MonoBehaviour
 	{
 		stateIndicator = "idle";
 		setRails (false);
-		if (assistTarget != null && !LeaderInRange())
+		if (assistTarget != null)// && !LeaderInRange())
 		{
 			stateDelegate = FollowingState;
 		}
-		else if (assistTarget == null && (navTarget != Vector3.zero || path != null))
+		else if (navTarget != Vector3.zero || path != null)//() && assistTarget == null )
 		{
 			stateDelegate = MovingState;
 		}
@@ -103,6 +103,7 @@ public class UnitController : MonoBehaviour
 	protected virtual void MovingState()
 	{
 		stateIndicator = "moving";
+		setRails (true);
 		Move();
 		if (path == null && navTarget == Vector3.zero)
 		{

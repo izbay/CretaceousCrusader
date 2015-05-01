@@ -58,8 +58,11 @@ public class QuarrierController : PlayerUnitController
 	
 	public void ReturnResources()
 	{
-		ReturnToKeep ();
+
+		assistTarget=null;
+		attackTarget=null;
 		returning = true;
+		ReturnToKeep ();
 	}
 	
 	public void UnloadResources()
