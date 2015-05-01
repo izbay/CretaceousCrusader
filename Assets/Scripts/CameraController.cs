@@ -22,6 +22,9 @@ public class CameraController : MonoBehaviour {
 	private Vector3 oldPos;
 	private Vector3 panOrigin;
 	private KeepManager selectionController;
+	private bool mapActive = false;
+	private bool toggleSpamLimiter = false;
+	private Camera mapCamera;
 
 	// Use this for initialization
 	void Start () {
@@ -29,6 +32,7 @@ public class CameraController : MonoBehaviour {
 		selectionController = Keep.GetComponent<KeepManager>();
 		seekKeep = true;
 	    seekSelected = false;
+		mapCamera = GameObject.Find ("Map Camera").GetComponent<Camera>();
 	}
 	
 	// Update is called once per frame
@@ -93,6 +97,15 @@ public class CameraController : MonoBehaviour {
 						}
 					}
 				}
+			}
+			if(Input.GetKey (KeyCode.M)){
+				if(!toggleSpamLimiter){
+					toggleSpamLimiter = true;
+					mapActive = !mapActive;
+					mapCamera.enabled = mapActive;
+				}
+			} else if(toggleSpamLimiter){
+				toggleSpamLimiter = false;
 			}
 		}
 	}

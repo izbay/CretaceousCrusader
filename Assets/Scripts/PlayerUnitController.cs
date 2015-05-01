@@ -25,6 +25,7 @@ public class PlayerUnitController : UnitController {
 	protected bool isSelected = false;
 	protected GameObject selectionIndicator;
 	protected GameObject targetIndicator;
+	protected GameObject mapIcon;
 
 	public void toggleSelected(){
 		isSelected = !isSelected;	
@@ -60,6 +61,7 @@ public class PlayerUnitController : UnitController {
 		keepOffsetPos = keep.transform.position+(keep.transform.forward*5);
 		selectionIndicator = transform.FindChild ("Selection Projector").gameObject;
 		targetIndicator = transform.FindChild ("Target Projector").gameObject;
+		mapIcon = transform.FindChild("MapIndicator").gameObject;
 		base.Start ();
 	}
 
@@ -69,6 +71,7 @@ public class PlayerUnitController : UnitController {
 		if(Vector3.Distance (transform.position, ground) > 5f){
 			transform.position = ground;
 		}
+		mapIcon.transform.rotation = Quaternion.Euler (90,0,0);
 		base.Update ();
 		if(isSelected && !(this is FarmerController)){
 			updateTargetIndicator();
