@@ -141,7 +141,9 @@ public class TerrainBuilder : MonoBehaviour {
 
 		StartCoroutine(Place (Objects[1], nestAmt, NestLocations));
 		StartCoroutine(Place (Objects[2], stoneAmt, RockLocations));
-		StartCoroutine(Place (Objects[4], treeAmt, NestLocations));
+		int tree1cnt = UnityEngine.Random.Range (0,5);
+		StartCoroutine(Place (Objects[4], treeAmt-15+tree1cnt, NestLocations));
+		StartCoroutine(Place (Objects[5], 15-tree1cnt, NestLocations));
 	}
 
 	private void PlaceKeep(){
