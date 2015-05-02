@@ -28,7 +28,7 @@ GameObject:
   - 114: {fileID: 11449972}
   m_Layer: 2
   m_Name: NearbyUnitSensor
-  m_TagString: Untagged
+  m_TagString: dino
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -333,6 +333,7 @@ MonoBehaviour:
   playerUnitsNearby: []
   dinosNearby: []
   foodValue: 0
+  loseFlag: 0
 --- !u!135 &13549972
 SphereCollider:
   m_ObjectHideFlags: 1

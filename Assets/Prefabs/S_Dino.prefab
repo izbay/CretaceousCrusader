@@ -12,7 +12,7 @@ GameObject:
   - 114: {fileID: 11409624}
   m_Layer: 2
   m_Name: NearbyUnitSensor
-  m_TagString: Untagged
+  m_TagString: dino
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -280,11 +280,13 @@ MonoBehaviour:
   attackRate: 5
   attackRange: 10
   attackTarget: {fileID: 0}
+  assistTarget: {fileID: 0}
   attackers: []
   turnSpeed: 5
   moveSpeed: 10
   selectable: 0
   sliderPrefab: {fileID: 11424286, guid: 3af583ca14c5be24997e5e1d69afe92f, type: 2}
+  stateIndicator: 
   playerUnitsNearby: []
   dinosNearby: []
   foodValue: 5

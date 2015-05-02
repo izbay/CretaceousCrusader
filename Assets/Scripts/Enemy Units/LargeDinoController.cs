@@ -9,7 +9,6 @@ public class LargeDinoController : DinoController
 
 	protected float regenTick = 0f;
 	protected float regenSpeed = 20f;
-	protected float regenAmount = 1f;
 
 	protected override void Start()
 	{
@@ -23,7 +22,7 @@ public class LargeDinoController : DinoController
 		mapIcon.transform.rotation = Quaternion.Euler (90,0,0);
 
 		if(regenTick > regenSpeed){
-			health += regenAmount;
+			health += (maxHealth / 20f);
 			if(health > maxHealth){
 				health = maxHealth;
 			}
@@ -37,7 +36,9 @@ public class LargeDinoController : DinoController
 
 	public override void Hit(UnitController attacker)
 	{
-		statTracker.LdinoHealth = health * 100f / maxHealth;
+		try{
+			statTracker.LdinoHealth = health * 100f / maxHealth;
+		}catch{}
 		base.Hit (attacker);
 	}
 
@@ -70,7 +71,8 @@ public class LargeDinoController : DinoController
 
 					float dist = Vector3.Distance (keepPos, newPos);
 					// 33% chance to not take the closest path.
-					if(dist < bestDist || Random.Range (0f,1f) < 0.33f){
+					float chance = Random.Range (0,100);
+					if(dist < bestDist ||chance < 33){
 						bestDist = dist;
 						bestPos = newPos;
 					}
@@ -81,7 +83,7 @@ public class LargeDinoController : DinoController
 			Move();
 		}
 	}
-	
+
 	protected override void StartledState()
 	{
 		// look at the player unit

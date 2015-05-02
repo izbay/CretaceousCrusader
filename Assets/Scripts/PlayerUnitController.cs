@@ -109,7 +109,9 @@ public class PlayerUnitController : UnitController {
 				hunger *= tb.getHungerWeight(transform.position);
 			}
 			float recievedFood = keep.requestFood (hunger);
-			statTracker.foodConsumed += recievedFood;
+			try{
+				statTracker.foodConsumed += recievedFood;
+			}catch{}
 			if(recievedFood < hunger)
 			{
 				health -= 0.1f; // TODO scale health loss based on amount of food received

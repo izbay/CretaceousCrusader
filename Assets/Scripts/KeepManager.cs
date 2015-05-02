@@ -2,7 +2,6 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 
 public class KeepManager : MonoBehaviour {
 
@@ -14,13 +13,13 @@ public class KeepManager : MonoBehaviour {
 	public GameObject hutPrefab;
 	public int maxUnitCount = 5;
 	public Font font;
+	public int spawnLimit = 5;
 
 	private bool rotatingHut = false;
 	private GameObject hutPlacement;
 	private HutManager hutPlacementManager;
 	private GameObject UI;
 	private bool clickSpamLimiter;
-	private int spawnLimit = 5;
 	private float foodQty = 10f;
 	private float rockQty = 0f;
 	private float foodTick = 0f;
@@ -48,7 +47,7 @@ public class KeepManager : MonoBehaviour {
 		Camera.main.GetComponent<CameraController>().keepTransform = this.transform;
 		Camera.main.GetComponent<CameraController>().seekKeep = true;
 		tb = GameObject.Find("Terrain").GetComponent<TerrainBuilder>();
-		statTracker = GameObject.FindGameObjectWithTag("stat_tracker").GetComponent<StatTracker>();
+		try{ statTracker = GameObject.FindGameObjectWithTag("stat_tracker").GetComponent<StatTracker>(); } catch {}
 		escButton = GameObject.Find ("Quit");
 		escButton.SetActive(false);
 		resourceIndicator = UI.transform.Find("Info_Panel/Resources").GetComponent<Text>();
@@ -61,7 +60,9 @@ public class KeepManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		statTracker.time += Time.deltaTime;
+		try{
+			statTracker.time += Time.deltaTime;
+		} catch {}
 		if(Input.GetKeyDown (KeyCode.Escape)){
 			escMenu = !escMenu;
 			escButton.SetActive(escMenu);
@@ -178,9 +179,11 @@ public class KeepManager : MonoBehaviour {
 		int total = GameObject.FindGameObjectsWithTag("farmer").Length + // includes princesses...
 					GameObject.FindGameObjectsWithTag("quarrier").Length +
 					GameObject.FindGameObjectsWithTag("lancer").Length;
-		if(total > statTracker.maxUnits){
-			statTracker.maxUnits = total;
-		}
+		try{
+			if(total > statTracker.maxUnits){
+				statTracker.maxUnits = total;
+			}
+		}catch{}
 		return total;
 	}
 

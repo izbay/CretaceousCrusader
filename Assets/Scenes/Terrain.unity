@@ -830,6 +830,7 @@ MonoBehaviour:
   hutPrefab: {fileID: 190916, guid: 04cde995097df0842aa6b7d24e37d891, type: 2}
   maxUnitCount: 5
   font: {fileID: 12800000, guid: c3ffbd0fbee11a0488c4b89ec0ef9439, type: 3}
+  spawnLimit: 5
 --- !u!1 &475931394
 GameObject:
   m_ObjectHideFlags: 0
@@ -2260,7 +2261,7 @@ GameObject:
   - 114: {fileID: 1628299272}
   m_Layer: 2
   m_Name: NearbyUnitSensor
-  m_TagString: Untagged
+  m_TagString: dino
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

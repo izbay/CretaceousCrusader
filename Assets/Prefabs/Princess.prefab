@@ -341,7 +341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de2b58235f2f6a9469437c721def8978, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 150
+  health: 100
   attackStr: 0
   attackRate: 0
   attackRange: 0
@@ -365,6 +365,7 @@ MonoBehaviour:
   returning: 0
   changing: 0
   wanderDistance: 15
+  winFlag: 0
 --- !u!119 &11933522
 Projector:
   m_ObjectHideFlags: 1

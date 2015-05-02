@@ -15,7 +15,7 @@ public class AnimationController : MonoBehaviour {
 	private StatTracker statTracker;
 
 	void Start () {
-		statTracker = GameObject.FindGameObjectWithTag("stat_tracker").GetComponent<StatTracker>();
+		try{ statTracker = GameObject.FindGameObjectWithTag("stat_tracker").GetComponent<StatTracker>(); } catch {}
 		anim = transform.gameObject.GetComponent<Animator>();
 		aux = transform.gameObject.GetComponent<AudioSource>();
 		if(roar != null){
@@ -75,11 +75,13 @@ public class AnimationController : MonoBehaviour {
 	}
 
 	public void hideThis(){
-		if(obj.GetComponent<UnitController>() is PlayerUnitController){
-			statTracker.unitsKilled += 1;
-		} else {
-			statTracker.dinosKilled += 1;
-		}
+		try{
+			if(obj.GetComponent<UnitController>() is PlayerUnitController){
+				statTracker.unitsKilled += 1;
+			} else {
+				statTracker.dinosKilled += 1;
+			}
+		}catch{}
 		transform.GetComponentInChildren<MeshRenderer>().enabled = false;
 		GameObject.Destroy (obj);
 	}

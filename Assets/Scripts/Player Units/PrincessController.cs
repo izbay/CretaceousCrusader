@@ -5,7 +5,6 @@ public class PrincessController : FarmerController {
 	public bool winFlag = false;
 	protected float regenTick = 0f;
 	protected float regenSpeed = 20f;
-	protected float regenAmount = 1f;
 
 	protected override void Start () {
 		base.Start ();
@@ -16,7 +15,7 @@ public class PrincessController : FarmerController {
 		base.Update ();
 
 		if(regenTick > regenSpeed){
-			health += regenAmount;
+			health += (maxHealth / 20f);
 			if(health > maxHealth){
 				health = maxHealth;
 			}

@@ -22,7 +22,7 @@ public class SmallDinoController : DinoController
 			transform.rotation = Quaternion.RotateTowards (transform.rotation, targetRotation, turnSpeed);
 			
 			// TODO vary the response based on player unit type (i.e. always attack farmers & quarriers, run from lancers)
-			if (playerUnitsNearby.Count + 2 > dinosNearby.Count)
+			if (nearbyUnitsPower() >= nearbyDinoPower())
 			{
 				stateDelegate = FleeingState;
 			}

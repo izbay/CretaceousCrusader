@@ -78,6 +78,7 @@ public class HutManager : MonoBehaviour {
 		}
 
 		keep.maxUnitCount += 3;
+		keep.spawnLimit += 3;
 		// Refresh the button graphics.
 		keep.alterSpawnCount(0);
 	}

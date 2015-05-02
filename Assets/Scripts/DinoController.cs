@@ -171,4 +171,30 @@ public class DinoController : UnitController
 			keep.addFood(foodValue);
 		}
 	}
+
+	protected float nearbyUnitsPower(){
+		float returnVal = 0;
+		foreach(PlayerUnitController p in playerUnitsNearby){
+			if(p is LancerController){
+				returnVal += 1f;
+			} else if(p is QuarrierController){
+				returnVal += 0.33f;
+			}
+		}
+		return returnVal;
+	}
+
+	protected float nearbyDinoPower(){
+		float returnVal = 0;
+		foreach(DinoController d in dinosNearby){
+			if(d is LargeDinoController){
+				returnVal += 10f;
+			} else if(d is MedDinoController){
+				returnVal += 1.33f;
+			} else {
+				returnVal += 0.33f;
+			}
+		}
+		return returnVal;
+	}
 }

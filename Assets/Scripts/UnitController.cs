@@ -52,7 +52,7 @@ public class UnitController : MonoBehaviour
 		keep = GameObject.FindObjectOfType<KeepManager>();
 		anim = transform.GetComponentInChildren<AnimationController>();
 		tb = GameObject.Find ("Terrain").GetComponent<TerrainBuilder>();
-		statTracker = GameObject.FindGameObjectWithTag("stat_tracker").GetComponent<StatTracker>();
+		try{ statTracker = GameObject.FindGameObjectWithTag("stat_tracker").GetComponent<StatTracker>(); } catch {}
 		maxHealth = health;
 		pathRefreshRate = 5f;
 		GameObject globalNav = GameObject.FindGameObjectWithTag("global_nav");
@@ -154,6 +154,7 @@ public class UnitController : MonoBehaviour
 		{
 			if (TargetInRange())
 			{
+				setRails (false);
 				// TODO use coroutine for attack cooldown
 				if (ReadyToAttack())
 				{
@@ -162,6 +163,7 @@ public class UnitController : MonoBehaviour
 			}
 			else
 			{
+				setRails (true);
 				// Move towards the enemy
 				//navigationController.registerClick(this, attackTarget.transform.position);
 				Move();
@@ -200,7 +202,7 @@ public class UnitController : MonoBehaviour
 		}
 		
 		// Check path with every update.
-		if(path != null && path.Count > 1 && onRails)
+		if(path != null && path.Count > 1)
 		{
 			setNavTarget(path[1]);
 			if (pathRefreshCount >= pathRefreshRate)
