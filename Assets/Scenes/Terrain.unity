@@ -386,7 +386,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 415724, guid: c0941a03fb21a9a4cac9905c62641cc4, type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 115724, guid: c0941a03fb21a9a4cac9905c62641cc4, type: 2}
       propertyPath: m_Name
@@ -1648,6 +1648,7 @@ MonoBehaviour:
   - {fileID: 137478, guid: 15640136d6fc2b448bb97b6eda98731c, type: 2}
   - {fileID: 187298, guid: 4f1b01dbbfe7c174680ba4519d0214fc, type: 2}
   - {fileID: 119498, guid: d25c9b4d689e2e34baa35689b739baa6, type: 2}
+  - {fileID: 119614, guid: 149383095e78bca4eac736510c4b617c, type: 2}
   detail: 2
   globalH: -20
   selectColor: {r: .426470578, g: .426470578, b: .426470578, a: 1}
@@ -3325,7 +3326,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 467574, guid: 087b9d70c7b0c4a4ca6dff82448d9ad2, type: 2}
       propertyPath: m_RootOrder
-      value: 9
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 11439522, guid: 087b9d70c7b0c4a4ca6dff82448d9ad2, type: 2}
       propertyPath: step
