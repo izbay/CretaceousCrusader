@@ -101,6 +101,18 @@ public class CameraController : MonoBehaviour {
 				mapActive = !mapActive;
 				mapCamera.enabled = mapActive;
 			}
+			if(Input.GetKeyDown(KeyCode.Alpha1) && unitController != null){
+				PlayerUnitController puc = unitController as PlayerUnitController;
+				puc.ChangeClass(0);
+			}
+			if(Input.GetKeyDown(KeyCode.Alpha2) && unitController != null){
+				PlayerUnitController puc = unitController as PlayerUnitController;
+				puc.ChangeClass(1);
+			}
+			if(Input.GetKeyDown(KeyCode.Alpha3) && unitController != null){
+				PlayerUnitController puc = unitController as PlayerUnitController;
+				puc.ChangeClass(2);
+			}
 		}
 	}
 

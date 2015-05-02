@@ -361,6 +361,7 @@ public class KeepManager : MonoBehaviour {
                             registerClick(playerUnitList[0]);
                             Camera.main.GetComponent<CameraController>().selectedTransform = getSelected().transform;
                             Camera.main.GetComponent<CameraController>().seekSelected = true;
+							Camera.main.GetComponent<CameraController>().unitController = getSelected ();
                             return;
                         }
                     }
@@ -369,6 +370,7 @@ public class KeepManager : MonoBehaviour {
                 {
                     registerClick(x);
                     Camera.main.GetComponent<CameraController>().seekSelected = true;
+					Camera.main.GetComponent<CameraController>().unitController = getSelected ();
                     return;
                 }
             }
@@ -378,6 +380,7 @@ public class KeepManager : MonoBehaviour {
             registerClick(playerUnitList[0]);
             Camera.main.GetComponent<CameraController>().selectedTransform = getSelected().transform;
             Camera.main.GetComponent<CameraController>().seekSelected = true;
+			Camera.main.GetComponent<CameraController>().unitController = getSelected ();
             return;
         }
 

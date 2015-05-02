@@ -36,9 +36,9 @@ public class LargeDinoController : DinoController
 
 	public override void Hit(UnitController attacker)
 	{
-		try{
+		if(statTracker != null){
 			statTracker.LdinoHealth = health * 100f / maxHealth;
-		}catch{}
+		}
 		base.Hit (attacker);
 	}
 
