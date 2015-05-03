@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class TerrainBuilder : MonoBehaviour {
 	public GameObject[] Objects;
 	public GameObject[] Plants;
+	public float[] PlantFreq;
 	private float[] biomeCosts = new float[6] {10f,1.3f,0.85f,1f,2f,10f};
 	private float[] biomeLevels;
 	private Terrain terrain;
@@ -144,7 +145,7 @@ public class TerrainBuilder : MonoBehaviour {
 		StartCoroutine(Place (Objects[2], stoneAmt, RockLocations));
 
 		for(int i=0; i<Plants.Length; i++){
-			StartCoroutine(Place (Plants[i], treeAmt/Plants.Length, NestLocations));
+			StartCoroutine(Place (Plants[i], Mathf.RoundToInt(PlantFreq[i]*treeAmt), NestLocations));
 		}
 	}
 
