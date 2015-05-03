@@ -216,6 +216,22 @@ public class CameraController : MonoBehaviour {
 			{
 				destination.y = minCameraHeight;
 			}
+
+			if (destination.x < -30)
+			{
+				destination.x = -30;
+			} else if (destination.x > 3030)
+			{
+				destination.x = 3030;
+			}
+
+			if (destination.z < -100)
+			{
+				destination.z = -100;
+			} else if (destination.z > 2900)
+			{
+				destination.z = 2900;
+			}
 			
 			//if a change in position is detected perform the necessary update
 			if(destination != origin)
